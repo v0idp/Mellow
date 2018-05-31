@@ -31,7 +31,7 @@ function outputTVShow(msg, show) {
 // only works when the user has permission to request
 function requestTVShow(msg, showMsg, show) {
 	// check if user has request role and if it's not available, requested and approved
-	if (!config.request.tv || (msg.member.roles.exists('name', config.request.tv) && !show.available && !show.requested && !show.approved)) {
+	if ((!config.request.tv || msg.member.roles.exists('name', config.request.tv)) && (!show.available && !show.requested && !show.approved)) {
 		msg.reply('If you want to request this tv show please click on the ⬇ reaction.');
 		showMsg.react('⬇');
 		

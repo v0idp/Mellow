@@ -24,7 +24,7 @@ module.exports = class libraryCommand extends commando.Command {
 			let libraryEmbed = new Discord.MessageEmbed()
 			.setTitle('Server Libraries')
 			.setTimestamp(new Date())
-			.setThumbnail('https://i.imgur.com/pz9PoqR.png')
+			.setThumbnail('https://i.imgur.com/pz9PoqR.png');
             for (let i = 0; i < Object.keys(jsonObject.response.data).length; i++) {
 				let obj = jsonObject.response.data[i];
 				if (obj.section_type == 'movie') {
