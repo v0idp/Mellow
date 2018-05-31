@@ -98,6 +98,9 @@ yarn start
 
 ## Changelogs
 
+* 1.2.0
+	* Fixed a bug where when no request role was set in config that you could request even available shows and movies
+
 * 1.1.9
 	* Added the possibility to delete user commands after bot answered
 	* Renamed searchtv & searchmovie to tv & movie

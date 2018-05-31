@@ -29,7 +29,7 @@ function outputMovie(msg, movie) {
 // only works when the user has permission to request
 function requestMovie(msg, movieMsg, movie) {
 	// check if user has request role and if it's not available, requested and approved
-	if (!config.request.movie || (msg.member.roles.exists('name', config.request.movie) && !movie.available && !movie.requested && !movie.approved)) {
+	if ((!config.request.movie || msg.member.roles.exists('name', config.request.movie)) && (!movie.available && !movie.requested && !movie.approved)) {
 		msg.reply('If you want to request this movie please click on the ⬇ reaction.');
 		movieMsg.react('⬇');
 		
