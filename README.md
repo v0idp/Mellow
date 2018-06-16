@@ -98,6 +98,10 @@ yarn start
 
 ## Changelogs
 
+* 1.2.2
+	* Added User-Agents to all API calls to avoid any request errors
+	* Fixed request role check (discord.js got rid of the .exists() function)
+
 * 1.2.0
 	* Fixed a bug where when no request role was set in config that you could request even available shows and movies
 
