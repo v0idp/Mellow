@@ -29,7 +29,7 @@ function outputMovie(msg, movie) {
 // only works when the user has permission to request
 function requestMovie(msg, movieMsg, movie) {
 	// check if user has request role and if it's not available, requested and approved
-	if ((!config.request.movie || msg.member.roles.exists('name', config.request.movie)) && (!movie.available && !movie.requested && !movie.approved)) {
+	if ((!config.request.movie || msg.member.roles.some(role => role.name === config.request.movie)) && (!movie.available && !movie.requested && !movie.approved)) {
 		msg.reply('If you want to request this movie please click on the ⬇ reaction.');
 		movieMsg.react('⬇');
 		
@@ -39,7 +39,10 @@ function requestMovie(msg, movieMsg, movie) {
 			// request movie in ombi
 			if (collected.first()) {
 				post({
-					headers: {'accept' : 'application/json', "Content-Type" : "application/json", 'ApiKey' : config.ombi.apiKey},
+					headers: {'accept' : 'application/json',
+					'Content-Type' : 'application/json',
+					'ApiKey' : config.ombi.apiKey,
+					'User-Agent': 'Mellow/1.2.2 (Windows NT 10.0; Win64; x64)'},
 					url: `http://${config.ombi.ip}:${config.ombi.port}/api/v1/Request/movie/`,
 					body: JSON.stringify({ "theMovieDbId": movie.theMovieDbId })
 				}).then((resolve) => {
@@ -84,7 +87,9 @@ module.exports = class searchMovieCommand extends commando.Command {
 
 		// search for movies through ombi API
 		get({
-            headers: {'accept' : 'application/json', 'ApiKey' : config.ombi.apiKey},
+			headers: {'accept' : 'application/json',
+			'ApiKey' : config.ombi.apiKey,
+			'User-Agent': 'Mellow/1.2.2 (Windows NT 10.0; Win64; x64)'},
             url:     `http://${config.ombi.ip}:${config.ombi.port}/api/v1/Search/movie/${args.name}`
         }).then((resolve) => {
 			// parse body into json objects

@@ -1,6 +1,6 @@
 {
   "name": "mellow",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "main": "src/index.js",
   "author": "void* <voidp@protonmail.com> (https://github.com/v0idp)",
 	"repository": {

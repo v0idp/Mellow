@@ -17,7 +17,8 @@ module.exports = class libraryCommand extends commando.Command {
     
     run (msg, args) {
         get({
-            headers: {'accept' : 'application/json'},
+			headers: {'accept' : 'application/json',
+			'User-Agent': 'Mellow/1.2.2 (Windows NT 10.0; Win64; x64)'},
             url:     `http://${config.tautulli.ip}:${config.tautulli.port}/api/v2?apikey=${config.tautulli.apiKey}&cmd=get_libraries`
         }).then((resolve) => {
 			let jsonObject = JSON.parse(resolve.body);
