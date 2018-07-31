@@ -42,7 +42,7 @@ function requestMovie(msg, movieMsg, movie) {
 					headers: {'accept' : 'application/json',
 					'Content-Type' : 'application/json',
 					'ApiKey' : config.ombi.apiKey,
-					'User-Agent': 'Mellow/1.2.2 (Windows NT 10.0; Win64; x64)'},
+					'User-Agent': `Mellow/${process.env.npm_package_version}`},
 					url: `http://${config.ombi.ip}:${config.ombi.port}/api/v1/Request/movie/`,
 					body: JSON.stringify({ "theMovieDbId": movie.theMovieDbId })
 				}).then((resolve) => {
@@ -89,7 +89,7 @@ module.exports = class searchMovieCommand extends commando.Command {
 		get({
 			headers: {'accept' : 'application/json',
 			'ApiKey' : config.ombi.apiKey,
-			'User-Agent': 'Mellow/1.2.2 (Windows NT 10.0; Win64; x64)'},
+			'User-Agent': `Mellow/${process.env.npm_package_version}`},
             url:     `http://${config.ombi.ip}:${config.ombi.port}/api/v1/Search/movie/${args.name}`
         }).then((resolve) => {
 			// parse body into json objects

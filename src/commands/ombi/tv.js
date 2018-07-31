@@ -44,7 +44,7 @@ function requestTVShow(msg, showMsg, show) {
 					headers: {'accept' : 'application/json',
 					'Content-Type' : 'application/json',
 					'ApiKey' : config.ombi.apiKey,
-					'User-Agent': 'Mellow/1.2.2 (Windows NT 10.0; Win64; x64)'},
+					'User-Agent': `Mellow/${process.env.npm_package_version}`},
 					url: `http://${config.ombi.ip}:${config.ombi.port}/api/v1/Request/tv/`,
 					body: JSON.stringify({ "tvDbId": show.theTvDbId, "requestAll" : true })
 				}).then((resolve) => {
@@ -91,7 +91,7 @@ module.exports = class searchTVCommand extends commando.Command {
 		get({
 			headers: {'accept' : 'application/json',
 			'ApiKey' : config.ombi.apiKey,
-			'User-Agent': 'Mellow/1.2.2 (Windows NT 10.0; Win64; x64)'},
+			'User-Agent': `Mellow/${process.env.npm_package_version}`},
             url:     `http://${config.ombi.ip}:${config.ombi.port}/api/v1/Search/tv/${args.name}`
         }).then((resolve) => {
 			// parse body into json objects

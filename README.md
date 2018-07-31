@@ -66,6 +66,7 @@
 * ``globalCommandPrefix`` is the command prefix the bot will listen for commands (you can also tag the bot to use commands)
 * ``deleteCommandMessages`` if set to true all commands written by the user will be deleted after bot answered
 * ``ombi``, ``sonarr``, ``radarr`` and ``tautulli`` contain ``ip``, ``port`` and ``apiKey`` settings, which are self-explanatory
+* **Note:** if you want to use your domain instead of ip:port just enter the domain name into ``ip`` and leave ``port`` empty
 
 ## Installation & Start
 
@@ -86,7 +87,7 @@ It's a bit more than the bot actually needs but if anything new is beeing added 
 Enter your bot client id into the field down below in the Permission Calculator. You can get it from your bot application site where you created your bot.
 Next click on the link at the bottom and invite the bot to your server.
 
-Go into the Mellow root folder and type 
+Go into the Mellow root folder and type
 ```sh
 yarn prestart
 ```
@@ -98,9 +99,13 @@ yarn start
 
 ## Changelogs
 
+* 1.2.4
+	* Added refreshlibrary command for tautulli
+	* Updated User-Agent Headers to correct package version
+
 * 1.2.2
 	* Added User-Agents to all API calls to avoid any request errors
-	* Fixed request role check (discord.js got rid of the .exists() function)
+	* Fixed request role check (discord.js got rid of the ``.exists()`` function)
 
 * 1.2.0
 	* Fixed a bug where when no request role was set in config that you could request even available shows and movies
