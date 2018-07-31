@@ -107,15 +107,12 @@ class Bot {
 				'commandState': true
 			});
 
-		// then we check for API keys and register command groups according to them
-		// double check needed to make sure that commands get registered if any of the api keys is given
-		if (config.ombi != "" || config.sonarr != "" || config.radarr != "") {
-			if (config.ombi != "") this.client.registry.registerGroup('ombi', 'Ombi');
-			if (config.sonarr != "") this.client.registry.registerGroup('sonarr', 'Sonarr');
-			if (config.radarr != "") this.client.registry.registerGroup('radarr', 'Radarr');
-			if (config.tautulli != "") this.client.registry.registerGroup('tautulli', 'Tautulli');
-			this.client.registry.registerCommandsIn(path.join(__dirname, 'commands'));
-		}
+		// we check for API keys and register command groups
+		if (config.ombi.apiKey != "") this.client.registry.registerGroup('ombi', 'Ombi');
+		if (config.sonarr.apiKey != "") this.client.registry.registerGroup('sonarr', 'Sonarr');
+		if (config.radarr.apiKey != "") this.client.registry.registerGroup('radarr', 'Radarr');
+		if (config.tautulli.apiKey != "") this.client.registry.registerGroup('tautulli', 'Tautulli');
+		this.client.registry.registerCommandsIn(path.join(__dirname, 'commands'));
 
 		// login with client and bot token
 		return this.client.login(this.token);
