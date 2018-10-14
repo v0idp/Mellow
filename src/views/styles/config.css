@@ -1,0 +1,206 @@
+body {
+    background-color: #222;
+}
+
+.top-bar {
+    width:100%;
+    overflow:hidden;
+    color:#fff!important;
+    position: relative;
+}
+
+.top-bar .top-bar-item {
+    margin-right: 2px;
+    margin-left: 2px;
+    padding:8px 16px;
+    float:left;
+    width:auto;
+    border:none;
+    display:block;
+    outline:0;
+}
+
+.top-bar .top-bar-item-right {
+	margin-right: 2px;
+    margin-left: 2px;
+    padding:8px 16px;
+    float:right;
+    width:auto;
+    border:none;
+    display:block;
+    outline:0;
+}
+
+.top-bar .top-bar-item:active {
+    background-color:#00aaff!important;
+}
+
+.top-bar .button {
+    white-space:normal;
+    color:#fff!important;
+    background-color:#222!important;
+}
+
+.button:hover {
+    background-color:#00aaff!important;
+}
+
+.button:active {
+    background-color:#00aaff!important;
+}
+
+.container {
+    padding: 0.01em 16px;
+    float:left;
+}
+
+.container:after,
+.container:before {
+    content:"";
+    display:table;
+    clear:both;
+}
+
+.form-setting {
+    max-width: 330px;
+    color: #00aaff;
+}
+
+.form-setting .form-setting-heading,
+.form-setting .checkbox {
+    margin-bottom: 10px;
+}
+
+.form-setting .checkbox {
+    font-weight: normal;
+}
+
+.form-setting .form-control {
+    text-indent: 10px;
+    position: relative;
+    height: auto;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 6px;
+    font-size: 16px;
+    background-color:#444!important;
+    color:#fff;
+    border-radius: 5px;
+}
+
+.form-setting .form-control:focus {
+    z-index: 2;
+}
+
+.form-setting input {
+    border: 1px hidden;
+    border-radius: 1px;
+    border-color: #00aaff;
+}
+
+.form-setting input:focus {
+    border: 1px solid #00aaff;
+    border-color: #00aaff;
+}
+
+.btn-block {
+    margin-top: 35px;
+    margin-left: 50%;
+    width: 50%;
+    text-align: center;
+}
+
+h2 {
+    color: #00aaff;
+}
+
+.h2-setting {
+    color:#fff!important;
+    font-size: 115%;
+    font-weight: bold;
+}
+
+p {
+    color:#f0f0f0!important;
+    font-style: italic;
+}
+
+input[type=checkbox] {
+	visibility: hidden;
+}
+
+.slide {
+    float: right;
+	width: 80px;
+	height: 26px;
+	background: #444;
+	margin: 10px auto;
+
+	-webkit-border-radius: 50px;
+	-moz-border-radius: 50px;
+	border-radius: 50px;
+	position: relative;
+
+	-webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,0.2);
+	-moz-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,0.2);
+	box-shadow: inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,0.2);
+}
+
+.slide:after {
+	content: 'OFF';
+	font: 12px/26px Arial, sans-serif;
+	color: #000;
+	position: absolute;
+	right: 10px;
+	z-index: 0;
+	font-weight: bold;
+	text-shadow: 1px 1px 0px rgba(255,255,255,.15);
+}
+
+.slide:before {
+	content: 'ON';
+	font: 12px/26px Arial, sans-serif;
+	color: #00aaff;
+	position: absolute;
+	left: 10px;
+	z-index: 0;
+	font-weight: bold;
+}
+
+.slide label {
+	display: block;
+	width: 34px;
+	height: 20px;
+
+	-webkit-border-radius: 50px;
+	-moz-border-radius: 50px;
+	border-radius: 50px;
+
+	-webkit-transition: all .4s ease;
+	-moz-transition: all .4s ease;
+	-o-transition: all .4s ease;
+	-ms-transition: all .4s ease;
+	transition: all .4s ease;
+	cursor: pointer;
+	position: absolute;
+	top: 3px;
+	left: 3px;
+	z-index: 1;
+
+	-webkit-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.3);
+	-moz-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.3);
+	box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.3);
+	background: #fcfff4;
+
+	background: -webkit-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+	background: -moz-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+	background: -o-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+	background: -ms-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+	background: linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfff4', endColorstr='#b3bead',GradientType=0 );
+}
+
+.slide input[type=checkbox]:checked + label {
+	left: 43px;
+}
