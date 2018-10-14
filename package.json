@@ -1,0 +1,34 @@
+{
+  "name": "mellow",
+  "version": "1.5.1",
+  "main": "src/index.js",
+  "author": "void* <voidp@protonmail.com> (https://bitbucket.org/v0idp/)",
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/v0idp/mellow"
+  },
+  "bugs": {
+    "url": "https://bitbucket.org/v0idp/mellow/issues"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "commands"
+  ],
+  "license": "GPL-3.0",
+  "scripts": {
+    "prestart": "yarn install",
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "discord.js": "discordjs/discord.js",
+    "discord.js-commando": "discordjs/Commando",
+    "ejs": "^2.6.1",
+    "express": "^4.16.3",
+    "express-session": "^1.15.6",
+    "moment": "^2.22.2",
+    "request": "^2.88.0",
+    "sqlite": "^3.0.0"
+  }
+}

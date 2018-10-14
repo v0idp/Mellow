@@ -1,0 +1,122 @@
+<!-- views/login.ejs -->
+<meta charset="UTF-8">
+
+<title>Mellow Configuration</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+  integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+  crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="styles/config.css">
+
+<div class="top-bar">
+  <button class="top-bar-item button" onclick="openSetting('General')">General</button>
+  <button class="top-bar-item button" onclick="openSetting('Bot')">Bot</button>
+  <button class="top-bar-item button" onclick="openSetting('Ombi')">Ombi</button>
+  <button class="top-bar-item button" onclick="openSetting('Tautulli')">Tautulli</button>
+  <button class="top-bar-item button" onclick="openSetting('Sonarr')">Sonarr</button>
+  <button class="top-bar-item button" onclick="openSetting('Radarr')">Radarr</button>
+  <form role = "form" action = "/logout" method = "post"><button class="top-bar-item-right button" type = "submit" name = "logout">Logout</button></form>
+</div>
+
+<div id="General" class="container setting" style="<% if (currentView == "general") { %><%="display:initial"%><% } else { %><%="display:none"%><% } %>">
+    <h2>General Settings</h2>
+    <form class = "form-setting" role = "form" action = "/general" method = "post">
+      <h2 class="h2-setting">Username</h2>
+      <input type = "text" class = "form-control" name = "username" value = "<% if (generalSettings && generalSettings.username) { %><%=generalSettings.username %><% } %>" required>
+      <h2 class="h2-setting">Password</h2>
+      <input type = "password" class = "form-control" name = "password" value = "<% if (generalSettings && generalSettings.password) { %><%=generalSettings.password %><% } %>" required>
+      <button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "submit">Submit</button>
+    </form>
+</div>
+
+<div id="Bot" class="container setting" style="<% if (currentView == "bot") { %><%="display:initial"%><% } else { %><%="display:none"%><% } %>">
+  <h2>Bot Settings</h2>
+  <form class = "form-setting" role = "form" action = "/bot" method = "post">
+    <h2 class="h2-setting">Token</h2>
+    <input type = "text" class = "form-control" name = "token" value = "<% if (botSettings && botSettings.token) { %><%=botSettings.token %><% } %>" required>
+    <h2 class="h2-setting">Owner ID</h2>
+    <input type = "tel" class = "form-control" name = "ownerID" value = "<% if (botSettings && botSettings.ownerid) { %><%=botSettings.ownerid %><% } %>">
+    <h2 class="h2-setting">Command Prefix</h2>
+    <input type = "text" class = "form-control" name = "commandPrefix" value = "<% if (botSettings && botSettings.commandprefix) { %><%=botSettings.commandprefix %><% } %>" required>
+    <div class="slide">
+      <input type="checkbox" value="true" id="slide" name="deleteCommandMessages" <% if (botSettings && botSettings.deletecommandmessages == 'true') { %> <? checked ?> <% } %>/>
+      <label for="slide"></label>
+    </div>
+    <h2 class="h2-setting">Delete Command Messages</h2>
+    <div class="slide">
+        <input type="checkbox" value="true" id="slide2" name="unknownCommandResponse" <% if (botSettings && botSettings.unknowncommandresponse == 'true') { %> <? checked ?> <% } %>/>
+        <label for="slide2"></label>
+      </div>
+      <h2 class="h2-setting">Unknown Command Response</h2>
+    <button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "submit">Submit</button>
+  </form>
+</div>
+
+<div id="Ombi" class="container setting" style="<% if (currentView == "ombi") { %><%="display:initial"%><% } else { %><%="display:none"%><% } %>">
+  <h2>Ombi Settings</h2>
+  <form class = "form-setting" role = "form" action = "/ombi" method = "post">
+    <h2 class="h2-setting">Host</h2>
+    <input type = "text" class = "form-control" name = "host" value = "<% if (ombiSettings && ombiSettings.host) { %><%=ombiSettings.host %><% } %>">
+    <h2 class="h2-setting">Port</h2>
+    <input type = "tel" class = "form-control" name = "port" value = "<% if (ombiSettings && ombiSettings.port) { %><%=ombiSettings.port %><% } %>">
+    <h2 class="h2-setting">API Key</h2>
+    <input type = "text" class = "form-control" name = "apiKey" value = "<% if (ombiSettings && ombiSettings.apikey) { %><%=ombiSettings.apikey %><% } %>">
+    <h2 class="h2-setting">Request TV Shows (Discord Role Name)</h2>
+    <input type = "text" class = "form-control" name = "requestTV" value = "<% if (ombiSettings && ombiSettings.requesttv) { %><%=ombiSettings.requesttv %><% } %>">
+    <p>(Leave blank if anyone can request.)</p>
+    <h2 class="h2-setting">Request Movies (Discord Role Name)</h2>
+    <input type = "text" class = "form-control" name = "requestMovie" value = "<% if (ombiSettings && ombiSettings.requestmovie) { %><%=ombiSettings.requestmovie %><% } %>">
+    <p>(Leave blank if anyone can request.)</p>
+    <button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "submit">Submit</button>
+  </form>
+</div>
+
+<div id="Tautulli" class="container setting" style="<% if (currentView == "tautulli") { %><%="display:initial"%><% } else { %><%="display:none"%><% } %>">
+  <h2>Tautulli Settings</h2>
+  <form class = "form-setting" role = "form" action = "/tautulli" method = "post">
+    <h2 class="h2-setting">Host</h2>
+    <input type = "text" class = "form-control" name = "host" value = "<% if (tautulliSettings && tautulliSettings.host) { %><%=tautulliSettings.host %><% } %>">
+    <h2 class="h2-setting">Port</h2>
+    <input type = "tel" class = "form-control" name = "port" value = "<% if (tautulliSettings && tautulliSettings.port) { %><%=tautulliSettings.port %><% } %>">
+    <h2 class="h2-setting">API Key</h2>
+    <input type = "text" class = "form-control" name = "apiKey" value = "<% if (tautulliSettings && tautulliSettings.apikey) { %><%=tautulliSettings.apikey %><% } %>">
+    <button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "submit">Submit</button>
+  </form>
+</div>
+
+<div id="Sonarr" class="container setting" style="<% if (currentView == "sonarr") { %><%="display:initial"%><% } else { %><%="display:none"%><% } %>">
+  <h2>Sonarr Settings</h2>
+  <form class = "form-setting" role = "form" action = "/sonarr" method = "post">
+    <h2 class="h2-setting">Host</h2>
+    <input type = "text" class = "form-control" name = "host" value = "<% if (sonarrSettings && sonarrSettings.host) { %><%=sonarrSettings.host %><% } %>">
+    <h2 class="h2-setting">Port</h2>
+    <input type = "tel" class = "form-control" name = "port" value = "<% if (sonarrSettings && sonarrSettings.port) { %><%=sonarrSettings.port %><% } %>">
+    <h2 class="h2-setting">API Key</h2>
+    <input type = "text" class = "form-control" name = "apiKey" value = "<% if (sonarrSettings && sonarrSettings.apikey) { %><%=sonarrSettings.apikey %><% } %>">
+    <button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "submit">Submit</button>
+  </form>
+</div>
+
+<div id="Radarr" class="container setting" style="<% if (currentView == "radarr") { %><%="display:initial"%><% } else { %><%="display:none"%><% } %>">
+  <h2>Radarr Settings</h2>
+  <form class = "form-setting" role = "form" action = "/radarr" method = "post">
+    <h2 class="h2-setting">Host</h2>
+    <input type = "text" class = "form-control" name = "host" value = "<% if (radarrSettings && radarrSettings.host) { %><%=radarrSettings.host %><% } %>">
+    <h2 class="h2-setting">Port</h2>
+    <input type = "tel" class = "form-control" name = "port" value = "<% if (radarrSettings && radarrSettings.port) { %><%=radarrSettings.port %><% } %>">
+    <h2 class="h2-setting">API Key</h2>
+    <input type = "text" class = "form-control" name = "apiKey" value = "<% if (radarrSettings && radarrSettings.apikey) { %><%=radarrSettings.apikey %><% } %>">
+    <button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "submit">Submit</button>
+  </form>
+</div>
+
+<script>
+  function openSetting(settingName) {
+      var i;
+      var x = document.getElementsByClassName("setting");
+      for (i = 0; i < x.length; i++) {
+        x[i].style.display = "none";  
+      }
+      document.getElementById(settingName).style.display = "block";  
+      currentSetting = settingName;
+  }
+</script>
