@@ -23,6 +23,7 @@ module.exports = class refreshLibraryCommand extends commando.Command {
 				deleteCommandMessages(msg, this.client);
 				msg.reply('Refreshed all libraries in Tautulli.');
 			}).catch((error) => {
+				console.error(error);
 				return msg.reply('There was an error in your request.');
 			});
 		}).catch((err) => console.error(err));

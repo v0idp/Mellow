@@ -36,7 +36,8 @@ module.exports = class librariesCommand extends commando.Command {
 				}
 				deleteCommandMessages(msg, this.client);
 				msg.embed(libraryEmbed);
-			}).catch(() => {
+			}).catch((error) => {
+				console.error(error);
 				return msg.reply('There was an error in your request.');
 			});
 		}).catch((err) => console.error(err));
