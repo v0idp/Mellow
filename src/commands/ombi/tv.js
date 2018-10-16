@@ -49,6 +49,7 @@ function requestTVShow(ombi, msg, showMsg, show) {
 				}).then((resolve) => {
 					return msg.reply(`Requested ${show.title} in Ombi.`);
 				}).catch((error) => {
+					console.error(error);
 					return msg.reply('There was an error in your request.');
 				});
 			}
@@ -148,6 +149,7 @@ module.exports = class searchTVCommand extends commando.Command {
 					return msg.reply('Cancelled command.');
 				});
 			}).catch((error) => {
+				console.error(error);
 				return msg.reply('There was an error in your request.');
 			});
 		}).catch((err) => console.error(err));

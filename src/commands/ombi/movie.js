@@ -47,6 +47,7 @@ function requestMovie(ombi, msg, movieMsg, movie) {
 				}).then((resolve) => {
 					return msg.reply(`Requested ${movie.title} in Ombi.`);
 				}).catch((error) => {
+					console.error(error);
 					return msg.reply('There was an error in your request.');
 				});
 			}
@@ -146,6 +147,7 @@ module.exports = class searchMovieCommand extends commando.Command {
 					return msg.reply('Cancelled command.');
 				});
 			}).catch((error) => {
+				console.error(error);
 				return msg.reply('There was an error in your request.');
 			});
 		}).catch((err) => console.error(err));
