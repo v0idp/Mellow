@@ -2,13 +2,13 @@
   "name": "mellow",
   "version": "1.5.1",
   "main": "src/index.js",
-  "author": "void* <voidp@protonmail.com> (https://bitbucket.org/v0idp/)",
+  "author": "void* <voidp@protonmail.com> (https://github.com/v0idp)",
   "repository": {
     "type": "git",
-    "url": "https://bitbucket.org/v0idp/mellow"
+    "url": "https://github.com/v0idp/Mellow"
   },
   "bugs": {
-    "url": "https://bitbucket.org/v0idp/mellow/issues"
+    "url": "https://github.com/v0idp/Mellow/issues"
   },
   "keywords": [
     "discord",

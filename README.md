@@ -66,7 +66,7 @@ or use docker compose. A yaml file is provided for this purpose.
 
 ## Contributing
 
-1. Fork it (<https://bitbucket.org/v0idp/mellow/fork>)
+1. Fork it (<https://github.com/v0idp/Mellow/fork>)
 2. Create your feature branch (`git checkout -b feature/fooBar`)
 3. Commit your changes (`git commit -am 'Add some fooBar'`)
 4. Push to the branch (`git push origin feature/fooBar`)
