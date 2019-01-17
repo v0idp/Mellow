@@ -41,6 +41,7 @@ function requestMovie(ombi, msg, movieMsg, movie) {
 					headers: {'accept' : 'application/json',
 					'Content-Type' : 'application/json',
 					'ApiKey' : ombi.apikey,
+					'ApiAlias' : `${msg.author.username} (${msg.author.id})`,
 					'User-Agent': `Mellow/${process.env.npm_package_version}`},
 					url: 'http://' + ombi.host + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Request/movie/',
 					body: JSON.stringify({ "theMovieDbId": movie.theMovieDbId })
