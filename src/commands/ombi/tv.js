@@ -44,6 +44,7 @@ function requestTVShow(ombi, msg, showMsg, show) {
 					'Content-Type' : 'application/json',
 					'ApiKey' : ombi.apikey,
 					'ApiAlias' : `${msg.author.username} (${msg.author.id})`,
+					'UserName' : (ombi.username !== "") ? ombi.username : '',
 					'User-Agent': `Mellow/${process.env.npm_package_version}`},
 					url: 'http://' + ombi.host + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Request/tv/',
 					body: JSON.stringify({ "tvDbId": show.id, "requestAll" : true })
