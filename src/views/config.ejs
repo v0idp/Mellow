@@ -66,6 +66,9 @@
     <h2 class="h2-setting">Request Movies (Discord Role Name)</h2>
     <input type = "text" class = "form-control" name = "requestMovie" value = "<% if (ombiSettings && ombiSettings.requestmovie) { %><%=ombiSettings.requestmovie %><% } %>">
     <p>(Leave blank if anyone can request.)</p>
+    <h2 class="h2-setting">Ombi Username</h2>
+    <input type = "text" class = "form-control" name = "userName" value = "<% if (ombiSettings && ombiSettings.username) { %><%=ombiSettings.username %><% } %>">
+    <p>(Enter Ombi username if you want custom permissions.)</p>
     <button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "submit">Submit</button>
   </form>
 </div>
