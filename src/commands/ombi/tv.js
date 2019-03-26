@@ -46,7 +46,7 @@ function requestTVShow(ombi, msg, showMsg, show) {
 					'ApiAlias' : `${msg.author.username} (${msg.author.id})`,
 					'UserName' : (ombi.username !== "") ? ombi.username : '',
 					'User-Agent': `Mellow/${process.env.npm_package_version}`},
-					url: 'http://' + ombi.host + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Request/tv/',
+					url: 'https://' + ombi.host + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Request/tv/',
 					body: JSON.stringify({ "tvDbId": show.id, "requestAll" : true })
 				}).then((resolve) => {
 					return msg.reply(`Requested ${show.title} in Ombi.`);
@@ -94,7 +94,7 @@ module.exports = class searchTVCommand extends commando.Command {
 				headers: {'accept' : 'application/json',
 				'ApiKey' : ombi.apikey,
 				'User-Agent': `Mellow/${process.env.npm_package_version}`},
-				url:     'http://' + ombi.host + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Search/tv/' + args.name
+				url:     'https://' + ombi.host + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Search/tv/' + args.name
 			}).then((resolve) => {
 				// parse body into json objects
 				let data = JSON.parse(resolve.body);
