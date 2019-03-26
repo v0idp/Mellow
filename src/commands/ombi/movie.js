@@ -92,7 +92,7 @@ module.exports = class searchMovieCommand extends commando.Command {
 				headers: {'accept' : 'application/json',
 				'ApiKey' : ombi.apikey,
 				'User-Agent': `Mellow/${process.env.npm_package_version}`},
-				url:     'http://' + ombi.host + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Search/movie/' + args.name
+				url:     'https://' + ombi.host + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Search/movie/' + args.name
 			}).then((resolve) => {
 				// parse body into json objects
 				let data = JSON.parse(resolve.body);
