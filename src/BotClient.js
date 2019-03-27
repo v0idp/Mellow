@@ -1,6 +1,7 @@
 const Commando = require('discord.js-commando');
 const path = require('path');
 const sqlite = require('sqlite');
+const {post} = require('./util.js');
 
 class BotClient extends Commando.Client {
 	constructor (webDB, token, ownerid, commandprefix, unknowncommandresponse) {
@@ -73,7 +74,33 @@ class BotClient extends Commando.Client {
 		};
 	}
 
-	init () {
+	refreshToken () {
+		return new Promise((resolve, reject) => {
+			this.webDB.loadSettings('ombi').then((ombi) => {
+				post({
+					headers: {
+						'accept' : 'application/json',
+						'Content-Type': 'application/json',
+						'User-Agent': `Mellow/${process.env.npm_package_version}`
+					},
+					url: 'https://' + ombi.host + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/token',
+					body: JSON.stringify({username:ombi.username, password:ombi.password})
+				}).then(({response, body}) => {
+					let {access_token, expiration} = JSON.parse(body)
+					this.accessToken = access_token
+					console.log("Refreshed Access Token")
+					setTimeout(this.refreshToken, new Date(expiration).getTime() - Date.now())
+					resolve()
+				}).catch((error) => {
+					console.error(error)
+					setTimeout(this.refreshToken, 5 * 60 * 1000)
+					reject()
+				})
+			})
+		})
+	}
+
+	async init () {
 		// register our events for logging purposes
 		this.on('ready', this.onReady())
 			.on('commandPrefixChange', this.onCommandPrefixChange())
@@ -109,19 +136,22 @@ class BotClient extends Commando.Client {
 				'ping': true,
 				'eval_': false,
 				'commandState': true
-			}).registerCommandsIn(path.join(__dirname, 'commands'));
+		}).registerCommandsIn(path.join(__dirname, 'commands'));
 
-			// unregister groups if apikey and host is not provided in web database
-			// thanks to the commando framework we have to go the dirty way
-			this.registry.groups.forEach((group) => {
-				this.webDB.loadSettings(group.name).then((result) => {
-					if(!result || (!result.host && !result.apikey)) {
-						group.commands.forEach((command) => {
-							this.registry.unregisterCommand(command);
-						});
-					}
-				}).catch(() => {});
-			});
+		// unregister groups if apikey and host is not provided in web database
+		// thanks to the commando framework we have to go the dirty way
+		this.registry.groups.forEach((group) => {
+			this.webDB.loadSettings(group.name).then((result) => {
+				if(!result || (!result.host && !result.username && !result.password)) {
+					group.commands.forEach((command) => {
+						this.registry.unregisterCommand(command);
+					});
+				}
+			}).catch(() => {});
+		});
+
+		// get the access token from Ombi
+		await this.refreshToken()
 
 		// login client with bot token
 		return this.login(this.token);

@@ -58,8 +58,6 @@
     <input type = "text" class = "form-control" name = "host" value = "<% if (ombiSettings && ombiSettings.host) { %><%=ombiSettings.host %><% } %>">
     <h2 class="h2-setting">Port</h2>
     <input type = "tel" class = "form-control" name = "port" value = "<% if (ombiSettings && ombiSettings.port) { %><%=ombiSettings.port %><% } %>">
-    <h2 class="h2-setting">API Key</h2>
-    <input type = "text" class = "form-control" name = "apiKey" value = "<% if (ombiSettings && ombiSettings.apikey) { %><%=ombiSettings.apikey %><% } %>">
     <h2 class="h2-setting">Request TV Shows (Discord Role Name)</h2>
     <input type = "text" class = "form-control" name = "requestTV" value = "<% if (ombiSettings && ombiSettings.requesttv) { %><%=ombiSettings.requesttv %><% } %>">
     <p>(Leave blank if anyone can request.)</p>
@@ -68,7 +66,8 @@
     <p>(Leave blank if anyone can request.)</p>
     <h2 class="h2-setting">Ombi Username</h2>
     <input type = "text" class = "form-control" name = "userName" value = "<% if (ombiSettings && ombiSettings.username) { %><%=ombiSettings.username %><% } %>">
-    <p>(Enter Ombi username if you want custom permissions.)</p>
+    <h2 class="h2-setting">Ombi Password</h2>
+    <input type = "password" class = "form-control" name = "passWord" value = "<% if (ombiSettings && ombiSettings.password) { %><%=ombiSettings.password %><% } %>">
     <button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "submit">Submit</button>
   </form>
 </div>
