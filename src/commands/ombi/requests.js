@@ -43,7 +43,7 @@ module.exports = class getRequestsCommand extends commando.Command {
 
 	async run (msg, args) {
 		let ombi = await this.client.webDB.loadSettings('ombi')
-		ombi.accessToken = this.client.accessToken
+		ombi.accessToken = this.client.accessTokens[ombi.username]
 
 		getRequests(ombi)
 		.then(({movieRequests, tvRequests}) => {

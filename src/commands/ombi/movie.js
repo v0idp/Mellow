@@ -111,14 +111,14 @@ module.exports = class searchMovieCommand extends commando.Command {
 			'name': 'movie',
 			'memberName': 'movie',
 			'group': 'ombi',
-			'description': 'search and request movies in ombi',
-			'examples': ['movie the matrix'],
+			'description': 'Search and Request Movies in Ombi',
+			'examples': ['movie The Matrix', 'movie tmdb:603'],
 			'guildOnly': true,
 
 			'args': [
 				{
 					'key': 'name',
-					'prompt': 'name of the movie',
+					'prompt': 'Name of the Movie',
 					'type': 'string'
 				}
 			]
@@ -130,8 +130,8 @@ module.exports = class searchMovieCommand extends commando.Command {
 			return msg.reply('Please enter a valid movie name!');
 		}
 
-		var ombi = await this.client.webDB.loadSettings('ombi')
-		ombi.accessToken = this.client.accessToken
+		let ombi = await this.client.webDB.loadSettings('ombi')
+		ombi.accessToken = this.client.accessTokens[ombi.username]
 
 		let tmdbid = null
 		if (!args.name.startsWith("tmdb:")) {

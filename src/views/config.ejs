@@ -62,10 +62,22 @@
     <h2 class="h2-setting">Request Movies (Discord Role Name)</h2>
     <input type = "text" class = "form-control" name = "requestMovie" value = "<% if (ombiSettings && ombiSettings.requestmovie) { %><%=ombiSettings.requestmovie %><% } %>">
     <p>(Leave blank if anyone can request.)</p>
+    <h2 class="h2-setting">Approve TV Shows (Discord Role Name)</h2>
+    <input type = "text" class = "form-control" name = "approveTV" value = "<% if (ombiSettings && ombiSettings.approvetv) { %><%=ombiSettings.approvetv %><% } %>">
+    <p>(Leave blank if anyone can approve.)</p>
+    <h2 class="h2-setting">Approve Movies (Discord Role Name)</h2>
+    <input type = "text" class = "form-control" name = "approveMovie" value = "<% if (ombiSettings && ombiSettings.approvemovie) { %><%=ombiSettings.approvemovie %><% } %>">
+    <p>(Leave blank if anyone can approve.)</p>
     <h2 class="h2-setting">Ombi Username</h2>
-    <input type = "text" class = "form-control" name = "userName" value = "<% if (ombiSettings && ombiSettings.username) { %><%=ombiSettings.username %><% } %>">
+    <input type = "text" class = "form-control" name = "username" value = "<% if (ombiSettings && ombiSettings.username) { %><%=ombiSettings.username %><% } %>">
     <h2 class="h2-setting">Ombi Password</h2>
-    <input type = "password" class = "form-control" name = "passWord" value = "<% if (ombiSettings && ombiSettings.password) { %><%=ombiSettings.password %><% } %>">
+    <input type = "password" class = "form-control" name = "password" value = "<% if (ombiSettings && ombiSettings.password) { %><%=ombiSettings.password %><% } %>">
+    <h2 class="h2-setting">Admin Ombi Username</h2>
+    <input type = "text" class = "form-control" name = "adminUsername" value = "<% if (ombiSettings && ombiSettings.adminusername) { %><%=ombiSettings.adminusername %><% } %>">
+    <p>(Leave blank to disable manual approvals.)</p>
+    <h2 class="h2-setting">Admin Ombi Password</h2>
+    <input type = "password" class = "form-control" name = "adminPassword" value = "<% if (ombiSettings && ombiSettings.adminpassword) { %><%=ombiSettings.adminpassword %><% } %>">
+    <p>(Leave blank to disable manual approvals.)</p>
     <button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "submit">Submit</button>
   </form>
 </div>
