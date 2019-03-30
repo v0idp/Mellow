@@ -114,14 +114,14 @@ module.exports = class searchTVCommand extends commando.Command {
 			'name': 'tv',
 			'memberName': 'tv',
 			'group': 'ombi',
-			'description': 'search and request tv shows in ombi',
-			'examples': ['tv big bang theory'],
+			'description': 'Search and Request TV Shows in Ombi',
+			'examples': ['tv The Big Bang Theory', 'tv tvdb:80379'],
 			'guildOnly': true,
 
 			'args': [
 				{
 					'key': 'name',
-					'prompt': 'name of the tv show',
+					'prompt': 'Name of the TV Show',
 					'type': 'string'
 				}
 			]
@@ -130,11 +130,11 @@ module.exports = class searchTVCommand extends commando.Command {
 
 	async run (msg, args) {
 		if (!args.name) {
-			return msg.reply('Please enter a valid tv show name!');
+			return msg.reply('Please enter a valid TV show name!');
 		}
 
-		var ombi = await this.client.webDB.loadSettings('ombi')
-		ombi.accessToken = this.client.accessToken
+		let ombi = await this.client.webDB.loadSettings('ombi')
+		ombi.accessToken = this.client.accessTokens[ombi.username]
 
 		let tvdbid = null
 		if (!args.name.startsWith("tvdb:")) {

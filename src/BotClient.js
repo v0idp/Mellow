@@ -13,6 +13,8 @@ class BotClient extends Commando.Client {
 		this.webDB = webDB;
 		this.token = token;
 		this.isReady = false;
+		this.accessTokens = {}
+		this.timeouts = {}
 	}
 
 	onReady () {
@@ -74,28 +76,25 @@ class BotClient extends Commando.Client {
 		};
 	}
 
-	refreshToken () {
+	renewAccessToken (ombi, username, password) {
 		return new Promise((resolve, reject) => {
-			this.webDB.loadSettings('ombi').then((ombi) => {
-				post({
-					headers: {
-						'accept' : 'application/json',
-						'Content-Type': 'application/json',
-						'User-Agent': `Mellow/${process.env.npm_package_version}`
-					},
-					url: 'https://' + ombi.host + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/token',
-					body: JSON.stringify({username:ombi.username, password:ombi.password})
-				}).then(({response, body}) => {
-					let {access_token, expiration} = JSON.parse(body)
-					this.accessToken = access_token
-					console.log("Refreshed Access Token")
-					setTimeout(this.refreshToken, new Date(expiration).getTime() - Date.now())
-					resolve()
-				}).catch((error) => {
-					console.error(error)
-					setTimeout(this.refreshToken, 5 * 60 * 1000)
-					reject()
-				})
+			post({
+				headers: {
+					'accept' : 'application/json',
+					'Content-Type': 'application/json',
+					'User-Agent': `Mellow/${process.env.npm_package_version}`
+				},
+				url: 'https://' + ombi.host + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/token',
+				body: JSON.stringify({username, password})
+			}).then(({response, body}) => {
+				let {access_token, expiration} = JSON.parse(body)
+				this.accessTokens[username] = access_token
+				console.log(`Renewed Access Token for User ${username}`)
+				this.timeouts[username] = setTimeout(this.renewAccessToken, new Date(expiration).getTime() - Date.now(), ombi, username, password)
+				resolve()
+			}).catch((error) => {
+				console.error(error)
+				this.timeouts[username] = setTimeout(this.renewAccessToken, 5 * 60 * 1000, ombi, username, password)
 			})
 		})
 	}
@@ -125,8 +124,6 @@ class BotClient extends Commando.Client {
 			.registerDefaultGroups()
 			.registerGroups([
 				['ombi', 'Ombi'],
-				['sonarr', 'Sonarr'],
-				['radarr', 'Radarr'],
 				['tautulli', 'Tautulli']
 			])
 			.registerDefaultTypes()
@@ -138,26 +135,36 @@ class BotClient extends Commando.Client {
 				'commandState': true
 		}).registerCommandsIn(path.join(__dirname, 'commands'));
 
-		// unregister groups if apikey and host is not provided in web database
-		// thanks to the commando framework we have to go the dirty way
-		this.registry.groups.forEach((group) => {
-			this.webDB.loadSettings(group.name).then((result) => {
-				if(!result || (!result.host && !result.username && !result.password)) {
-					group.commands.forEach((command) => {
-						this.registry.unregisterCommand(command);
-					});
+		this.webDB.loadSettings("ombi").then((result) => {
+			if (result && result.host && result.username && result.password) {
+				this.renewAccessToken(result, result.username, result.password)
+				if (result.adminUsername && result.adminPassword) {
+					this.renewAccessToken(result, result.adminUsername, result.adminPassword)
 				}
-			}).catch(() => {});
-		});
+			} else {
+				this.registry.groups.find(g => g.id == "ombi").commands.forEach((command) => {
+					this.registry.unregisterCommand(command)
+				})
+			}
+		}).catch(() => {});
 
-		// get the access token from Ombi
-		await this.refreshToken()
+		this.webDB.loadSettings("tautulli").then((result) => {
+			if (!result || !result.host || !result.apikey) {
+				this.registry.groups.find(g => g.id == "tautulli").commands.forEach((command) => {
+					this.registry.unregisterCommand(command)
+				})
+			}
+		}).catch(() => {});
 
 		// login client with bot token
 		return this.login(this.token);
 	}
 
 	deinit () {
+		for (var user in this.timeouts) {
+			clearTimeout(this.timeouts[user])
+		}
+
 		this.isReady = false;
 		return this.destroy();
 	}
