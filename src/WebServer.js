@@ -96,11 +96,13 @@ class WebServer {
             this.app.post('/login', this.onCheckAuth());
 
             this.app.get('/config', async (req, res) => {
-                let [general, bot, ombi, tautulli] = await Promise.all([
+                let [general, bot, ombi, tautulli, sonarr, radarr] = await Promise.all([
                     this.db.loadSettings('general'),
                     this.db.loadSettings('bot'),
                     this.db.loadSettings('ombi'),
                     this.db.loadSettings('tautulli'),
+                    this.db.loadSettings('sonarr'),
+                    this.db.loadSettings('radarr')
                 ]);
 
                 if (req.session.user_id == 10000 || !general) {
@@ -110,6 +112,8 @@ class WebServer {
                         botSettings: (bot) ? bot : '',
                         ombiSettings:  (ombi) ? ombi : '',
                         tautulliSettings:  (tautulli) ? tautulli : '',
+                        sonarrSettings:  (sonarr) ? sonarr : '',
+                        radarrSettings:  (radarr) ? radarr : ''
                     });
                 } else {
                     res.redirect('/login');
@@ -119,6 +123,8 @@ class WebServer {
             this.app.post('/bot', this.onConfigSave());
             this.app.post('/ombi', this.onConfigSave());
             this.app.post('/tautulli', this.onConfigSave());
+            this.app.post('/sonarr', this.onConfigSave());
+            this.app.post('/radarr', this.onConfigSave());
             this.app.post('/logout', this.onLogout());
 
             this.app.listen(5060, this.onReady());
