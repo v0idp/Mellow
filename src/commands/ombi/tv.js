@@ -28,7 +28,7 @@ function getTVDBID(ombi, msg, name) {
 	return new Promise((resolve, reject) => {
 		get({
 			headers: {'accept' : 'application/json',
-			'Authorization': `Bearer ${ombi.accessToken}`,
+			'ApiKey': ombi.apikey,
 			'User-Agent': `Mellow/${process.env.npm_package_version}`},
 			url: 'https://' + ombi.host + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Search/tv/' + name
 		}).then(({response, body}) => {
@@ -67,19 +67,22 @@ function getTVDBID(ombi, msg, name) {
 					return resolve()
 				});
 			} else if (!data.length) {
-				msg.reply('Couldn\'t find the tv show you were looking for. Is the name correct?');
+				msg.reply('Couldn\'t find the TV show you were looking for. Is the name correct?');
 				return resolve()
 			} else {
 				return resolve(data[0].id)
 			}
 		})
-		.catch((error) => reject(error))
+		.catch((error) => {
+			console.error(error);
+			return msg.reply('There was an error in your request.');
+		})
 	})
 }
 
 function requestTVShow(ombi, msg, showMsg, show) {
 	if ((!ombi.requesttv || msg.member.roles.some(role => role.name === ombi.requesttv)) && (!show.available && !show.requested && !show.approved)) {
-		msg.reply('If you want to request this tv show please click on the ⬇ reaction.');
+		msg.reply('If you want to request this TV show please click on the ⬇ reaction.');
 		showMsg.react('⬇');
 		
 		showMsg.awaitReactions((reaction, user) => reaction.emoji.name === '⬇' && user.id === msg.author.id, { max: 1, time: 120000 })
@@ -88,9 +91,9 @@ function requestTVShow(ombi, msg, showMsg, show) {
 				post({
 					headers: {'accept' : 'application/json',
 					'Content-Type' : 'application/json',
-					'Authorization': `Bearer ${ombi.accessToken}`,
+					'ApiKey': ombi.apikey,
 					'ApiAlias' : `${msg.author.username} (${msg.author.id})`,
-					'UserName' : (ombi.username !== "") ? ombi.username : '',
+					'UserName' : ombi.username ? ombi.username : undefined,
 					'User-Agent': `Mellow/${process.env.npm_package_version}`},
 					url: 'https://' + ombi.host + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Request/tv/',
 					body: JSON.stringify({ "tvDbId": show.id, "requestAll" : true })
@@ -134,40 +137,32 @@ module.exports = class searchTVCommand extends commando.Command {
 		}
 
 		let ombi = await this.client.webDB.loadSettings('ombi')
-		ombi.accessToken = this.client.accessTokens[ombi.username]
-
 		let tvdbid = null
-		if (!args.name.startsWith("tvdb:")) {
-			tvdbid = await getTVDBID(ombi, msg, args.name)
-			.catch((error) => {
-				console.error(error);
-				return msg.reply('There was an error in your request.');
-			});
-		} else {
-			console.log(JSON.stringify(args.name))
+
+		if (args.name.startsWith("tvdb:")) {
 			let matches = /^tvdb:(\d+)$/.exec(args.name)
-			if (!matches) {
-				return msg.reply('Please enter a valid TVDB ID!');
+			if (matches) {
+				tvdbid = matches[1]
+			} else {
+				return msg.reply('Please enter a valid TheTVDB ID!');
 			}
-			tvdbid = matches[1]
+		} else {
+			tvdbid = await getTVDBID(ombi, msg, args.name)
 		}
 
 		if (tvdbid) {
 			get({
 				headers: {'accept' : 'application/json',
-				'Authorization': `Bearer ${ombi.accessToken}`,
+				'ApiKey': ombi.apikey,
 				'User-Agent': `Mellow/${process.env.npm_package_version}`},
 				url: 'https://' + ombi.host + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Search/tv/info/' + tvdbid
 			})
 			.then(({response, body}) => {
 				let data = JSON.parse(body)
+				let dataMsg = outputTVShow(msg, data)
 
-				outputTVShow(msg, data).then(dataMsg => {
-					deleteCommandMessages(msg, this.client);
-					requestTVShow(ombi, msg, dataMsg, data);
-				}).catch((error) => {
-					return msg.reply('Cancelled command.');
-				});
+				deleteCommandMessages(msg, this.client);
+				requestTVShow(ombi, msg, dataMsg, data);
 			})
 			.catch((error) => {
 				console.error(error);

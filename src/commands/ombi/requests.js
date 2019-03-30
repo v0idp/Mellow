@@ -6,7 +6,7 @@ function getRequests(ombi) {
 	return new Promise((resolve, reject) => {
 		get({
 			headers: {'accept' : 'application/json',
-			'Authorization': `Bearer ${ombi.accessToken}`,
+			'ApiKey': ombi.apikey,
 			'User-Agent': `Mellow/${process.env.npm_package_version}`},
 			url: 'https://' + ombi.host + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Request/movie'
 		})
@@ -14,7 +14,7 @@ function getRequests(ombi) {
 			let movieRequests = JSON.parse(body).filter(r => !r.available && !r.denied)
 			get({
 				headers: {'accept' : 'application/json',
-				'Authorization': `Bearer ${ombi.accessToken}`,
+				'ApiKey': ombi.apikey,
 				'User-Agent': `Mellow/${process.env.npm_package_version}`},
 				url: 'https://' + ombi.host + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Request/tv'
 			})
@@ -43,7 +43,6 @@ module.exports = class getRequestsCommand extends commando.Command {
 
 	async run (msg, args) {
 		let ombi = await this.client.webDB.loadSettings('ombi')
-		ombi.accessToken = this.client.accessTokens[ombi.username]
 
 		getRequests(ombi)
 		.then(({movieRequests, tvRequests}) => {
@@ -58,7 +57,6 @@ module.exports = class getRequestsCommand extends commando.Command {
 				})
 				showEmbed.addField("Movies", fieldContent)
 			}
-
 			if (tvRequests.length) {
 				let fieldContent = ""
 				tvRequests.forEach((show,i) => {
