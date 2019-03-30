@@ -37,7 +37,7 @@ class Database {
             this.db.run('DELETE FROM ' + request.path.replace('/', ''));
             this.db.run('INSERT INTO ombi (host, port, requesttv, requestmovie, username, password) VALUES(?, ?, ?, ?, ?, ?)',
                 [request.body.host, request.body.port, request.body.requestTV, request.body.requestMovie, request.body.userName, request.body.passWord]);
-        } else if ((request.path == '/tautulli' || request.path == '/sonarr' || request.path == '/radarr') && request.body.apiKey != '' && request.body.host != '') {
+        } else if ((request.path == '/tautulli') && request.body.apiKey != '' && request.body.host != '') {
             this.db.run('DELETE FROM ' + request.path.replace('/', ''));
             this.db.run('INSERT INTO placeholder (host, port, apikey) VALUES(?, ?, ?)'.replace('placeholder', request.path.replace('/', '')),
                 [request.body.host, request.body.port, request.body.apiKey]);
@@ -71,8 +71,6 @@ class Database {
                 this.db.run('CREATE TABLE IF NOT EXISTS bot (id integer primary key asc, token text, ownerid text, commandprefix text, deletecommandmessages text, unknowncommandresponse text)');
                 this.db.run('CREATE TABLE IF NOT EXISTS ombi (id integer primary key asc, host text, port text, requesttv text, requestmovie text, username text, password text)');
                 this.db.run('CREATE TABLE IF NOT EXISTS tautulli (id integer primary key asc, host text, port text, apikey text)');
-                this.db.run('CREATE TABLE IF NOT EXISTS sonarr (id integer primary key asc, host text, port text, apikey text)');
-                this.db.run('CREATE TABLE IF NOT EXISTS radarr (id integer primary key asc, host text, port text, apikey text)');
                 resolve(this.db);
             }).catch((err) => reject(err));
         });

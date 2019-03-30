@@ -4,13 +4,13 @@ const {deleteCommandMessages, get, post} = require('../../util.js');
 
 function outputTVShow(msg, show) {
 	let tvEmbed = new Discord.MessageEmbed()
-	.setTitle(`${show.title} ${(show.firstAired) ? `(${show.firstAired})` : '(unknown)' }`)
+	.setTitle(`${show.title} ${(show.firstAired) ? `(${show.firstAired.substring(0,4)})` : ''}`)
 	.setDescription(show.overview.substr(0, 255) + '(...)')
-	.setFooter('Click the thumbnail to get more informations about the tv show.')
+	.setFooter(msg.author.username, `https://cdn.discordapp.com/avatars/${msg.author.id}/${msg.author.avatar}.png`)
 	.setTimestamp(new Date())
 	.setImage(show.banner)
 	.setURL(`https://www.thetvdb.com/?id=${show.id}&tab=series`)
-	.setThumbnail('https://i.imgur.com/WBX4rf0.png')
+	.setThumbnail('https://i.imgur.com/9dcDIYe.png')
 	.addField('__Network__', show.network, true)
 	.addField('__Status__', show.status, true);
 
@@ -36,11 +36,11 @@ function getTVDBID(ombi, msg, name) {
 
 			if (data.length > 1) {
 				let fieldContent = '';
-				for (let i = 0; i < data.length; i++) {
-					fieldContent += `${i+1}) ${data[i].title}`;
-					if (data[i].firstAired) fieldContent += ` (${data[i].firstAired})`;
-					fieldContent += '\n';
-				}
+				data.forEach((show, i) => {
+					fieldContent += `${i+1}) ${show.title} `
+					if (show.firstAired) fieldContent += `(${show.firstAired.substring(0,4)}) `
+					fieldContent += `[[TheTVDb](https://www.thetvdb.com/?id=${show.id}&tab=series)]\n`
+				})
 			
 				let showEmbed = new Discord.MessageEmbed()
 				showEmbed.setTitle('Ombi TV Show Search')

@@ -4,13 +4,13 @@ const {deleteCommandMessages, get, post} = require('../../util.js');
 
 function outputMovie(msg, movie) {
 	let movieEmbed = new Discord.MessageEmbed()
-	.setTitle(`${movie.title} ${(movie.releaseDate) ? `(${movie.releaseDate.split('T')[0]})` : '(unknown)' }`)
+	.setTitle(`${movie.title} ${(movie.releaseDate) ? `(${movie.releaseDate.split('T')[0].substring(0,4)})` : ''}`)
 	.setDescription(movie.overview.substr(0, 255) + '(...)')
-	.setFooter('Click the thumbnail to get more informations about the movie.')
+	.setFooter(msg.author.username, `https://cdn.discordapp.com/avatars/${msg.author.id}/${msg.author.avatar}.png`)
 	.setTimestamp(new Date())
 	.setImage('https://image.tmdb.org/t/p/w500' + movie.posterPath)
 	.setURL('https://www.themoviedb.org/movie/' + movie.theMovieDbId)
-	.setThumbnail('https://i.imgur.com/K55EOJH.png');
+	.setThumbnail('https://i.imgur.com/EQhANAP.png');
 
 	if (movie.available) movieEmbed.addField('__Available__', '✅', true);
 	if (movie.quality) movieEmbed.addField('__Quality__', movie.quality + "p", true);
@@ -34,11 +34,11 @@ function getTMDbID(ombi, msg, name) {
 
 			if (data.length > 1) {
 				let fieldContent = '';
-				for (let i = 0; i < data.length; i++) {
-					fieldContent += `${i+1}) ${data[i].title}`;
-					if (data[i].firstAired) fieldContent += ` (${data[i].firstAired})`;
-					fieldContent += '\n';
-				}
+				data.forEach((movie, i) => {
+					fieldContent += `${i+1}) ${movie.title} `
+					if (movie.releaseDate) fieldContent += `(${movie.releaseDate.substring(0,4)}) `
+					fieldContent += `[[TheMovieDb](https://www.themoviedb.org/movie/${movie.theMovieDbId})]\n`
+				})
 			
 				let showEmbed = new Discord.MessageEmbed()
 				showEmbed.setTitle('Ombi Movie Search')
