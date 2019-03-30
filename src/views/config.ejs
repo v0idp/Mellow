@@ -12,8 +12,6 @@
   <button class="top-bar-item button" onclick="openSetting('Bot')">Bot</button>
   <button class="top-bar-item button" onclick="openSetting('Ombi')">Ombi</button>
   <button class="top-bar-item button" onclick="openSetting('Tautulli')">Tautulli</button>
-  <button class="top-bar-item button" onclick="openSetting('Sonarr')">Sonarr</button>
-  <button class="top-bar-item button" onclick="openSetting('Radarr')">Radarr</button>
   <form role = "form" action = "/logout" method = "post"><button class="top-bar-item-right button" type = "submit" name = "logout">Logout</button></form>
 </div>
 
@@ -81,32 +79,6 @@
     <input type = "tel" class = "form-control" name = "port" value = "<% if (tautulliSettings && tautulliSettings.port) { %><%=tautulliSettings.port %><% } %>">
     <h2 class="h2-setting">API Key</h2>
     <input type = "text" class = "form-control" name = "apiKey" value = "<% if (tautulliSettings && tautulliSettings.apikey) { %><%=tautulliSettings.apikey %><% } %>">
-    <button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "submit">Submit</button>
-  </form>
-</div>
-
-<div id="Sonarr" class="container setting" style="<% if (currentView == "sonarr") { %><%="display:initial"%><% } else { %><%="display:none"%><% } %>">
-  <h2>Sonarr Settings</h2>
-  <form class = "form-setting" role = "form" action = "/sonarr" method = "post">
-    <h2 class="h2-setting">Host</h2>
-    <input type = "text" class = "form-control" name = "host" value = "<% if (sonarrSettings && sonarrSettings.host) { %><%=sonarrSettings.host %><% } %>">
-    <h2 class="h2-setting">Port</h2>
-    <input type = "tel" class = "form-control" name = "port" value = "<% if (sonarrSettings && sonarrSettings.port) { %><%=sonarrSettings.port %><% } %>">
-    <h2 class="h2-setting">API Key</h2>
-    <input type = "text" class = "form-control" name = "apiKey" value = "<% if (sonarrSettings && sonarrSettings.apikey) { %><%=sonarrSettings.apikey %><% } %>">
-    <button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "submit">Submit</button>
-  </form>
-</div>
-
-<div id="Radarr" class="container setting" style="<% if (currentView == "radarr") { %><%="display:initial"%><% } else { %><%="display:none"%><% } %>">
-  <h2>Radarr Settings</h2>
-  <form class = "form-setting" role = "form" action = "/radarr" method = "post">
-    <h2 class="h2-setting">Host</h2>
-    <input type = "text" class = "form-control" name = "host" value = "<% if (radarrSettings && radarrSettings.host) { %><%=radarrSettings.host %><% } %>">
-    <h2 class="h2-setting">Port</h2>
-    <input type = "tel" class = "form-control" name = "port" value = "<% if (radarrSettings && radarrSettings.port) { %><%=radarrSettings.port %><% } %>">
-    <h2 class="h2-setting">API Key</h2>
-    <input type = "text" class = "form-control" name = "apiKey" value = "<% if (radarrSettings && radarrSettings.apikey) { %><%=radarrSettings.apikey %><% } %>">
     <button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "submit">Submit</button>
   </form>
 </div>
