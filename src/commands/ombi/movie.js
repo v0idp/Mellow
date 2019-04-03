@@ -28,7 +28,7 @@ function getTMDbID(ombi, msg, name) {
 			headers: {'accept' : 'application/json',
 			'ApiKey': ombi.apikey,
 			'User-Agent': `Mellow/${process.env.npm_package_version}`},
-			url: 'https://' + ombi.host + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Search/movie/' + name
+			url: ombi.host + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Search/movie/' + name
 		}).then(({response, body}) => {
 			let data = JSON.parse(body)
 
@@ -53,7 +53,7 @@ function getTMDbID(ombi, msg, name) {
 		
 					if (message.startsWith('cancel')) {
 						msg.reply('Cancelled command.');
-					} else if (selection >= 1 && selection <= data.length) {
+					} else if (selection > 0 && selection <= data.length) {
 						return resolve(data[selection - 1].id)
 					} else {
 						msg.reply('Please enter a valid selection!')
@@ -90,10 +90,10 @@ function requestMovie(ombi, msg, movieMsg, movie) {
 					headers: {'accept' : 'application/json',
 					'Content-Type' : 'application/json',
 					'ApiKey': ombi.apikey,
-					'ApiAlias' : `${msg.author.username}#${msg.author.discriminator} (${msg.author.id})`,
+					'ApiAlias' : `${msg.author.username}#${msg.author.discriminator}`,
 					'UserName' : ombi.username ? ombi.username : undefined,
 					'User-Agent': `Mellow/${process.env.npm_package_version}`},
-					url: 'https://' + ombi.host + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Request/movie/',
+					url: ombi.host + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Request/movie/',
 					body: JSON.stringify({ "theMovieDbId": movie.theMovieDbId })
 				}).then((resolve) => {
 					return msg.reply(`Requested ${movie.title} in Ombi.`);
@@ -152,14 +152,14 @@ module.exports = class searchMovieCommand extends commando.Command {
 				headers: {'accept' : 'application/json',
 				'ApiKey': ombi.apikey,
 				'User-Agent': `Mellow/${process.env.npm_package_version}`},
-				url: 'https://' + ombi.host + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Search/movie/info/' + tmdbid
+				url: ombi.host + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Search/movie/info/' + tmdbid
 			})
 			.then(({response, body}) => {
 				let data = JSON.parse(body)
-				let dataMsg = outputMovie(msg, data)
-
-				deleteCommandMessages(msg, this.client);
-				requestMovie(ombi, msg, dataMsg, data);
+				outputMovie(msg, data).then((dataMsg) => {
+					deleteCommandMessages(msg, this.client);
+					requestMovie(ombi, msg, dataMsg, data);
+				})
 			})
 			.catch((error) => {
 				console.error(error);
