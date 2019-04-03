@@ -30,7 +30,7 @@ function getTVDBID(ombi, msg, name) {
 			headers: {'accept' : 'application/json',
 			'ApiKey': ombi.apikey,
 			'User-Agent': `Mellow/${process.env.npm_package_version}`},
-			url: 'https://' + ombi.host + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Search/tv/' + name
+			url: ombi.host + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Search/tv/' + name
 		}).then(({response, body}) => {
 			let data = JSON.parse(body)
 
@@ -55,7 +55,7 @@ function getTVDBID(ombi, msg, name) {
 		
 					if (message.startsWith('cancel')) {
 						msg.reply('Cancelled command.');
-					} else if (selection >= 1 && selection <= data.length) {
+					} else if (selection > 0 && selection <= data.length) {
 						return resolve(data[selection - 1].id)
 					} else {
 						msg.reply('Please enter a valid selection!')
@@ -92,10 +92,10 @@ function requestTVShow(ombi, msg, showMsg, show) {
 					headers: {'accept' : 'application/json',
 					'Content-Type' : 'application/json',
 					'ApiKey': ombi.apikey,
-					'ApiAlias' : `${msg.author.username} (${msg.author.id})`,
+					'ApiAlias' : `${msg.author.username}#${msg.author.discriminator}`,
 					'UserName' : ombi.username ? ombi.username : undefined,
 					'User-Agent': `Mellow/${process.env.npm_package_version}`},
-					url: 'https://' + ombi.host + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Request/tv/',
+					url: ombi.host + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Request/tv/',
 					body: JSON.stringify({ "tvDbId": show.id, "requestAll" : true })
 				}).then((resolve) => {
 					return msg.reply(`Requested ${show.title} in Ombi.`);
@@ -120,7 +120,6 @@ module.exports = class searchTVCommand extends commando.Command {
 			'description': 'Search and Request TV Shows in Ombi',
 			'examples': ['tv The Big Bang Theory', 'tv tvdb:80379'],
 			'guildOnly': true,
-
 			'args': [
 				{
 					'key': 'name',
@@ -155,14 +154,14 @@ module.exports = class searchTVCommand extends commando.Command {
 				headers: {'accept' : 'application/json',
 				'ApiKey': ombi.apikey,
 				'User-Agent': `Mellow/${process.env.npm_package_version}`},
-				url: 'https://' + ombi.host + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Search/tv/info/' + tvdbid
+				url: ombi.host + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Search/tv/info/' + tvdbid
 			})
 			.then(({response, body}) => {
 				let data = JSON.parse(body)
-				let dataMsg = outputTVShow(msg, data)
-
-				deleteCommandMessages(msg, this.client);
-				requestTVShow(ombi, msg, dataMsg, data);
+				outputTVShow(msg, data).then((dataMsg) => {
+					deleteCommandMessages(msg, this.client);
+					requestTVShow(ombi, msg, dataMsg, data);
+				})
 			})
 			.catch((error) => {
 				console.error(error);
