@@ -36,7 +36,7 @@ const post = function(options) {
 }
 
 const checkURLPrefix = function(url) {
-    if (url.match(/https?:\/\//).length > 0) {
+    if (/https?:\/\//.exec(url)) {
         return true;
     } else {
 	return false;
