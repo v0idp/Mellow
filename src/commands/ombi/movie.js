@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const commando = require('discord.js-commando');
-const {deleteCommandMessages, get, post} = require('../../util.js');
+const {checkURLPrefix, deleteCommandMessages, get, post} = require('../../util.js');
 
 function outputMovie(msg, movie) {
 	let movieEmbed = new Discord.MessageEmbed()
@@ -27,8 +27,8 @@ function getTMDbID(ombi, msg, name) {
 		get({
 			headers: {'accept' : 'application/json',
 			'ApiKey': ombi.apikey,
-			'User-Agent': `Mellow/${process.env.npm_package_version}`},
-			url: ombi.host + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Search/movie/' + name
+            'User-Agent': `Mellow/${process.env.npm_package_version}`},
+			url: (checkURLPrefix(ombi.host) ? ombi.host : `http://${ombi.host}`) + (ombi.port ? `:${ombi.port}` : '') + '/api/v1/Search/movie/' +name 
 		}).then(({response, body}) => {
 			let data = JSON.parse(body)
 
@@ -93,7 +93,7 @@ function requestMovie(ombi, msg, movieMsg, movie) {
 					'ApiAlias' : `${msg.author.username}#${msg.author.discriminator}`,
 					'UserName' : ombi.username ? ombi.username : undefined,
 					'User-Agent': `Mellow/${process.env.npm_package_version}`},
-					url: ombi.host + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Request/movie/',
+					url: (checkURLPrefix(ombi.host) ? ombi.host : `http://${ombi.host}`) + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Request/movie/',
 					body: JSON.stringify({ "theMovieDbId": movie.theMovieDbId })
 				}).then((resolve) => {
 					return msg.reply(`Requested ${movie.title} in Ombi.`);
@@ -152,7 +152,7 @@ module.exports = class searchMovieCommand extends commando.Command {
 				headers: {'accept' : 'application/json',
 				'ApiKey': ombi.apikey,
 				'User-Agent': `Mellow/${process.env.npm_package_version}`},
-				url: ombi.host + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Search/movie/info/' + tmdbid
+				url: (checkURLPrefix(ombi.host) ? ombi.host : `http://${ombi.host}`) + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Search/movie/info/' + tmdbid
 			})
 			.then(({response, body}) => {
 				let data = JSON.parse(body)
