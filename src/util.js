@@ -35,16 +35,7 @@ const post = function(options) {
     });
 }
 
-const checkURLPrefix = function(url) {
-    if (/https?:\/\//.exec(url)) {
-        return true;
-    } else {
-	return false;
-    }
-}
-
 module.exports = {
-	checkURLPrefix,
 	capitalizeFirstLetter,
 	deleteCommandMessages,
 	momentFormat,
