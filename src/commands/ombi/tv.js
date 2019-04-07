@@ -4,7 +4,7 @@ const {deleteCommandMessages, get, post} = require('../../util.js');
 	
 function outputTVShow(msg, show) {
 	// populate basic selected result into embed and output it
-	let tvEmbed = new Discord.MessageEmbed()
+	let tvEmbed = new Discord.RichEmbed()
 	.setTitle(`${show.title} ${(show.firstAired) ? `(${show.firstAired})` : '(unknown)' }`)
 	.setDescription(show.overview.substr(0, 255) + '(...)')
 	.setFooter('Click the thumbnail to get more informations about the tv show.')
@@ -98,7 +98,7 @@ module.exports = class searchTVCommand extends commando.Command {
 			}).then((resolve) => {
 				// parse body into json objects
 				let data = JSON.parse(resolve.body);
-				let showEmbed = new Discord.MessageEmbed();
+				let showEmbed = new Discord.RichEmbed();
 
 				// check if data contains any results
 				if (data.length == 0) {

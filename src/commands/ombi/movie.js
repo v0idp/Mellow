@@ -4,7 +4,7 @@ const {deleteCommandMessages, get, post} = require('../../util.js');
 	
 function outputMovie(msg, movie) {
 	// populate basic selected result into embed
-	let movieEmbed = new Discord.MessageEmbed()
+	let movieEmbed = new Discord.RichEmbed()
 	.setTitle(`${movie.title} ${(movie.releaseDate) ? `(${movie.releaseDate.split('T')[0]})` : '(unknown)' }`)
 	.setDescription(movie.overview.substr(0, 255) + '(...)')
 	.setFooter('Click the thumbnail to get more informations about the movie.')
@@ -96,7 +96,7 @@ module.exports = class searchMovieCommand extends commando.Command {
 			}).then((resolve) => {
 				// parse body into json objects
 				let data = JSON.parse(resolve.body);
-				let movieEmbed = new Discord.MessageEmbed();
+				let movieEmbed = new Discord.RichEmbed();
 
 				// check if data contains any results
 				if (data.length == 0) {
