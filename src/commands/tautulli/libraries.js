@@ -22,7 +22,7 @@ module.exports = class librariesCommand extends commando.Command {
 				url:     'http://' + tautulli.host + ((tautulli.port) ? ':' + tautulli.port : '') + '/api/v2?apikey=' + tautulli.apikey + '&cmd=get_libraries'
 			}).then((resolve) => {
 				let jsonObject = JSON.parse(resolve.body);
-				let libraryEmbed = new Discord.MessageEmbed()
+				let libraryEmbed = new Discord.RichEmbed()
 				.setTitle('Server Libraries')
 				.setTimestamp(new Date())
 				.setThumbnail('https://i.imgur.com/pz9PoqR.png');
