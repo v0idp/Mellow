@@ -31,8 +31,8 @@ class Database {
                 [request.body.username, request.body.password]);
         } else if (request.path == '/bot') {
             this.db.run('DELETE FROM bot');
-            this.db.run('INSERT INTO bot (token, ownerid, commandprefix, deletecommandmessages, unknowncommandresponse) VALUES(?, ?, ?, ?, ?)',
-                [request.body.token, request.body.ownerID, request.body.commandPrefix, (request.body.deleteCommandMessages) ? 'true' : 'false', (request.body.unknownCommandResponse) ? 'true' : 'false']);
+            this.db.run('INSERT INTO bot (token, ownerid, commandprefix, deletecommandmessages, unknowncommandresponse, channelname) VALUES(?, ?, ?, ?, ?, ?)',
+                [request.body.token, request.body.ownerID, request.body.commandPrefix, (request.body.deleteCommandMessages) ? 'true' : 'false', (request.body.unknownCommandResponse) ? 'true' : 'false', request.body.channelName]);
         } else if (request.path == '/ombi' && request.body.apiKey != '' && request.body.host != '') {
             this.db.run('DELETE FROM ' + request.path.replace('/', ''));
             this.db.run('INSERT INTO ombi (host, port, apikey, requesttv, requestmovie, username) VALUES(?, ?, ?, ?, ?, ?)',
@@ -53,7 +53,7 @@ class Database {
                 if (!fs.existsSync(dataPath)) {
                     fs.mkdirSync(dataPath);
                 }
-                
+
                 const dbPromise = sqlite.open(path, { Promise });
                 let db = await dbPromise;
                 resolve(db);
@@ -67,12 +67,7 @@ class Database {
         return new Promise(async (resolve, reject) => {
             this.openDB(this.path).then(db => {
                 this.db = db;
-                this.db.run('CREATE TABLE IF NOT EXISTS general (id integer primary key asc, username text, password text)');
-                this.db.run('CREATE TABLE IF NOT EXISTS bot (id integer primary key asc, token text, ownerid text, commandprefix text, deletecommandmessages text, unknowncommandresponse text)');
-                this.db.run('CREATE TABLE IF NOT EXISTS ombi (id integer primary key asc, host text, port text, apikey text, requesttv text, requestmovie text, username text)');
-                this.db.run('CREATE TABLE IF NOT EXISTS tautulli (id integer primary key asc, host text, port text, apikey text)');
-                this.db.run('CREATE TABLE IF NOT EXISTS sonarr (id integer primary key asc, host text, port text, apikey text)');
-                this.db.run('CREATE TABLE IF NOT EXISTS radarr (id integer primary key asc, host text, port text, apikey text)');
+                this.db.migrate();
                 resolve(this.db);
             }).catch((err) => reject(err));
         });
