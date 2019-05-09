@@ -126,7 +126,7 @@ module.exports = class searchMovieCommand extends commando.Command {
 
 				// output search results in embed
 				movieEmbed.setTitle('Ombi Movie Search')
-				.setDescription('Please select one of the search results. To abort answer **cancel**')
+				.setDescription('To select one of the search results, respond with its number. To abort answer **cancel**')
 				.addField('__Search Results__', fieldContent);
 				msg.embed(movieEmbed);
 
