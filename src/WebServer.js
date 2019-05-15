@@ -26,7 +26,7 @@ class WebServer {
             console.log('No BotClient is running to restart. Starting a new BotClient...');
         }
         this.db.loadSettings('bot').then((bot) => {
-            this.bot = new BotClient(this.db, bot.token, (bot.ownerid) ? bot.ownerid : null, bot.commandprefix, bot.unknowncommandresponse);
+            this.bot = new BotClient(this.db, bot.token, (bot.ownerid) ? bot.ownerid : null, bot.commandprefix, bot.unknowncommandresponse, bot.channelname);
             this.bot.init().catch(() => { console.error('Failed initializing BotClient. Is your token correct?') });
         }).catch((err) => console.error(err));
     }
@@ -79,7 +79,7 @@ class WebServer {
             this.app.use(express.urlencoded({extended: true}));
             this.app.use(session({ resave: true, secret: 'asdkjn2398easojdfh9238hrihsf', saveUninitialized: true}));
             this.app.use(express.static(this.path));
-    
+
             this.app.get('/', (req, res) => res.redirect('/login'));
             this.app.get('/login', async (req, res) => {
                 this.db.loadSettings('general').then((general) => {
@@ -91,7 +91,7 @@ class WebServer {
                         res.redirect('/config');
                     }
                 });
-                
+
             });
             this.app.post('/login', this.onCheckAuth());
 

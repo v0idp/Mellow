@@ -15,6 +15,7 @@ RUN cd /tmp && npm install --loglevel=warn \
   && mv /tmp/node_modules $APP
 
 COPY src $APP/src
+COPY migrations $APP/migrations
 
 WORKDIR $APP
 
