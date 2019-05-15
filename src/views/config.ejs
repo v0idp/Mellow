@@ -37,6 +37,9 @@
     <input type = "tel" class = "form-control" name = "ownerID" value = "<% if (botSettings && botSettings.ownerid) { %><%=botSettings.ownerid %><% } %>">
     <h2 class="h2-setting">Command Prefix</h2>
     <input type = "text" class = "form-control" name = "commandPrefix" value = "<% if (botSettings && botSettings.commandprefix) { %><%=botSettings.commandprefix %><% } %>" required>
+    <h2 class="h2-setting">Channel to Monitor</h2>
+    <input type = "text" class = "form-control" name = "channelName" value = "<% if (botSettings && botSettings.channelname) { %><%=botSettings.channelname %><% } %>">
+    <p>(Leave blank to watch all channels.)</p>
     <div class="slide">
       <input type="checkbox" value="true" id="slide" name="deleteCommandMessages" <% if (botSettings && botSettings.deletecommandmessages == 'true') { %> <? checked ?> <% } %>/>
       <label for="slide"></label>
