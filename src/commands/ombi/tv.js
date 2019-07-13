@@ -39,22 +39,41 @@ function requestTVShow(ombi, msg, showMsg, show) {
 		.then(collected => {
 			// request show in ombi
 			if (collected.first()) {
-				post({
-					headers: {'accept' : 'application/json',
-					'Content-Type' : 'application/json',
-					'ApiKey' : ombi.apikey,
-					'ApiAlias' : `${msg.author.username} (${msg.author.id})`,
-					'UserName' : (ombi.username !== "") ? ombi.username : '',
-					'User-Agent': `Mellow/${process.env.npm_package_version}`},
-					url: 'http://' + ombi.host + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Request/tv/',
-					body: JSON.stringify({ "tvDbId": show.id, "requestAll" : true })
+                		get({
+				    headers: {'accept' : 'application/json',
+				    'ApiKey' : ombi.apikey,
+				    'User-Agent': `Mellow/${process.env.npm_package_version}`},
+				    url:     'http://' + ombi.host + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Search/tv/info/' + show.id
 				}).then((resolve) => {
-					return msg.reply(`Requested ${show.title} in Ombi.`);
-				}).catch((error) => {
+				// parse body into json objects
+				    let data = JSON.parse(resolve.body);
+				    //console.log((data.seasonRequests).length);
+				    //console.log(data.status);
+				    let body = "";
+				    let response = "";
+				    if (data.status != 'Ended' && (data.seasonRequests).length > 4) { //If a show is still running and has had more than 4 seasons, only request the most recent season to avoid a large backlog.
+					body = JSON.stringify({ "tvDbId": show.id, "latestSeason" : true });
+					response = 'Only the latest season was requested.';
+				    } else {
+					body = JSON.stringify({ "tvDbId": show.id, "requestAll" : true });
+					response = 'All seasons were requested.';
+				    }
+				    post({
+					    headers: {'accept' : 'application/json',
+					    'Content-Type' : 'application/json',
+					    'ApiKey' : ombi.apikey,
+								'ApiAlias' : `${msg.author.username} (${msg.author.id})`,
+								'UserName': 'BigBox Requests',
+					    'User-Agent': `Mellow/${process.env.npm_package_version}`},
+					    url: 'http://' + ombi.host + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Request/tv/',
+					    body: body
+				    }).then((resolve) => {
+					return msg.reply(`Requested ${show.title} in Ombi. ` + response);
+				    }).catch((error) => {
 					console.error(error);
 					return msg.reply('There was an error in your request.');
-				});
-			}
+                    		    });
+                	    });
 		}).catch(collected => {
 			return showMsg;
 		});
