@@ -63,6 +63,9 @@
     <h2 class="h2-setting">Request TV Shows (Discord Role Name)</h2>
     <input type = "text" class = "form-control" name = "requestTV" value = "<% if (ombiSettings && ombiSettings.requesttv) { %><%=ombiSettings.requesttv %><% } %>">
     <p>(Leave blank if anyone can request.)</p>
+    <h2 class="h2-setting">How many seasons backlog for running TV shows</h2>
+    <input type = "text" class = "form-control" name = "limitTVRequest" value "<% if (ombiSettings && ombiSettings.limittvrequest) { %><%=ombiSettings.limittvrequest %><% } %>">
+    <p>(Leave blank to default to all seasons.)</p>
     <h2 class="h2-setting">Request Movies (Discord Role Name)</h2>
     <input type = "text" class = "form-control" name = "requestMovie" value = "<% if (ombiSettings && ombiSettings.requestmovie) { %><%=ombiSettings.requestmovie %><% } %>">
     <p>(Leave blank if anyone can request.)</p>
