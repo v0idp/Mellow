@@ -3,7 +3,7 @@ const path = require('path');
 const sqlite = require('sqlite');
 
 class BotClient extends Commando.Client {
-	constructor (webDB, token, ownerid, commandprefix, unknowncommandresponse) {
+	constructor (webDB, token, ownerid, commandprefix, unknowncommandresponse, channelname) {
 		super({
 			"owner": (ownerid) ? ownerid : null,
 			"commandPrefix": commandprefix,
@@ -11,6 +11,7 @@ class BotClient extends Commando.Client {
 		});
 		this.webDB = webDB;
 		this.token = token;
+		this.channelName = channelname;
 		this.isReady = false;
 	}
 
@@ -121,6 +122,14 @@ class BotClient extends Commando.Client {
 						});
 					}
 				}).catch(() => {});
+			});
+
+			this.dispatcher.addInhibitor((message) => {
+				// Older versions of the DB may not have channelName defined
+				if (!this.channelName || this.channelName.length == 0) {
+					return false;
+				}
+				return (message.channel.name.toLowerCase() !== this.channelName.toLowerCase()) ? 'Not allowed in this channel' : false;
 			});
 
 		// login client with bot token
