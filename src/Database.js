@@ -35,8 +35,8 @@ class Database {
                 [request.body.token, request.body.ownerID, request.body.commandPrefix, (request.body.deleteCommandMessages) ? 'true' : 'false', (request.body.unknownCommandResponse) ? 'true' : 'false']);
         } else if (request.path == '/ombi' && request.body.apiKey != '' && request.body.host != '') {
             this.db.run('DELETE FROM ' + request.path.replace('/', ''));
-            this.db.run('INSERT INTO ombi (host, port, apikey, requesttv, requestmovie, username) VALUES(?, ?, ?, ?, ?, ?)',
-                [request.body.host, request.body.port, request.body.apiKey, request.body.requestTV, request.body.requestMovie, request.body.userName]);
+            this.db.run('INSERT INTO ombi (host, port, apikey, requesttv, requestmovie, username, limittvrequests) VALUES(?, ?, ?, ?, ?, ?, ?)',
+                [request.body.host, request.body.port, request.body.apiKey, request.body.requestTV, request.body.requestMovie, request.body.userName, request.body.limitTVRequest]);
         } else if ((request.path == '/tautulli' || request.path == '/sonarr' || request.path == '/radarr') && request.body.apiKey != '' && request.body.host != '') {
             this.db.run('DELETE FROM ' + request.path.replace('/', ''));
             this.db.run('INSERT INTO placeholder (host, port, apikey) VALUES(?, ?, ?)'.replace('placeholder', request.path.replace('/', '')),
