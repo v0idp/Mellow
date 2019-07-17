@@ -21,14 +21,14 @@
     "start": "node src/index.js"
   },
   "dependencies": {
-    "bluebird": "^3.5.1",
-    "discord.js": "discordjs/discord.js",
-    "discord.js-commando": "discordjs/Commando",
+    "bluebird": "^3.5.4",
+    "discord.js": "^11.4.2",
+    "discord.js-commando": "^0.10.0",
     "ejs": "^2.6.1",
-    "express": "^4.16.3",
+    "express": "^4.16.4",
     "express-session": "^1.15.6",
-    "moment": "^2.22.2",
+    "moment": "^2.24.0",
     "request": "^2.88.0",
-    "sqlite": "^3.0.0"
+    "sqlite": "^3.0.3"
   }
 }
