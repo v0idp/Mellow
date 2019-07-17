@@ -47,16 +47,14 @@ function requestTVShow(ombi, msg, showMsg, show) {
 				}).then((resolve) => {
 				// parse body into json objects
 				    let data = JSON.parse(resolve.body);
-				    //console.log((data.seasonRequests).length);
-				    //console.log(data.status);
 				    let body = "";
 				    let response = "";
-				    if (data.status != 'Ended' && (data.seasonRequests).length > 4) { //If a show is still running and has had more than 4 seasons, only request the most recent season to avoid a large backlog.
+				    if (ombi.limittvrequest > 0 && data.status != 'Ended' && (data.seasonRequests).length > ombi.limittvrequests) { //If user has set a backlog limit on TV season requests
 					body = JSON.stringify({ "tvDbId": show.id, "latestSeason" : true });
 					response = 'Only the latest season was requested.';
 				    } else {
 					body = JSON.stringify({ "tvDbId": show.id, "requestAll" : true });
-					response = 'All seasons were requested.';
+					response = 'All ' + (data.seasonRequests).length + ' seasons were requested.';
 				    }
 				    post({
 					    headers: {'accept' : 'application/json',
