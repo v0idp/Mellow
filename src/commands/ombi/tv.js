@@ -60,8 +60,8 @@ function requestTVShow(ombi, msg, showMsg, show) {
 					    headers: {'accept' : 'application/json',
 					    'Content-Type' : 'application/json',
 					    'ApiKey' : ombi.apikey,
-								'ApiAlias' : `${msg.author.username} (${msg.author.id})`,
-								'UserName': 'BigBox Requests',
+					    'ApiAlias' : `${msg.author.username} (${msg.author.id})`,
+				            'UserName': (ombi.username !== "") ? ombi.username : '',
 					    'User-Agent': `Mellow/${process.env.npm_package_version}`},
 					    url: 'http://' + ombi.host + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Request/tv/',
 					    body: body
