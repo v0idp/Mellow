@@ -53,7 +53,7 @@ class Database {
                 if (!fs.existsSync(dataPath)) {
                     fs.mkdirSync(dataPath);
                 }
-
+                
                 const dbPromise = sqlite.open(path, { Promise });
                 let db = await dbPromise;
                 resolve(db);

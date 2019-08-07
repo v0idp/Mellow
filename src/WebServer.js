@@ -79,7 +79,7 @@ class WebServer {
             this.app.use(express.urlencoded({extended: true}));
             this.app.use(session({ resave: true, secret: 'asdkjn2398easojdfh9238hrihsf', saveUninitialized: true}));
             this.app.use(express.static(this.path));
-
+    
             this.app.get('/', (req, res) => res.redirect('/login'));
             this.app.get('/login', async (req, res) => {
                 this.db.loadSettings('general').then((general) => {
@@ -91,7 +91,7 @@ class WebServer {
                         res.redirect('/config');
                     }
                 });
-
+                
             });
             this.app.post('/login', this.onCheckAuth());
 
