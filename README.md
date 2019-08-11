@@ -3,7 +3,7 @@
 [![Discord](https://img.shields.io/badge/Discord-Mellow-7289DA.svg?style=flat-square)](https://discord.gg/4ys8Mkv)
 
 Discord Bot which can communicate with several APIs like Ombi, Sonarr, Radarr and Tautulli which are related to home streaming.
-Based off of node:9.3
+Based off of node:10.16.2
 
 ## Features
 
@@ -14,7 +14,7 @@ Based off of node:9.3
 
 ## Requirements
 
-* [NodeJS 9.x +](https://nodejs.org/en/download/)
+* [NodeJS 10.x +](https://nodejs.org/en/download/)
 * [Yarn 1.x +](https://yarnpkg.com/en/docs/install)
 
 ## Installation & Configuration

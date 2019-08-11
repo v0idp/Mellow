@@ -19,10 +19,10 @@ module.exports = class librariesCommand extends commando.Command {
 			get({
 				headers: {'accept' : 'application/json',
 				'User-Agent': `Mellow/${process.env.npm_package_version}`},
-				url:     tautulli.host + ((tautulli.port) ? ':' + tautulli.port : '') + '/api/v2?apikey=' + tautulli.apikey + '&cmd=get_libraries'
+				url: (checkURLPrefix(tautulli.host) ? tautulli.host : `http://${tautulli.host}`) + ((tautulli.port) ? ':' + tautulli.port : '') + '/api/v2?apikey=' + tautulli.apikey + '&cmd=get_libraries'
 			}).then((resolve) => {
 				let jsonObject = JSON.parse(resolve.body);
-				let libraryEmbed = new Discord.RichEmbed()
+				let libraryEmbed = new Discord.MessageEmbed()
 				.setTitle('Server Libraries')
 				.setTimestamp(new Date())
 				.setThumbnail('https://i.imgur.com/pz9PoqR.png');
