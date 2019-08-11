@@ -21,7 +21,7 @@ const get = function(options) {
     return new Promise(function(resolve, reject) {
         request.get(options, function(error, response, body){
             if (!error && response.statusCode == 200) resolve({response, body});
-            else reject({error, response, body});
+            else reject({error, body});
         });
     });
 }
@@ -29,13 +29,22 @@ const get = function(options) {
 const post = function(options) {
     return new Promise(function(resolve, reject) {
         request.post(options, function(error, response, body){
-            if (!error && response.statusCode == 200) resolve({response, body});
-            else reject({error, response, body});
+            if (!error && response.statusCode == 200) resolve({error, response, body});
+            else reject({error, body});
         });
     });
 }
 
+const checkURLPrefix = function(url) {
+    if (/https?:\/\//.exec(url)) {
+        return true;
+    } else {
+	return false;
+    }
+}
+
 module.exports = {
+	checkURLPrefix,
 	capitalizeFirstLetter,
 	deleteCommandMessages,
 	momentFormat,
