@@ -1,6 +1,6 @@
 # Mellow
 
-[![Discord](https://img.shields.io/badge/Discord-Mellow-7289DA.svg?style=flat-square)](https://discord.gg/4ys8Mkv)
+[![Discord](https://img.shields.io/badge/Discord-Mellow-7289DA.svg?style=flat-square)](https://discord.gg/zx2BWp2)
 
 Discord Bot which can communicate with several APIs like Ombi, Sonarr, Radarr and Tautulli which are related to home streaming.
 Based off of node:10.16.2
