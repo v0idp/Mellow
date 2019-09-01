@@ -26,7 +26,7 @@ class WebServer {
             console.log('No BotClient is running to restart. Starting a new BotClient...');
         }
         this.db.loadSettings('bot').then((bot) => {
-            this.bot = new BotClient(this.db, bot.token, (bot.ownerid) ? bot.ownerid : null, bot.commandprefix, bot.unknowncommandresponse);
+            this.bot = new BotClient(this.db, bot.token, (bot.ownerid) ? bot.ownerid : null, bot.commandprefix, bot.unknowncommandresponse, bot.channelname);
             this.bot.init().catch(() => { console.error('Failed initializing BotClient. Is your token correct?') });
         }).catch((err) => console.error(err));
     }
