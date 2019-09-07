@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const commando = require('discord.js-commando');
-const {deleteCommandMessages, get} = require('../../util.js');
+const {checkURLPrefix, deleteCommandMessages, get} = require('../../util.js');
 
 module.exports = class librariesCommand extends commando.Command {
 	constructor (client) {
