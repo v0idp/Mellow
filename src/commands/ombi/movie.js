@@ -118,6 +118,7 @@ module.exports = class searchMovieCommand extends commando.Command {
 			'description': 'Search and Request Movies in Ombi',
 			'examples': ['movie The Matrix', 'movie tmdb:603'],
 			'guildOnly': true,
+			'argsPromptLimit': 0,
 			'args': [
 				{
 					'key': 'name',
@@ -133,7 +134,7 @@ module.exports = class searchMovieCommand extends commando.Command {
 			return msg.reply('Please enter a valid movie name!');
 		}
 
-		let ombi = await this.client.webDB.loadSettings('ombi')
+		let ombi = this.client.webDatabase.webConfig.ombi
 		let tmdbid = null
 
 		if (args.name.startsWith("tmdb:")) {
