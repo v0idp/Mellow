@@ -19,7 +19,7 @@ module.exports = class librariesCommand extends commando.Command {
 		get({
 			headers: {'accept' : 'application/json',
 			'User-Agent': `Mellow/${process.env.npm_package_version}`},
-			url: (checkURLPrefix(tautulli.host) ? tautulli.host : (tautulli.port) ? tautulli.host + tautulli.port : 'http://' + tautulli.host) + '/api/v2?apikey=' + tautulli.apikey + '&cmd=get_libraries'
+			url: (checkURLPrefix(tautulli.host) ? tautulli.host : (tautulli.port) ? tautulli.host + ':' + tautulli.port : 'http://' + tautulli.host) + '/api/v2?apikey=' + tautulli.apikey + '&cmd=get_libraries'
 		}).then((resolve) => {
 			let jsonObject = JSON.parse(resolve.body);
 			let libraryEmbed = new Discord.MessageEmbed()
