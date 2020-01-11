@@ -18,7 +18,7 @@ module.exports = class refreshLibraryCommand extends commando.Command {
 		get({
 			headers: {'accept' : 'application/json',
 			'User-Agent': `Mellow/${process.env.npm_package_version}`},
-			url: (checkURLPrefix(tautulli.host) ? tautulli.host : `http://${tautulli.host}`) + ((tautulli.port) ? ':' + tautulli.port : '') + '/api/v2?apikey=' + tautulli.apikey + '&cmd=refresh_libraries_list'
+			url: (checkURLPrefix(tautulli.host) ? tautulli.host : (tautulli.port) ? tautulli.host + tautulli.port : 'http://' + tautulli.host) + '/api/v2?apikey=' + tautulli.apikey + '&cmd=refresh_libraries_list'
 		}).then((resolve) => {
 			deleteCommandMessages(msg, this.client);
 			msg.reply('Refreshed all libraries in Tautulli.');

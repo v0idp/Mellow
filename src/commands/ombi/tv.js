@@ -155,7 +155,7 @@ module.exports = class searchTVCommand extends commando.Command {
 				headers: {'accept' : 'application/json',
 				'ApiKey': ombi.apikey,
 				'User-Agent': `Mellow/${process.env.npm_package_version}`},
-				url: (checkURLPrefix(ombi.host) ? ombi.host : `http://${ombi.host}`) + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Search/tv/info/' + tvdbid
+				url: (checkURLPrefix(ombi.host) ? ombi.host : (ombi.port) ? ombi.host + ombi.port : 'http://' + ombi.host) + '/api/v1/Search/tv/info/' + tvdbid
 			})
 			.then(({response, body}) => {
 				let data = JSON.parse(body)

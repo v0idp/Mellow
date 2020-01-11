@@ -93,7 +93,7 @@ function requestMovie(ombi, msg, movieMsg, movie) {
 					'ApiAlias' : `${msg.author.username}#${msg.author.discriminator}`,
 					'UserName' : ombi.username ? ombi.username : undefined,
 					'User-Agent': `Mellow/${process.env.npm_package_version}`},
-					url: (checkURLPrefix(ombi.host) ? ombi.host : `http://${ombi.host}`) + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Request/movie/',
+					url: (checkURLPrefix(ombi.host) ? ombi.host : (ombi.port) ? ombi.host + ombi.port : 'http://' + ombi.host) + '/api/v1/Request/movie/',
 					body: JSON.stringify({ "theMovieDbId": movie.theMovieDbId })
 				}).then((resolve) => {
 					return msg.reply(`Requested ${movie.title} in Ombi.`);
