@@ -120,6 +120,7 @@ module.exports = class searchTVCommand extends commando.Command {
 			'description': 'Search and Request TV Shows in Ombi',
 			'examples': ['tv The Big Bang Theory', 'tv tvdb:80379'],
 			'guildOnly': true,
+			'argsPromptLimit': 0,
 			'args': [
 				{
 					'key': 'name',
@@ -135,7 +136,7 @@ module.exports = class searchTVCommand extends commando.Command {
 			return msg.reply('Please enter a valid TV show name!');
 		}
 
-		let ombi = await this.client.webDB.loadSettings('ombi')
+		let ombi = this.client.webDatabase.webConfig.ombi
 		let tvdbid = null
 
 		if (args.name.startsWith("tvdb:")) {

@@ -5,10 +5,10 @@ const BotClient = require('./BotClient.js');
 
 
 class WebServer {
-    constructor (db, bot) {
+    constructor (WebDatabase, bot) {
         this.path = path.join(__dirname, 'views/');
         this.app = express();
-        this.db = db;
+        this.WebDatabase = WebDatabase;
         this.bot = bot;
         this.currentView = 'general';
     }
@@ -25,25 +25,23 @@ class WebServer {
         } catch (err) {
             console.log('No BotClient is running to restart. Starting a new BotClient...');
         }
-        this.db.loadSettings('bot').then((bot) => {
-            this.bot = new BotClient(this.db, bot.token, (bot.ownerid) ? bot.ownerid : null, bot.commandprefix, bot.unknowncommandresponse, bot.channelname);
-            this.bot.init().catch(() => { console.error('Failed initializing BotClient. Is your token correct?') });
-        }).catch((err) => console.error(err));
+        const botConfig = this.WebDatabase.webConfig.bot;
+        this.bot = new BotClient(this.WebDatabase, botConfig.ownerid, botConfig.commandprefix);
+        this.bot.init().catch(() => { console.error('Failed initializing BotClient. Is your token correct?') });
     }
 
     onCheckAuth() {
-        return async (req, res) => {
-            let post = req.body;
-            this.db.loadSettings('general').then((table) => {
-                if (post.username == table.username && post.password == table.password) {
-                    req.session.user_id = 10000;
-                    res.redirect('/config');
-                } else {
-                    res.render('login', {
-                        loginMessage: 'Login failed! Username or password incorrect.'
-                    });
-                }
-            });
+        return (req, res) => {
+            const post = req.body;
+            const table = this.WebDatabase.webConfig.general;
+            if (post.username == table.username && post.password == table.password) {
+                req.session.user_id = 10000;
+                res.redirect('/config');
+            } else {
+                res.render('login', {
+                    loginMessage: 'Login failed! Username or password incorrect.'
+                });
+            }
         }
     }
 
@@ -62,7 +60,7 @@ class WebServer {
 
     onConfigSave() {
         return (req, res) => {
-            this.db.saveSettings(req);
+            this.WebDatabase.saveConfig(req);
             this.restartBot();
 
             this.currentView = req.path.replace('/', '');
@@ -82,38 +80,27 @@ class WebServer {
     
             this.app.get('/', (req, res) => res.redirect('/login'));
             this.app.get('/login', async (req, res) => {
-                this.db.loadSettings('general').then((general) => {
-                    if (general && req.session.user_id != 10000) {
-                        res.render('login', {
-                            loginMessage: ''
-                        });
-                    } else {
-                        res.redirect('/config');
-                    }
-                });
-                
+                if (req.session.user_id != 10000) {
+                    res.render('login', {
+                        loginMessage: ''
+                    });
+                } else {
+                    res.redirect('/config');
+                }
             });
             this.app.post('/login', this.onCheckAuth());
 
             this.app.get('/config', async (req, res) => {
-                let [general, bot, ombi, tautulli, sonarr, radarr] = await Promise.all([
-                    this.db.loadSettings('general'),
-                    this.db.loadSettings('bot'),
-                    this.db.loadSettings('ombi'),
-                    this.db.loadSettings('tautulli'),
-                    this.db.loadSettings('sonarr'),
-                    this.db.loadSettings('radarr')
-                ]);
-
-                if (req.session.user_id == 10000 || !general) {
+                if (req.session.user_id == 10000 || !this.WebDatabase.webConfig.general) {
+                    const config = this.WebDatabase.webConfig;
                     res.render('config', {
                         currentView: this.currentView,
-                        generalSettings: (general) ? general : '',
-                        botSettings: (bot) ? bot : '',
-                        ombiSettings:  (ombi) ? ombi : '',
-                        tautulliSettings:  (tautulli) ? tautulli : '',
-                        sonarrSettings:  (sonarr) ? sonarr : '',
-                        radarrSettings:  (radarr) ? radarr : ''
+                        generalSettings: (config.general) ? config.general : '',
+                        botSettings: (config.bot) ? config.bot : '',
+                        ombiSettings:  (config.ombi) ? config.ombi : '',
+                        tautulliSettings:  (config.tautulli) ? config.tautulli : '',
+                        sonarrSettings:  (config.sonarr) ? config.sonarr : '',
+                        radarrSettings:  (config.radarr) ? config.radarr : ''
                     });
                 } else {
                     res.redirect('/login');
