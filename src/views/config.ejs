@@ -41,12 +41,12 @@
     <input type = "text" class = "form-control" name = "channelName" value = "<% if (botSettings && botSettings.channelname) { %><%=botSettings.channelname %><% } %>">
     <p>(Leave blank to watch all channels.)</p>
     <div class="slide">
-      <input type="checkbox" value="true" id="slide" name="deleteCommandMessages" <% if (botSettings && botSettings.deletecommandmessages == 'true') { %> <? checked ?> <% } %>/>
+      <input type="checkbox" value="true" id="slide" name="deleteCommandMessages" <% if (botSettings && botSettings.deletecommandmessages === 'true') { %> <? checked ?> <% } %>/>
       <label for="slide"></label>
     </div>
     <h2 class="h2-setting">Delete Command Messages</h2>
     <div class="slide">
-        <input type="checkbox" value="true" id="slide2" name="unknownCommandResponse" <% if (botSettings && botSettings.unknowncommandresponse == 'true') { %> <? checked ?> <% } %>/>
+        <input type="checkbox" value="true" id="slide2" name="unknownCommandResponse" <% if (botSettings && botSettings.unknowncommandresponse === 'true') { %> <? checked ?> <% } %>/>
         <label for="slide2"></label>
       </div>
       <h2 class="h2-setting">Unknown Command Response</h2>
