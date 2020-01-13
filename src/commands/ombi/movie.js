@@ -93,7 +93,7 @@ function requestMovie(ombi, msg, movieMsg, movie) {
 					'ApiAlias' : `${msg.author.username}#${msg.author.discriminator}`,
 					'UserName' : ombi.username ? ombi.username : undefined,
 					'User-Agent': `Mellow/${process.env.npm_package_version}`},
-					url: (checkURLPrefix(ombi.host) ? ombi.host : `http://${ombi.host}`) + ((ombi.port) ? ':' + ombi.port : '') + '/api/v1/Request/movie/',
+					url: (checkURLPrefix(ombi.host) ? ombi.host : (ombi.port) ? ombi.host + ':' + ombi.port : 'http://' + ombi.host) + '/api/v1/Request/movie/',
 					body: JSON.stringify({ "theMovieDbId": movie.theMovieDbId })
 				}).then((resolve) => {
 					return msg.reply(`Requested ${movie.title} in Ombi.`);
@@ -118,6 +118,7 @@ module.exports = class searchMovieCommand extends commando.Command {
 			'description': 'Search and Request Movies in Ombi',
 			'examples': ['movie The Matrix', 'movie tmdb:603'],
 			'guildOnly': true,
+			'argsPromptLimit': 0,
 			'args': [
 				{
 					'key': 'name',
@@ -133,7 +134,7 @@ module.exports = class searchMovieCommand extends commando.Command {
 			return msg.reply('Please enter a valid movie name!');
 		}
 
-		let ombi = await this.client.webDB.loadSettings('ombi')
+		let ombi = this.client.webDatabase.webConfig.ombi
 		let tmdbid = null
 
 		if (args.name.startsWith("tmdb:")) {

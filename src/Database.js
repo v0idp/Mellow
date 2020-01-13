@@ -1,76 +1,60 @@
-const sqlite = require('sqlite');
-const Promise = require('bluebird');
 const path = require('path');
-var fs = require('fs');
+const fs = require('fs')
+
+const storeData = (data) => {
+    try {
+        fs.writeFileSync(path.join(__dirname, '..', 'data', 'settings.json'), JSON.stringify(data))
+    } catch (err) {
+        console.error(err)
+    }
+}
 
 class Database {
-    constructor(dbName) {
-        this.path = path.join(__dirname.slice(0, -3), 'data/' + dbName + '.sqlite3');
-        this.db;
+    constructor() {
+        this.webConfig = require(path.join(__dirname, '..', 'data', 'settings.json'));
     }
 
-    getDB() {
-        return this.db;
+    getConfig() {
+        return this.webConfig;
     }
 
-    loadSettings(table) {
-        return new Promise(async (resolve, reject) => {
-            try {
-                let result =  await this.db.get('SELECT * FROM ' + table + ' WHERE id=1');
-                resolve(result);
-            } catch (err) {
-                reject(err);
-            }
-        });
+    loadConfigTable(table) {
+        return this.webConfig[table];
     }
 
-    saveSettings(request) {
+    saveConfig(request) {
+        let newWebConfig = this.webConfig;
         if (request.path == '/general') {
-            this.db.run('DELETE FROM general');
-            this.db.run('INSERT INTO general (username, password) VALUES(?, ?)',
-                [request.body.username, request.body.password]);
+            newWebConfig.general.username = request.body.username;
+            newWebConfig.general.password = request.body.password;
         } else if (request.path == '/bot') {
-            this.db.run('DELETE FROM bot');
-            this.db.run('INSERT INTO bot (token, ownerid, commandprefix, deletecommandmessages, unknowncommandresponse, channelname) VALUES(?, ?, ?, ?, ?, ?)',
-                [request.body.token, request.body.ownerID, request.body.commandPrefix, (request.body.deleteCommandMessages) ? 'true' : 'false', (request.body.unknownCommandResponse) ? 'true' : 'false', request.body.channelName]);
+            newWebConfig.bot.token = request.body.token;
+            newWebConfig.bot.ownerid = request.body.ownerID;
+            newWebConfig.bot.commandprefix = request.body.commandPrefix;
+            newWebConfig.bot.deletecommandmessages = (request.body.deleteCommandMessages) ? 'true' : 'false';
+            newWebConfig.bot.unknowncommandresponse = (request.body.unknownCommandResponse) ? 'true' : 'false';
+            newWebConfig.bot.channelname = request.body.channelName;
         } else if (request.path == '/ombi' && request.body.apiKey != '' && request.body.host != '') {
-            this.db.run('DELETE FROM ' + request.path.replace('/', ''));
-            this.db.run('INSERT INTO ombi (host, port, apikey, requesttv, requestmovie, username) VALUES(?, ?, ?, ?, ?, ?)',
-                [request.body.host, request.body.port, request.body.apiKey, request.body.requestTV, request.body.requestMovie, request.body.userName]);
-        } else if ((request.path == '/tautulli' || request.path == '/sonarr' || request.path == '/radarr') && request.body.apiKey != '' && request.body.host != '') {
-            this.db.run('DELETE FROM ' + request.path.replace('/', ''));
-            this.db.run('INSERT INTO placeholder (host, port, apikey) VALUES(?, ?, ?)'.replace('placeholder', request.path.replace('/', '')),
-                [request.body.host, request.body.port, request.body.apiKey]);
-        } else {
-            return;
+            newWebConfig.ombi.host = request.body.host;
+            newWebConfig.ombi.port = request.body.port;
+            newWebConfig.ombi.apikey = request.body.apiKey;
+            newWebConfig.ombi.requesttv = request.body.requestTV;
+            newWebConfig.ombi.requestmovie = request.body.requestMovie;
+            newWebConfig.ombi.username = request.body.userName;
+        } else if (request.path == '/tautulli' && request.body.apiKey != '' && request.body.host != '') {
+            newWebConfig.tautulli.host = request.body.host;
+            newWebConfig.tautulli.port = request.body.port;
+            newWebConfig.tautulli.apikey = request.body.apiKey;
+        } else if (request.path == '/sonarr' && request.body.apiKey != '' && request.body.host != '') {
+            newWebConfig.sonarr.host = request.body.host;
+            newWebConfig.sonarr.port = request.body.port;
+            newWebConfig.sonarr.apikey = request.body.apiKey;
+        } else if (request.path == '/radarr' && request.body.apiKey != '' && request.body.host != '') {
+            newWebConfig.radarr.host = request.body.host;
+            newWebConfig.radarr.port = request.body.port;
+            newWebConfig.radarr.apikey = request.body.apiKey;
         }
-    }
-
-    openDB(path) {
-        return new Promise(async (resolve, reject) => {
-            try {
-                let dataPath = __dirname.slice(0, -3) + 'data';
-                if (!fs.existsSync(dataPath)) {
-                    fs.mkdirSync(dataPath);
-                }
-                
-                const dbPromise = sqlite.open(path, { Promise });
-                let db = await dbPromise;
-                resolve(db);
-            } catch(error) {
-                reject(error);
-            }
-        });
-    }
-
-    init() {
-        return new Promise(async (resolve, reject) => {
-            this.openDB(this.path).then(db => {
-                this.db = db;
-                this.db.migrate();
-                resolve(this.db);
-            }).catch((err) => reject(err));
-        });
+        storeData(newWebConfig);
     }
 }
 

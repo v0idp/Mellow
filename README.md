@@ -49,6 +49,7 @@ yarn start
 
 After starting the bot you will need to configure it by visiting ``youripordomain:5060``
 and filling out the Bot Settings which will start the bot with your token.
+The default login credentials are username:``mellow`` password: ``default``. Please change these as soon as possible!
 Note: It's recommended to set a username and password in General Settings. This way only you can access the web interface.
 
 ## Docker Setup & Start

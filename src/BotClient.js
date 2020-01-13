@@ -3,15 +3,12 @@ const path = require('path');
 const sqlite = require('sqlite');
 
 class BotClient extends Commando.Client {
-	constructor (webDB, token, ownerid, commandprefix, unknowncommandresponse, channelname) {
+	constructor (webDatabase, ownerid, commandprefix) {
 		super({
-			"owner": (ownerid) ? ownerid : null,
-			"commandPrefix": commandprefix,
-			"unknownCommandResponse": unknowncommandresponse
+			"owner": (ownerid !== '') ? ownerid : null,
+			"commandPrefix": (commandprefix !== '') ? commandprefix : '$'
 		});
-		this.webDB = webDB;
-		this.token = token;
-		this.channelName = channelname;
+		this.webDatabase = webDatabase;
 		this.isReady = false;
 	}
 
@@ -108,32 +105,35 @@ class BotClient extends Commando.Client {
 				'help': true,
 				'prefix': true,
 				'ping': true,
-				'eval_': false,
-				'commandState': true
+				'eval': false,
+				'commandState': true,
+				'unknownCommand': (this.webDatabase.webConfig.bot.unknowncommandresponse === 'true') ? true : false
 			}).registerCommandsIn(path.join(__dirname, 'commands'));
 
 			// unregister groups if apikey and host is not provided in web database
 			// thanks to the commando framework we have to go the dirty way
 			this.registry.groups.forEach((group) => {
-				this.webDB.loadSettings(group.name).then((result) => {
-					if(!result || (!result.host && !result.apikey)) {
-						group.commands.forEach((command) => {
-							this.registry.unregisterCommand(command);
-						});
-					}
-				}).catch(() => {});
+				const checkGroups = ['ombi', 'sonarr', 'radarr', 'tautulli'];
+				if(checkGroups.indexOf(group.name.toLowerCase()) > -1) {
+					const groupConfig = this.webDatabase.webConfig[group.name.toLowerCase()];
+					if (groupConfig.host === "" || groupConfig.apikey === "")
+					group.commands.forEach((command) => {
+						this.registry.unregisterCommand(command);
+					});
+				}
 			});
 
 			this.dispatcher.addInhibitor((message) => {
 				// Older versions of the DB may not have channelName defined
-				if (!this.channelName || this.channelName.length == 0) {
+				const bot = this.webDatabase.webConfig.bot;
+				if (!bot.channelname || bot.channelname.length == 0) {
 					return false;
 				}
-				return (message.channel.name.toLowerCase() !== this.channelName.toLowerCase()) ? 'Not allowed in this channel' : false;
+				return (message.channel.name.toLowerCase() !== bot.channelname.toLowerCase()) ? 'Not allowed in this channel' : false;
 			});
 
 		// login client with bot token
-		return this.login(this.token);
+		return this.login(this.webDatabase.webConfig.bot.token);
 	}
 
 	deinit () {

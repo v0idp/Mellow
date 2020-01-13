@@ -1,8 +1,10 @@
 const request = require('request');
 const Promise = require('bluebird');
+const path = require('path');
+const webConfig = require(path.join(__dirname, '..', 'data', 'settings.json'));
 
-const deleteCommandMessages = function (msg, client) {
-    if (msg.deletable && client.provider.get('global', 'deletecommandmessages', false)) {
+const deleteCommandMessages = function (msg) {
+    if (msg.deletable && (webConfig.bot.deletecommandmessages) === 'true' ? true : false) {
         return msg.delete();
     }
 };
