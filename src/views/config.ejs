@@ -37,7 +37,7 @@
     <input type = "tel" class = "form-control" name = "ownerID" value = "<% if (botSettings && botSettings.ownerid) { %><%=botSettings.ownerid %><% } %>">
     <h2 class="h2-setting">Command Prefix</h2>
     <input type = "text" class = "form-control" name = "commandPrefix" value = "<% if (botSettings && botSettings.commandprefix) { %><%=botSettings.commandprefix %><% } %>" required>
-    <h2 class="h2-setting">Channel to Monitor</h2>
+    <h2 class="h2-setting">Channelname to Monitor</h2>
     <input type = "text" class = "form-control" name = "channelName" value = "<% if (botSettings && botSettings.channelname) { %><%=botSettings.channelname %><% } %>">
     <p>(Leave blank to watch all channels.)</p>
     <div class="slide">
@@ -57,12 +57,17 @@
 <div id="Ombi" class="container setting" style="<% if (currentView == "ombi") { %><%="display:initial"%><% } else { %><%="display:none"%><% } %>">
   <h2>Ombi Settings</h2>
   <form class = "form-setting" role = "form" action = "/ombi" method = "post">
-    <h2 class="h2-setting">Host</h2>
+    <h2 class="h2-setting">Host or IP</h2>
     <input type = "text" class = "form-control" name = "host" value = "<% if (ombiSettings && ombiSettings.host) { %><%=ombiSettings.host %><% } %>">
     <h2 class="h2-setting">Port</h2>
     <input type = "tel" class = "form-control" name = "port" value = "<% if (ombiSettings && ombiSettings.port) { %><%=ombiSettings.port %><% } %>">
     <h2 class="h2-setting">API Key</h2>
     <input type = "text" class = "form-control" name = "apiKey" value = "<% if (ombiSettings && ombiSettings.apikey) { %><%=ombiSettings.apikey %><% } %>">
+    <div class="slide">
+      <input type="checkbox" value="true" id="slide3" name="ssl" <% if (ombiSettings && ombiSettings.ssl === "true") { %> <? checked ?> <% } %>/>
+      <label for="slide3"></label>
+    </div>
+    <h2 class="h2-setting">SSL</h2>
     <h2 class="h2-setting">Request TV Shows (Discord Role Name)</h2>
     <input type = "text" class = "form-control" name = "requestTV" value = "<% if (ombiSettings && ombiSettings.requesttv) { %><%=ombiSettings.requesttv %><% } %>">
     <p>(Leave blank if anyone can request.)</p>
@@ -79,12 +84,17 @@
 <div id="Tautulli" class="container setting" style="<% if (currentView == "tautulli") { %><%="display:initial"%><% } else { %><%="display:none"%><% } %>">
   <h2>Tautulli Settings</h2>
   <form class = "form-setting" role = "form" action = "/tautulli" method = "post">
-    <h2 class="h2-setting">Host</h2>
+    <h2 class="h2-setting">Host or IP</h2>
     <input type = "text" class = "form-control" name = "host" value = "<% if (tautulliSettings && tautulliSettings.host) { %><%=tautulliSettings.host %><% } %>">
     <h2 class="h2-setting">Port</h2>
     <input type = "tel" class = "form-control" name = "port" value = "<% if (tautulliSettings && tautulliSettings.port) { %><%=tautulliSettings.port %><% } %>">
     <h2 class="h2-setting">API Key</h2>
     <input type = "text" class = "form-control" name = "apiKey" value = "<% if (tautulliSettings && tautulliSettings.apikey) { %><%=tautulliSettings.apikey %><% } %>">
+    <div class="slide">
+      <input type="checkbox" value="true" id="slide4" name="ssl" <% if (tautulliSettings && tautulliSettings.ssl === "true") { %> <? checked ?> <% } %>/>
+      <label for="slide4"></label>
+    </div>
+    <h2 class="h2-setting">SSL</h2>
     <button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "submit">Submit</button>
   </form>
 </div>
@@ -92,12 +102,17 @@
 <div id="Sonarr" class="container setting" style="<% if (currentView == "sonarr") { %><%="display:initial"%><% } else { %><%="display:none"%><% } %>">
   <h2>Sonarr Settings</h2>
   <form class = "form-setting" role = "form" action = "/sonarr" method = "post">
-    <h2 class="h2-setting">Host</h2>
+    <h2 class="h2-setting">Host or IP</h2>
     <input type = "text" class = "form-control" name = "host" value = "<% if (sonarrSettings && sonarrSettings.host) { %><%=sonarrSettings.host %><% } %>">
     <h2 class="h2-setting">Port</h2>
     <input type = "tel" class = "form-control" name = "port" value = "<% if (sonarrSettings && sonarrSettings.port) { %><%=sonarrSettings.port %><% } %>">
     <h2 class="h2-setting">API Key</h2>
     <input type = "text" class = "form-control" name = "apiKey" value = "<% if (sonarrSettings && sonarrSettings.apikey) { %><%=sonarrSettings.apikey %><% } %>">
+    <div class="slide">
+      <input type="checkbox" value="true" id="slide5" name="ssl" <% if (sonarrSettings && sonarrSettings.ssl === "true") { %> <? checked ?> <% } %>/>
+      <label for="slide5"></label>
+    </div>
+    <h2 class="h2-setting">SSL</h2>
     <button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "submit">Submit</button>
   </form>
 </div>
@@ -105,12 +120,17 @@
 <div id="Radarr" class="container setting" style="<% if (currentView == "radarr") { %><%="display:initial"%><% } else { %><%="display:none"%><% } %>">
   <h2>Radarr Settings</h2>
   <form class = "form-setting" role = "form" action = "/radarr" method = "post">
-    <h2 class="h2-setting">Host</h2>
+    <h2 class="h2-setting">Host or IP</h2>
     <input type = "text" class = "form-control" name = "host" value = "<% if (radarrSettings && radarrSettings.host) { %><%=radarrSettings.host %><% } %>">
     <h2 class="h2-setting">Port</h2>
     <input type = "tel" class = "form-control" name = "port" value = "<% if (radarrSettings && radarrSettings.port) { %><%=radarrSettings.port %><% } %>">
     <h2 class="h2-setting">API Key</h2>
     <input type = "text" class = "form-control" name = "apiKey" value = "<% if (radarrSettings && radarrSettings.apikey) { %><%=radarrSettings.apikey %><% } %>">
+    <div class="slide">
+      <input type="checkbox" value="true" id="slide6" name="ssl" <% if (radarrSettings && radarrSettings.ssl === "true") { %> <? checked ?> <% } %>/>
+      <label for="slide6"></label>
+    </div>
+    <h2 class="h2-setting">SSL</h2>
     <button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "submit">Submit</button>
   </form>
 </div>
