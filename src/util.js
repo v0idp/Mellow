@@ -1,6 +1,7 @@
 const request = require('request');
 const Promise = require('bluebird');
 const path = require('path');
+const url = require('url');
 const webConfig = require(path.join(__dirname, '..', 'data', 'settings.json'));
 
 const deleteCommandMessages = function (msg) {
@@ -45,8 +46,16 @@ const checkURLPrefix = function(url) {
     }
 }
 
+const getURL = function(host, port, ssl, args) {
+    return url.parse(`${(ssl === 'true') ? 'https://' : 'http://'}` +
+        `${(host.match(/^http(s)?:\/\//)) ? host.split('//')[1] : host}` +
+        `${(port) ? `:${port}` : ''}` +
+        `${args}`);
+}
+
 module.exports = {
-	checkURLPrefix,
+    checkURLPrefix,
+    getURL,
 	capitalizeFirstLetter,
 	deleteCommandMessages,
 	momentFormat,

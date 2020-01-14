@@ -1,43 +1,41 @@
 {
-    "general":
-    {
-        "username":"mellow",
-        "password":"default"
+    "general": {
+      "username": "mellow",
+      "password": "default"
     },
-    "bot":
-    {
-        "token":"",
-        "ownerid":"",
-        "commandprefix":"",
-        "channelname":"",
-        "deletecommandmessages":"",
-        "unknowncommandresponse":""
+    "bot": {
+      "token": "",
+      "ownerid": "",
+      "commandprefix": "",
+      "channelname": "",
+      "deletecommandmessages": "false",
+      "unknowncommandresponse": "false"
     },
-    "ombi":
-    {
-        "host":"",
-        "port":"",
-        "apikey":"",
-        "requesttv":"",
-        "requestmovie":"",
-        "username":""
+    "ombi": {
+      "host": "",
+      "port": "",
+      "apikey": "",
+      "ssl": "false",
+      "requesttv": "",
+      "requestmovie": "",
+      "username": ""
     },
-    "tautulli":
-    {
-        "host":"",
-        "port":"",
-        "apikey":""
+    "tautulli": {
+      "host": "",
+      "port": "",
+      "apikey": "",
+      "ssl": "false"
     },
-    "sonarr":
-    {
-        "host":"",
-        "port":"",
-        "apikey":""
+    "sonarr": {
+      "host": "",
+      "port": "",
+      "apikey": "",
+      "ssl": "false"
     },
-    "radarr":
-    {
-        "host":"",
-        "port":"",
-        "apikey":""
+    "radarr": {
+      "host": "",
+      "port": "",
+      "apikey": "",
+      "ssl": "false"
     }
-}
+  }
