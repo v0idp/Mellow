@@ -41,12 +41,12 @@
     <input type = "text" class = "form-control" name = "channelName" value = "<% if (botSettings && botSettings.channelname) { %><%=botSettings.channelname %><% } %>">
     <p>(Leave blank to watch all channels.)</p>
     <div class="slide">
-      <input type="checkbox" value="true" id="slide" name="deleteCommandMessages" <% if (botSettings && botSettings.deletecommandmessages === 'true') { %> <? checked ?> <% } %>/>
+      <input type="checkbox" value="true" id="slide" name="deleteCommandMessages" <% if (botSettings && botSettings.deletecommandmessages === 'true') { %> <? checked ?> <% } %>></input>
       <label for="slide"></label>
     </div>
     <h2 class="h2-setting">Delete Command Messages</h2>
     <div class="slide">
-        <input type="checkbox" value="true" id="slide2" name="unknownCommandResponse" <% if (botSettings && botSettings.unknowncommandresponse === 'true') { %> <? checked ?> <% } %>/>
+        <input type="checkbox" value="true" id="slide2" name="unknownCommandResponse" <% if (botSettings && botSettings.unknowncommandresponse === 'true') { %> <? checked ?> <% } %>></input>
         <label for="slide2"></label>
       </div>
       <h2 class="h2-setting">Unknown Command Response</h2>
@@ -64,7 +64,7 @@
     <h2 class="h2-setting">API Key</h2>
     <input type = "text" class = "form-control" name = "apiKey" value = "<% if (ombiSettings && ombiSettings.apikey) { %><%=ombiSettings.apikey %><% } %>">
     <div class="slide">
-      <input type="checkbox" value="true" id="slide3" name="ssl" <% if (ombiSettings && ombiSettings.ssl === "true") { %> <? checked ?> <% } %>/>
+      <input type="checkbox" value="true" id="slide3" name="ssl" <% if (ombiSettings && ombiSettings.ssl === "true") { %> <? checked ?> <% } %>></input>
       <label for="slide3"></label>
     </div>
     <h2 class="h2-setting">SSL</h2>
@@ -91,7 +91,7 @@
     <h2 class="h2-setting">API Key</h2>
     <input type = "text" class = "form-control" name = "apiKey" value = "<% if (tautulliSettings && tautulliSettings.apikey) { %><%=tautulliSettings.apikey %><% } %>">
     <div class="slide">
-      <input type="checkbox" value="true" id="slide4" name="ssl" <% if (tautulliSettings && tautulliSettings.ssl === "true") { %> <? checked ?> <% } %>/>
+      <input type="checkbox" value="true" id="slide4" name="ssl" <% if (tautulliSettings && tautulliSettings.ssl === "true") { %> <? checked ?> <% } %>></input>
       <label for="slide4"></label>
     </div>
     <h2 class="h2-setting">SSL</h2>
@@ -109,7 +109,7 @@
     <h2 class="h2-setting">API Key</h2>
     <input type = "text" class = "form-control" name = "apiKey" value = "<% if (sonarrSettings && sonarrSettings.apikey) { %><%=sonarrSettings.apikey %><% } %>">
     <div class="slide">
-      <input type="checkbox" value="true" id="slide5" name="ssl" <% if (sonarrSettings && sonarrSettings.ssl === "true") { %> <? checked ?> <% } %>/>
+      <input type="checkbox" value="true" id="slide5" name="ssl" <% if (sonarrSettings && sonarrSettings.ssl === "true") { %> <? checked ?> <% } %>></input>
       <label for="slide5"></label>
     </div>
     <h2 class="h2-setting">SSL</h2>
@@ -127,7 +127,7 @@
     <h2 class="h2-setting">API Key</h2>
     <input type = "text" class = "form-control" name = "apiKey" value = "<% if (radarrSettings && radarrSettings.apikey) { %><%=radarrSettings.apikey %><% } %>">
     <div class="slide">
-      <input type="checkbox" value="true" id="slide6" name="ssl" <% if (radarrSettings && radarrSettings.ssl === "true") { %> <? checked ?> <% } %>/>
+      <input type="checkbox" value="true" id="slide6" name="ssl" <% if (radarrSettings && radarrSettings.ssl === "true") { %> <? checked ?> <% } %>></input>
       <label for="slide6"></label>
     </div>
     <h2 class="h2-setting">SSL</h2>

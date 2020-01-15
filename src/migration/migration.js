@@ -5,7 +5,15 @@ const sqlite = require('sqlite');
 const newSettings = require('./settings_format.json');
 
 const migrateSQLITE = function() {
-    // TODO: Implement migration from SQL to JSON
+    return new Promise((resolve, reject) => {
+        try {
+            // TODO: Implement migration from SQLITE to JSON
+            resolve();
+        }
+        catch (err) {
+            reject(err);
+        }
+    });
 }
 
 const migrateJSON = function() {
@@ -27,7 +35,7 @@ const migrateJSON = function() {
                 nProps.forEach((prop) => nSize += Object.getOwnPropertyNames(newSettings[prop]).length);
 
                 if (oSize !== nSize) {
-                    console.log("Settings found! Migrating settings to new settings...");
+                    console.log("JSON Settings found! Migrating settings to new settings...");
                     migrated = false;
                     for (const key in oldSettings)
                         for (const k in oldSettings[key])
@@ -35,12 +43,12 @@ const migrateJSON = function() {
                                 newSettings[key][k] = oldSettings[key][k];
                 }
                 else {
-                    console.log("Settings already migrated! Skipping...");
+                    console.log("JSON Settings already up-to-date! Skipping...");
                 }
             }
             else {
                 migrated = false;
-                console.log("No settings found! Creating new settings file...");
+                console.log("No JSON settings found! Creating new JSON settings file...");
             }
         
             if (!migrated) fs.writeFileSync(settingsPath, JSON.stringify(newSettings));
@@ -52,7 +60,14 @@ const migrateJSON = function() {
     });
 }
 
+const migrateALL = function() {
+    return new Promise((resolve, reject) => {
+        Promise.all([migrateSQLITE(), migrateJSON()]).then(() => resolve()).catch((err) => reject(err));
+    });
+}
+
 module.exports = {
     migrateSQLITE,
-    migrateJSON
+    migrateJSON,
+    migrateALL
 }
