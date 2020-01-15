@@ -5,9 +5,29 @@ const sqlite = require('sqlite');
 const newSettings = require('./settings_format.json');
 
 const migrateSQLITE = function() {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
-            // TODO: Implement migration from SQLITE to JSON
+            const databasePath = path.join(__dirname, '..', '..', 'data', 'WebSettings.sqlite3');
+            const newSettingsPath = path.join(__dirname, '..', '..', 'data', 'settings.json');
+            if (fs.existsSync(databasePath) ) {
+                console.log("SQLite Settings found! Migrating settings to new settings...");
+                const db = await sqlite.open(databasePath, { Promise });
+                for (const table of ['general', 'bot', 'ombi', 'tautulli', 'sonarr', 'radarr']) {
+                    const result =  await db.get('SELECT * FROM ' + table + ' WHERE id=1');
+                    for (const key in result) {
+                        if (key !== 'id' && newSettings[table].hasOwnProperty(key))
+                            newSettings[table][key] = result[key];
+                    }
+                }
+                await db.close();
+                fs.writeFileSync(newSettingsPath, JSON.stringify(newSettings));
+                fs.unlinkSync(databasePath, (err) => {
+                    if (err) reject(err);
+                });
+            }
+            else {
+                console.log('No SQLite settings found! Skipping...');
+            }
             resolve();
         }
         catch (err) {
@@ -62,7 +82,8 @@ const migrateJSON = function() {
 
 const migrateALL = function() {
     return new Promise((resolve, reject) => {
-        Promise.all([migrateSQLITE(), migrateJSON()]).then(() => resolve()).catch((err) => reject(err));
+        migrateSQLITE().then(() => migrateJSON().then(() => resolve())
+            .catch((err) => reject(err))).catch((err) => reject(err));
     });
 }
 
