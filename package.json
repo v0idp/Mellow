@@ -17,7 +17,7 @@
   ],
   "license": "GPL-3.0",
   "scripts": {
-    "prestart": "yarn install",
+    "prestart": "npm install",
     "start": "node src/index.js"
   },
   "dependencies": {

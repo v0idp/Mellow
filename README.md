@@ -5,7 +5,7 @@
 [![Run on Repl.it](https://repl.it/badge/github/v0idp/Mellow)](https://repl.it/github/v0idp/Mellow)
 
 Discord Bot which can communicate with several APIs like Ombi, Sonarr, Radarr and Tautulli which are related to home streaming.
-Based off of node:10.16.2
+Based off of node:lts
 
 ## Features
 
@@ -17,7 +17,6 @@ Based off of node:10.16.2
 ## Requirements
 
 * [NodeJS 10.x +](https://nodejs.org/en/download/)
-* [Yarn 1.x +](https://yarnpkg.com/en/docs/install)
 
 ## Installation & Configuration
 
@@ -40,12 +39,12 @@ Next click on the link at the bottom and invite the bot to your server.
 
 Go into the Mellow root folder and type
 ```sh
-yarn prestart
+npm run prestart
 ```
 
 To start the bot just simply type
 ```sh
-yarn start
+npm run start
 ```
 
 After starting the bot you will need to configure it by visiting ``youripordomain:5060``
