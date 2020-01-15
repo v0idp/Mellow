@@ -47,8 +47,8 @@ const migrateJSON = function() {
                 }
             }
             else {
-                migrated = false;
                 console.log("No JSON settings found! Creating new JSON settings file...");
+                migrated = false;
             }
         
             if (!migrated) fs.writeFileSync(settingsPath, JSON.stringify(newSettings));

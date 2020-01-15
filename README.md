@@ -59,7 +59,7 @@ If you want to use this bot in a docker container you have to follow these steps
 * Pull from docker hub: ``docker pull voidp/mellow``
 * Run docker image:
 ```
-docker run -d --restart=always --name mellow \
+docker run -d --restart=unless-stopped --name mellow \
    -v /opt/appdata/mellow/:/usr/src/app/data/ \
    -p 5060:5060 \
    voidp/mellow
