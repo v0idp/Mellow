@@ -16,7 +16,7 @@ Based off of node:lts
 
 ## Requirements
 
-* [NodeJS 10.x +](https://nodejs.org/en/download/)
+* [NodeJS 12.4.1 LTS or higher](https://nodejs.org/en/download/)
 
 ## Installation & Configuration
 
