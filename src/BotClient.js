@@ -72,68 +72,79 @@ class BotClient extends Commando.Client {
 	}
 
 	init () {
-		// register our events for logging purposes
-		this.on('ready', this.onReady())
-			.on('commandPrefixChange', this.onCommandPrefixChange())
-			.on('error', console.error)
-			.on('warn', console.warn)
-			//.on('debug', console.log)
-			.on('disconnect', this.onDisconnect())
-			.on('reconnecting', this.onReconnect())
-			.on('commandError', this.onCmdErr())
-			.on('commandBlocked', this.onCmdBlock())
-			.on('commandStatusChange', this.onCmdStatusChange())
-			.on('groupStatusChange', this.onGroupStatusChange())
-			.on('message', this.onMessage());
+		return new Promise((resolve, reject) => {
+			try {
+				// register our events for logging purposes
+				this.on('ready', this.onReady())
+				.on('commandPrefixChange', this.onCommandPrefixChange())
+				.on('error', console.error)
+				.on('warn', console.warn)
+				//.on('debug', console.log)
+				.on('disconnect', this.onDisconnect())
+				.on('reconnecting', this.onReconnect())
+				.on('commandError', this.onCmdErr())
+				.on('commandBlocked', this.onCmdBlock())
+				.on('commandStatusChange', this.onCmdStatusChange())
+				.on('groupStatusChange', this.onGroupStatusChange())
+				.on('message', this.onMessage());
 
-		// set provider sqlite so we can actually save our config permanently
-		this.setProvider(
-			sqlite.open(path.join(__dirname.slice(0, -3), 'data/BotSettings.sqlite3')).then(db => new Commando.SQLiteProvider(db))
-		).catch(console.error);
+				// set provider sqlite so we can actually save our config permanently
+				this.setProvider(
+				sqlite.open(path.join(__dirname.slice(0, -3), 'data', 'BotSettings.sqlite3'))
+				.then(db => new Commando.SQLiteProvider(db)).catch((err) => reject(err))
+				).catch(console.error);
 
-		// first we register groups and commands
-		this.registry
-			.registerDefaultGroups()
-			.registerGroups([
-				['ombi', 'Ombi'],
-				['sonarr', 'Sonarr'],
-				['radarr', 'Radarr'],
-				['tautulli', 'Tautulli']
-			])
-			.registerDefaultTypes()
-			.registerDefaultCommands({
-				'help': true,
-				'prefix': true,
-				'ping': true,
-				'eval': false,
-				'commandState': true,
-				'unknownCommand': (this.webDatabase.webConfig.bot.unknowncommandresponse === 'true') ? true : false
-			}).registerCommandsIn(path.join(__dirname, 'commands'));
+				// first we register groups and commands
+				this.registry
+				.registerDefaultGroups()
+				.registerGroups([
+					['ombi', 'Ombi'],
+					['sonarr', 'Sonarr'],
+					['radarr', 'Radarr'],
+					['tautulli', 'Tautulli']
+				])
+				.registerDefaultTypes()
+				.registerDefaultCommands({
+					'help': true,
+					'prefix': true,
+					'ping': true,
+					'eval': false,
+					'commandState': true,
+					'unknownCommand': (this.webDatabase.webConfig.bot.unknowncommandresponse === 'true') ? true : false
+				}).registerCommandsIn(path.join(__dirname, 'commands'));
 
-			// unregister groups if apikey and host is not provided in web database
-			// thanks to the commando framework we have to go the dirty way
-			this.registry.groups.forEach((group) => {
-				const checkGroups = ['ombi', 'sonarr', 'radarr', 'tautulli'];
-				if(checkGroups.indexOf(group.name.toLowerCase()) > -1) {
-					const groupConfig = this.webDatabase.webConfig[group.name.toLowerCase()];
-					if (groupConfig.host === "" || groupConfig.apikey === "")
-					group.commands.forEach((command) => {
-						this.registry.unregisterCommand(command);
-					});
-				}
-			});
+				// unregister groups if apikey and host is not provided in web database
+				// thanks to the commando framework we have to go the dirty way
+				this.registry.groups.forEach((group) => {
+					const checkGroups = ['ombi', 'sonarr', 'radarr', 'tautulli'];
+					if(checkGroups.indexOf(group.name.toLowerCase()) > -1) {
+						const groupConfig = this.webDatabase.webConfig[group.name.toLowerCase()];
+						if (groupConfig.host === "" || groupConfig.apikey === "")
+						group.commands.forEach((command) => {
+							this.registry.unregisterCommand(command);
+						});
+					}
+				});
 
-			this.dispatcher.addInhibitor((message) => {
-				// Older versions of the DB may not have channelName defined
-				const bot = this.webDatabase.webConfig.bot;
-				if (!bot.channelname || bot.channelname.length == 0) {
-					return false;
-				}
-				return (message.channel.name.toLowerCase() !== bot.channelname.toLowerCase()) ? 'Not allowed in this channel' : false;
-			});
+				this.dispatcher.addInhibitor((message) => {
+					// Older versions of the DB may not have channelName defined
+					const bot = this.webDatabase.webConfig.bot;
+					if (!bot.channelname || bot.channelname.length == 0) {
+						return false;
+					}
+					return (message.channel.name.toLowerCase() !== bot.channelname.toLowerCase()) ? 'Not allowed in this channel' : false;
+				});
 
-		// login client with bot token
-		return this.login(this.webDatabase.webConfig.bot.token);
+				// login client with bot token
+				this.login(this.webDatabase.webConfig.bot.token)
+					.then((token) => resolve(token))
+					.catch((err) => reject(err));
+			}
+			catch (err) {
+				reject(err)
+			}
+		});
+		
 	}
 
 	deinit () {

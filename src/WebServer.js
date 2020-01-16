@@ -26,8 +26,10 @@ class WebServer {
             console.log('No BotClient is running to restart. Starting a new BotClient...');
         }
         const botConfig = this.WebDatabase.webConfig.bot;
-        this.bot = new BotClient(this.WebDatabase, botConfig.ownerid, botConfig.commandprefix);
-        this.bot.init().catch(() => { console.error('Failed initializing BotClient. Is your token correct?') });
+        if (botConfig && botConfig.token) {
+            this.bot = new BotClient(this.WebDatabase, botConfig.ownerid, botConfig.commandprefix);
+            this.bot.init().catch(() => { console.error('Failed initializing BotClient. Is your token correct?') });
+        }
     }
 
     onCheckAuth() {
