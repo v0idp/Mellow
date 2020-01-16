@@ -28,7 +28,7 @@ function getTMDbID(ombi, msg, name) {
 			headers: {'accept' : 'application/json',
 			'ApiKey': ombi.apikey,
             'User-Agent': `Mellow/${process.env.npm_package_version}`},
-			url: getURL(ombi.host, ombi.port, ombi.ssl, '/api/v1/Search/movie/' + name)
+			url: getURL(ombi.host, ombi.port, ombi.ssl, ombi.baseurl + '/api/v1/Search/movie/' + name)
 		}).then(({response, body}) => {
 			let data = JSON.parse(body)
 
@@ -93,7 +93,7 @@ function requestMovie(ombi, msg, movieMsg, movie) {
 					'ApiAlias' : `${msg.author.username}#${msg.author.discriminator}`,
 					'UserName' : ombi.username ? ombi.username : undefined,
 					'User-Agent': `Mellow/${process.env.npm_package_version}`},
-					url: getURL(ombi.host, ombi.port, ombi.ssl, '/api/v1/Request/movie/'),
+					url: getURL(ombi.host, ombi.port, ombi.ssl, ombi.baseurl + '/api/v1/Request/movie/'),
 					body: JSON.stringify({ "theMovieDbId": movie.theMovieDbId })
 				}).then((resolve) => {
 					return msg.reply(`Requested ${movie.title} in Ombi.`);
@@ -153,7 +153,7 @@ module.exports = class searchMovieCommand extends commando.Command {
 				headers: {'accept' : 'application/json',
 				'ApiKey': ombi.apikey,
 				'User-Agent': `Mellow/${process.env.npm_package_version}`},
-				url: getURL(ombi.host, ombi.port, ombi.ssl, '/api/v1/Search/movie/info/' + tmdbid)
+				url: getURL(ombi.host, ombi.port, ombi.ssl, ombi.baseurl + '/api/v1/Search/movie/info/' + tmdbid)
 			})
 			.then(({response, body}) => {
 				let data = JSON.parse(body)

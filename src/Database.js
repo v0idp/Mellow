@@ -37,6 +37,7 @@ class Database {
         } else if (request.path == '/ombi' && request.body.apiKey != '' && request.body.host != '') {
             newWebConfig.ombi.host = request.body.host;
             newWebConfig.ombi.port = request.body.port;
+            newWebConfig.ombi.baseurl = request.body.baseUrl;
             newWebConfig.ombi.apikey = request.body.apiKey;
             newWebConfig.ombi.ssl = (request.body.ssl) ? 'true' : 'false';
             newWebConfig.ombi.requesttv = request.body.requestTV;
@@ -45,16 +46,19 @@ class Database {
         } else if (request.path == '/tautulli' && request.body.apiKey != '' && request.body.host != '') {
             newWebConfig.tautulli.host = request.body.host;
             newWebConfig.tautulli.port = request.body.port;
+            newWebConfig.tautulli.baseurl = request.body.baseUrl;
             newWebConfig.tautulli.apikey = request.body.apiKey;
             newWebConfig.tautulli.ssl = (request.body.ssl) ? 'true' : 'false';
         } else if (request.path == '/sonarr' && request.body.apiKey != '' && request.body.host != '') {
             newWebConfig.sonarr.host = request.body.host;
             newWebConfig.sonarr.port = request.body.port;
+            newWebConfig.sonarr.baseurl = request.body.baseUrl;
             newWebConfig.sonarr.apikey = request.body.apiKey;
             newWebConfig.sonarr.ssl = (request.body.ssl) ? 'true' : 'false';
         } else if (request.path == '/radarr' && request.body.apiKey != '' && request.body.host != '') {
             newWebConfig.radarr.host = request.body.host;
             newWebConfig.radarr.port = request.body.port;
+            newWebConfig.radarr.baseurl = request.body.baseUrl;
             newWebConfig.radarr.apikey = request.body.apiKey;
             newWebConfig.radarr.ssl = (request.body.ssl) ? 'true' : 'false';
         }
