@@ -30,7 +30,7 @@ function getTVDBID(ombi, msg, name) {
 			headers: {'accept' : 'application/json',
 			'ApiKey': ombi.apikey,
 			'User-Agent': `Mellow/${process.env.npm_package_version}`},
-			url: getURL(ombi.host, ombi.port, ombi.ssl, '/api/v1/Search/tv/' + name)
+			url: getURL(ombi.host, ombi.port, ombi.ssl, ombi.baseurl + '/api/v1/Search/tv/' + name)
 		}).then(({response, body}) => {
 			let data = JSON.parse(body)
 
@@ -95,7 +95,7 @@ function requestTVShow(ombi, msg, showMsg, show) {
 					'ApiAlias' : `${msg.author.username}#${msg.author.discriminator}`,
 					'UserName' : ombi.username ? ombi.username : undefined,
 					'User-Agent': `Mellow/${process.env.npm_package_version}`},
-					url: getURL(ombi.host, ombi.port, ombi.ssl, '/api/v1/Request/tv/'),
+					url: getURL(ombi.host, ombi.port, ombi.ssl, ombi.baseurl + '/api/v1/Request/tv/'),
 					body: JSON.stringify({ "tvDbId": show.id, "requestAll" : true })
 				}).then((resolve) => {
 					return msg.reply(`Requested ${show.title} in Ombi.`);
@@ -155,7 +155,7 @@ module.exports = class searchTVCommand extends commando.Command {
 				headers: {'accept' : 'application/json',
 				'ApiKey': ombi.apikey,
 				'User-Agent': `Mellow/${process.env.npm_package_version}`},
-				url: getURL(ombi.host, ombi.port, ombi.ssl, '/api/v1/Search/tv/info/' + tvdbid)
+				url: getURL(ombi.host, ombi.port, ombi.ssl, ombi.baseurl + '/api/v1/Search/tv/info/' + tvdbid)
 			})
 			.then(({response, body}) => {
 				let data = JSON.parse(body)
