@@ -45,6 +45,7 @@ class Database {
         } else if (request.path == '/tautulli' && request.body.apiKey != '' && request.body.host != '') {
             newWebConfig.tautulli.host = request.body.host;
             newWebConfig.tautulli.port = request.body.port;
+            newWebConfig.tautulli.baseurl = request.body.baseUrl;
             newWebConfig.tautulli.apikey = request.body.apiKey;
             newWebConfig.tautulli.ssl = (request.body.ssl) ? 'true' : 'false';
         } else if (request.path == '/sonarr' && request.body.apiKey != '' && request.body.host != '') {
