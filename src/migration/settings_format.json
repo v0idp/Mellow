@@ -14,6 +14,7 @@
     "ombi": {
       "host": "",
       "port": "",
+      "baseurl": "",
       "apikey": "",
       "ssl": "false",
       "requesttv": "",
@@ -23,18 +24,21 @@
     "tautulli": {
       "host": "",
       "port": "",
+      "baseurl": "",
       "apikey": "",
       "ssl": "false"
     },
     "sonarr": {
       "host": "",
       "port": "",
+      "baseurl": "",
       "apikey": "",
       "ssl": "false"
     },
     "radarr": {
       "host": "",
       "port": "",
+      "baseurl": "",
       "apikey": "",
       "ssl": "false"
     }
