@@ -13,7 +13,7 @@ module.exports = class refreshLibraryCommand extends commando.Command {
 		});
     }
     
-    run (msg, args) {
+    run (msg) {
 		const tautulli = this.client.webDatabase.webConfig.tautulli;
 		get({
 			headers: {'accept' : 'application/json',
