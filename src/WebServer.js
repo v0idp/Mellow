@@ -173,8 +173,7 @@ class WebServer {
             this.app.get('/tautulli/test', this.testApi('tautulli'));
             this.app.get('/sonarr/test', this.testApi('sonarr'));
             this.app.get('/radarr/test', this.testApi('radarr'));
-
-
+            
             this.app.listen(5060, this.onReady());
         } catch(error) {
             console.error(error);
