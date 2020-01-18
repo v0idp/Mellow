@@ -110,7 +110,25 @@ body {
     width: 50%;
     text-align: center;
 }
-
+.buttons button {
+    display: block;
+    width: 100%;
+}
+div.alerts{
+    margin-top: 10px;
+}
+div.alerts span {
+    font-weight: bold;
+}
+div.alerts span.ok {
+    color: green;
+}
+div.alerts span.failed {
+    color: red;
+}
+div.alerts div {
+    display:none;
+}
 h2 {
     color: #00aaff;
 }
