@@ -73,43 +73,49 @@ class WebServer {
     }
 
     testApi(api) {
-        // todo: stuff
-        let config = this.WebDatabase.webConfig;
-        let url;
-        let apiHeader = {};
-        switch (api) {
-            case "ombi":
-                apiHeader = {'ApiKey': config.ombi.apikey};
-                url = getURL(config.ombi.host, config.ombi.port, config.ombi.ssl, config.ombi.baseurl + '/api/v1/Status/info');
-                break;
-            case "tautulli":
-                url = getURL(config.tautulli.host, config.tautulli.port, config.tautulli.ssl, config.tautulli.baseurl + '/api/v2?apikey=' + config.tautulli.apikey + '&cmd=status');
-                break;
-            case "sonarr":
-                url = getURL(config.sonarr.host, config.sonarr.port, config.sonarr.ssl, config.sonarr.baseurl + '/api/system/status?apikey=' + config.sonarr.apikey);
-                break;
-            case "radarr":
-                url = getURL(config.radarr.host, config.radarr.port, config.radarr.ssl, config.radarr.baseurl + '/api/system/status?apikey=' + config.radarr.apikey);
-                break;
-            default:
-                // no idea what api it is, so fail anyway
-                return (req, res) => {
-                    res.status(500).send(JSON.stringify({'status': 'error'}));
-                }
-        }
-        console.log(url);
-
         return (req, res) => {
+            let config = this.WebDatabase.webConfig;
+            let url;
+            let apiHeader = {};
+            switch (api) {
+                case "ombi":
+                    apiHeader = {'ApiKey': config.ombi.apikey};
+                    // removed Status URL - currently works without an API key:
+                    // url = getURL(config.ombi.host, config.ombi.port, config.ombi.ssl, config.ombi.baseurl + '/api/v1/Status/info');
+
+                    // For the moment, get the most popular movie list
+                    url = getURL(config.ombi.host, config.ombi.port, config.ombi.ssl, config.ombi.baseurl + '/api/v1/Search/movie/popular');
+                    break;
+                case "tautulli":
+                    url = getURL(config.tautulli.host, config.tautulli.port, config.tautulli.ssl, config.tautulli.baseurl + '/api/v2?apikey=' + config.tautulli.apikey + '&cmd=status');
+                    break;
+                case "sonarr":
+                    url = getURL(config.sonarr.host, config.sonarr.port, config.sonarr.ssl, config.sonarr.baseurl + '/api/system/status?apikey=' + config.sonarr.apikey);
+                    break;
+                case "radarr":
+                    url = getURL(config.radarr.host, config.radarr.port, config.radarr.ssl, config.radarr.baseurl + '/api/system/status?apikey=' + config.radarr.apikey);
+                    break;
+                default:
+                    // no idea what api it is, so fail anyway
+                    return (req, res) => {
+                        res.status(500).send(JSON.stringify({'status': 'error'}));
+                    }
+            }
+
+            let defaultHeaders = {'accept' : 'application/json',
+                'User-Agent': `Mellow/${process.env.npm_package_version}`};
+
+            let requestHeaders = {...defaultHeaders, ...apiHeader};
+
             get({
-                headers: {'accept' : 'application/json',
-                    'User-Agent': `Mellow/${process.env.npm_package_version}`},
+                headers: requestHeaders,
                 url: url
             }).then((resolve) => {
                 res.setHeader('Content-Type', 'application/json');
                 res.send(resolve.body);
             }).catch((error) => {
-                console.log(error);
-                res.status(500).send(JSON.stringify({'status': 'error'}));
+                // if there was an error, throw a 500 and provide more details on the error, if available
+                res.status(500).send(JSON.stringify({...{response: error.body},...{status: 'error'}}));
             });
         }
     }
