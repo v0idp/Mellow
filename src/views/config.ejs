@@ -251,9 +251,16 @@
           let buildMsg;
           if ((res.status === "error")) {
               buildMsg = "Connection failed. ";
-              if ((api === "tautulli")) {
-                  let detail = JSON.parse(res.response);
-                  buildMsg += detail.response.message;
+
+              let hardFailures = [400, 403, 404, 502];
+
+              if (hardFailures.includes(res.response.statusCode)) {
+                  buildMsg += res.response.statusCode;
+              } else {
+                  if ((api === "tautulli") && (res.response.body)) {
+                        let detail = JSON.parse(res.response.body);
+                        buildMsg += detail.response.message;
+                  }
               }
               setFailedMsg(buildMsg, api);
           } else {

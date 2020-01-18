@@ -114,10 +114,17 @@ class WebServer {
                     url: url
                 }).then((resolve) => {
                     res.setHeader('Content-Type', 'application/json');
-                    res.send(resolve.body);
+
+                    // check that there is actually JSON supplied
+                    try {
+                        JSON.parse(resolve.body);
+                        res.send(resolve.body);
+                    } catch (e) {
+                        res.status(500).send(JSON.stringify({...{response: error}, ...{status: 'error'}}));
+                    }
                 }).catch((error) => {
                     // if there was an error, throw a 500 and provide more details on the error, if available
-                    res.status(500).send(JSON.stringify({...{response: error.body}, ...{status: 'error'}}));
+                    res.status(500).send(JSON.stringify({...{response: error}, ...{status: 'error'}}));
                 });
             }
         }
@@ -173,7 +180,7 @@ class WebServer {
             this.app.get('/tautulli/test', this.testApi('tautulli'));
             this.app.get('/sonarr/test', this.testApi('sonarr'));
             this.app.get('/radarr/test', this.testApi('radarr'));
-            
+
             this.app.listen(5060, this.onReady());
         } catch(error) {
             console.error(error);
