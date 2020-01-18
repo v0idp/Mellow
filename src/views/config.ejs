@@ -80,7 +80,25 @@
     <h2 class="h2-setting">Ombi Username</h2>
     <input type = "text" class = "form-control" name = "userName" value = "<% if (ombiSettings && ombiSettings.username) { %><%=ombiSettings.username %><% } %>">
     <p>(Enter Ombi username if you want custom permissions.)</p>
-    <button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "submit">Submit</button>
+
+    <div class="row buttons">
+      <div class="col-sm-6">
+        <button class = "btn btn-lg btn-secondary" type = "button" onclick="testApi('ombi');" >Test API</button>
+      </div>
+      <div class="col-sm-6">
+        <button class = "btn btn-lg btn-primary" type = "submit" name = "submit">Submit</button>
+      </div>
+    </div>
+
+    <div class="alerts">
+      <div class="alert alert-success" id="ombiOk">
+        <span id="ombiStatusOk" class="ok"></span>
+      </div>
+      <div class="alert alert-danger" id="ombiFailed">
+        <span id="ombiStatusFailed" class="failed"></span>
+      </div>
+    </div>
+
   </form>
 </div>
 
@@ -101,7 +119,25 @@
       <label for="slide4"></label>
     </div>
     <h2 class="h2-setting">SSL</h2>
-    <button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "submit">Submit</button>
+
+    <div class="row buttons">
+      <div class="col-sm-6">
+        <button class = "btn btn-lg btn-secondary" type = "button" onclick="testApi('tautulli');" >Test API</button>
+      </div>
+      <div class="col-sm-6">
+        <button class = "btn btn-lg btn-primary" type = "submit" name = "submit">Submit</button>
+      </div>
+    </div>
+
+    <div class="alerts">
+      <div class="alert alert-success" id="tautulliOk">
+        <span id="tautulliStatusOk" class="ok"></span>
+      </div>
+      <div class="alert alert-danger" id="tautulliFailed">
+        <span id="tautulliStatusFailed" class="failed"></span>
+      </div>
+    </div>
+
   </form>
 </div>
 
@@ -122,7 +158,25 @@
       <label for="slide5"></label>
     </div>
     <h2 class="h2-setting">SSL</h2>
-    <button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "submit">Submit</button>
+
+    <div class="row buttons">
+      <div class="col-sm-6">
+        <button class = "btn btn-lg btn-secondary" type = "button" onclick="testApi('sonarr');" >Test API</button>
+      </div>
+      <div class="col-sm-6">
+        <button class = "btn btn-lg btn-primary" type = "submit" name = "submit">Submit</button>
+      </div>
+    </div>
+
+    <div class="alerts">
+      <div class="alert alert-success" id="sonarrOk">
+        <span id="sonarrStatusOk" class="ok"></span>
+      </div>
+      <div class="alert alert-danger" id="sonarrFailed">
+        <span id="sonarrStatusFailed" class="failed"></span>
+      </div>
+    </div>
+
   </form>
 </div>
 
@@ -143,7 +197,25 @@
       <label for="slide6"></label>
     </div>
     <h2 class="h2-setting">SSL</h2>
-    <button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "submit">Submit</button>
+
+    <div class="row buttons">
+      <div class="col-sm-6">
+        <button class = "btn btn-lg btn-secondary" type = "button" onclick="testApi('radarr');" >Test API</button>
+      </div>
+      <div class="col-sm-6">
+        <button class = "btn btn-lg btn-primary" type = "submit" name = "submit">Submit</button>
+      </div>
+    </div>
+
+    <div class="alerts">
+      <div class="alert alert-success" id="radarrOk">
+        <span id="radarrStatusOk" class="ok"></span>
+      </div>
+      <div class="alert alert-danger" id="radarrFailed">
+        <span id="radarrStatusFailed" class="failed"></span>
+      </div>
+    </div>
+
   </form>
 </div>
 
@@ -156,5 +228,61 @@
       }
       document.getElementById(settingName).style.display = "block";  
       currentSetting = settingName;
+  }
+
+  function setSuccessMsg(msg, api) {
+      document.getElementById(api + 'Ok').style.display = "block";
+      document.getElementById(api + 'Failed').style.display = "none";
+      document.getElementById(api + 'StatusOk').innerHTML = msg;
+      document.getElementById(api + 'StatusFailed').innerHTML = '';
+  }
+
+  function setFailedMsg(msg, api) {
+      document.getElementById(api + 'Failed').style.display = "block";
+      document.getElementById(api + 'Ok').style.display = "none";
+      document.getElementById(api + 'StatusFailed').innerHTML = msg;
+      document.getElementById(api + 'StatusOk').innerHTML = '';
+  }
+
+  function testApi(api) {
+      let url = '/' + api + '/test';
+
+      fetchAsync(url).then(function(res) {
+          let buildMsg;
+          if ((res.status === "error")) {
+              buildMsg = "Connection failed. ";
+
+              let hardFailures = [400, 403, 404, 502];
+
+              if (hardFailures.includes(res.response.statusCode)) {
+                  buildMsg += res.response.statusCode;
+              } else {
+                  if ((api === "tautulli") && (res.response.body)) {
+                        let detail = JSON.parse(res.response.body);
+                        buildMsg += detail.response.message;
+                  }
+              }
+              setFailedMsg(buildMsg, api);
+          } else {
+              buildMsg = "Connection successful! ";
+              switch(api) {
+                  case "radarr":
+                  case "sonarr":
+                      buildMsg += "Version " + res.version;
+                      break;
+              }
+
+              setSuccessMsg(buildMsg, api);
+          }
+      });
+
+  }
+  async function fetchAsync (url, api) {
+      let response = await fetch(url);
+      let data = await response.json();
+      if (api === "radarr") {
+
+      }
+      return data;
   }
 </script>
