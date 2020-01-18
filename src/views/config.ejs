@@ -171,10 +171,6 @@
       currentSetting = settingName;
   }
 
-  function test() {
-      console.log('hello');
-  }
-
   function setSuccessMsg(msg, api) {
       document.getElementById(api + 'StatusOk').innerHTML = msg;
       document.getElementById(api + 'StatusFailed').innerHTML = '';
@@ -189,10 +185,13 @@
       let url = '/' + api + '/test';
 
       fetchAsync(url).then(function(res) {
-          console.log(res);
           let buildMsg;
-          if (res.status === "error") {
-              buildMsg = "Connection failed.";
+          if ((res.status === "error")) {
+              buildMsg = "Connection failed. ";
+              if ((api === "tautulli")) {
+                  let detail = JSON.parse(res.response);
+                  buildMsg += detail.response.message;
+              }
               setFailedMsg(buildMsg, api);
           } else {
               buildMsg = "Connection successful! ";
@@ -200,9 +199,6 @@
                   case "radarr":
                   case "sonarr":
                       buildMsg += "Version " + res.version;
-                      break;
-                  case "ombi":
-                      buildMsg += "Version " + res;
                       break;
               }
 
@@ -218,6 +214,5 @@
 
       }
       return data;
-      //console.log(data);
   }
 </script>
