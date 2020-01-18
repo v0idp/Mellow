@@ -1,6 +1,7 @@
 const Commando = require('discord.js-commando');
 const path = require('path');
 const sqlite = require('sqlite');
+const fs = require('fs');
 
 class BotClient extends Commando.Client {
 	constructor (webDatabase, ownerid, commandprefix) {
