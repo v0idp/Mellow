@@ -81,7 +81,6 @@
     <input type = "text" class = "form-control" name = "userName" value = "<% if (ombiSettings && ombiSettings.username) { %><%=ombiSettings.username %><% } %>">
     <p>(Enter Ombi username if you want custom permissions.)</p>
     <button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "submit">Submit</button>
-
     <button class = "btn btn-lg btn-secondary btn-block" type = "button" onclick="testApi('ombi');" >Test API</button>
     <span id="ombiStatusOk" style="font-weight:bold;color:green;"></span>
     <span id="ombiStatusFailed" style="font-weight:bold;color:red;"></span>
