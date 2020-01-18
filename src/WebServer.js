@@ -97,26 +97,29 @@ class WebServer {
                     break;
                 default:
                     // no idea what api it is, so fail anyway
-                    return (req, res) => {
-                        res.status(500).send(JSON.stringify({'status': 'error'}));
-                    }
+                    res.status(500).send(JSON.stringify({'status': 'error'}));
+                    break;
             }
 
-            let defaultHeaders = {'accept' : 'application/json',
-                'User-Agent': `Mellow/${process.env.npm_package_version}`};
+            if (url) {
+                let defaultHeaders = {
+                    'accept': 'application/json',
+                    'User-Agent': `Mellow/${process.env.npm_package_version}`
+                };
 
-            let requestHeaders = {...defaultHeaders, ...apiHeader};
+                let requestHeaders = {...defaultHeaders, ...apiHeader};
 
-            get({
-                headers: requestHeaders,
-                url: url
-            }).then((resolve) => {
-                res.setHeader('Content-Type', 'application/json');
-                res.send(resolve.body);
-            }).catch((error) => {
-                // if there was an error, throw a 500 and provide more details on the error, if available
-                res.status(500).send(JSON.stringify({...{response: error.body},...{status: 'error'}}));
-            });
+                get({
+                    headers: requestHeaders,
+                    url: url
+                }).then((resolve) => {
+                    res.setHeader('Content-Type', 'application/json');
+                    res.send(resolve.body);
+                }).catch((error) => {
+                    // if there was an error, throw a 500 and provide more details on the error, if available
+                    res.status(500).send(JSON.stringify({...{response: error.body}, ...{status: 'error'}}));
+                });
+            }
         }
     }
 
