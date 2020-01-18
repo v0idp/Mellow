@@ -81,6 +81,10 @@
     <input type = "text" class = "form-control" name = "userName" value = "<% if (ombiSettings && ombiSettings.username) { %><%=ombiSettings.username %><% } %>">
     <p>(Enter Ombi username if you want custom permissions.)</p>
     <button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "submit">Submit</button>
+
+    <button class = "btn btn-lg btn-secondary btn-block" type = "button" onclick="testApi('ombi');" >Test API</button>
+    <span id="ombiStatusOk" style="font-weight:bold;color:green;"></span>
+    <span id="ombiStatusFailed" style="font-weight:bold;color:red;"></span>
   </form>
 </div>
 
@@ -102,6 +106,9 @@
     </div>
     <h2 class="h2-setting">SSL</h2>
     <button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "submit">Submit</button>
+    <button class = "btn btn-lg btn-secondary btn-block" type = "button" onclick="testApi('tautulli');" >Test API</button>
+    <span id="tautulliStatusOk" style="font-weight:bold;color:green;"></span>
+    <span id="tautulliStatusFailed" style="font-weight:bold;color:red;"></span>
   </form>
 </div>
 
@@ -123,6 +130,9 @@
     </div>
     <h2 class="h2-setting">SSL</h2>
     <button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "submit">Submit</button>
+    <button class = "btn btn-lg btn-secondary btn-block" type = "button" onclick="testApi('sonarr');" >Test API</button>
+    <span id="sonarrStatusOk" style="font-weight:bold;color:green;"></span>
+    <span id="sonarrStatusFailed" style="font-weight:bold;color:red;"></span>
   </form>
 </div>
 
@@ -144,6 +154,9 @@
     </div>
     <h2 class="h2-setting">SSL</h2>
     <button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "submit">Submit</button>
+    <button class = "btn btn-lg btn-secondary btn-block" type = "button" onclick="testApi('radarr');" >Test API</button>
+    <span id="radarrStatusOk" style="font-weight:bold;color:green;"></span>
+    <span id="radarrStatusFailed" style="font-weight:bold;color:red;"></span>
   </form>
 </div>
 
@@ -156,5 +169,55 @@
       }
       document.getElementById(settingName).style.display = "block";  
       currentSetting = settingName;
+  }
+
+  function test() {
+      console.log('hello');
+  }
+
+  function setSuccessMsg(msg, api) {
+      document.getElementById(api + 'StatusOk').innerHTML = msg;
+      document.getElementById(api + 'StatusFailed').innerHTML = '';
+  }
+
+  function setFailedMsg(msg, api) {
+      document.getElementById(api + 'StatusFailed').innerHTML = msg;
+      document.getElementById(api + 'StatusOk').innerHTML = '';
+  }
+
+  function testApi(api) {
+      let url = '/' + api + '/test';
+
+      fetchAsync(url).then(function(res) {
+          console.log(res);
+          let buildMsg;
+          if (res.status === "error") {
+              buildMsg = "Connection failed.";
+              setFailedMsg(buildMsg, api);
+          } else {
+              buildMsg = "Connection successful! ";
+              switch(api) {
+                  case "radarr":
+                  case "sonarr":
+                      buildMsg += "Version " + res.version;
+                      break;
+                  case "ombi":
+                      buildMsg += "Version " + res;
+                      break;
+              }
+
+              setSuccessMsg(buildMsg, api);
+          }
+      });
+
+  }
+  async function fetchAsync (url, api) {
+      let response = await fetch(url);
+      let data = await response.json();
+      if (api === "radarr") {
+
+      }
+      return data;
+      //console.log(data);
   }
 </script>
