@@ -71,7 +71,7 @@ $(function() {
         request.ssl =  $('#form-' + request.api + ' input.ssl').is(':checked') ? 'true' : 'false';
 
         // make sure that we actually have enough data to proceed first...
-        if (!request.host || !request.port || !request.apikey) {
+        if (!request.host || !request.apikey) {
             setWarningMsg('One or more required fields are missing. Please double check your configuration.', request.api);
             return false;
         }
