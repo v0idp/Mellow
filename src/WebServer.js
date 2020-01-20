@@ -84,7 +84,7 @@ class WebServer {
             this.WebDatabase.resetConfigTable(api);
             this.restartBot();
 
-            this.currentView = req.path.replace('/', '');
+            this.currentView = req.path.split('/')[1];
 
             this.successMsg = ucwords(this.currentView) + ' configuration reset.';
 
