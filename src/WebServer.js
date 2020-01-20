@@ -79,7 +79,20 @@ class WebServer {
         }
     }
 
-    testApi(api) {
+    onConfigReset(api) {
+        return (req, res) => {
+            this.WebDatabase.resetConfigTable(api);
+            this.restartBot();
+
+            this.currentView = req.path.replace('/', '');
+
+            this.successMsg = ucwords(this.currentView) + ' configuration reset.';
+
+            res.redirect('/config');
+        }
+    }
+
+    onTestAPI(api) {
         return (req, res) => {
             //let config = this.WebDatabase.webConfig;
             let config = req.body;
@@ -193,10 +206,15 @@ class WebServer {
             this.app.post('/radarr', this.onConfigSave());
             this.app.get('/logout', this.onLogout());
 
-            this.app.post('/ombi/test', this.testApi('ombi'));
-            this.app.post('/tautulli/test', this.testApi('tautulli'));
-            this.app.post('/sonarr/test', this.testApi('sonarr'));
-            this.app.post('/radarr/test', this.testApi('radarr'));
+            this.app.post('/ombi/test', this.onTestAPI('ombi'));
+            this.app.post('/tautulli/test', this.onTestAPI('tautulli'));
+            this.app.post('/sonarr/test', this.onTestAPI('sonarr'));
+            this.app.post('/radarr/test', this.onTestAPI('radarr'));
+
+            this.app.get('/ombi/reset', this.onConfigReset('ombi'));
+            this.app.get('/tautulli/reset', this.onConfigReset('tautulli'));
+            this.app.get('/sonarr/reset', this.onConfigReset('sonarr'));
+            this.app.get('/radarr/reset', this.onConfigReset('radarr'));
 
             this.app.listen(5060, this.onReady());
         } catch(error) {

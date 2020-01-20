@@ -1,5 +1,6 @@
 const path = require('path');
-const fs = require('fs')
+const fs = require('fs');
+const template = require('./migration/settings_format.json');
 
 const storeData = (data) => {
     try {
@@ -20,6 +21,12 @@ class Database {
 
     loadConfigTable(table) {
         return this.webConfig[table];
+    }
+
+    resetConfigTable(table) {
+        newWebConfig = this.webConfig;
+        newWebConfig[table] = template[table];
+        storeData(newWebConfig);
     }
 
     saveConfig(request) {
