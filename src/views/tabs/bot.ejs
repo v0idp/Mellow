@@ -1,0 +1,61 @@
+<form class="form-setting" role="form" action="/bot" method="post">
+    <div class="form-group row">
+        <label for="token" class=" col-sm-3 col-form-label">Token</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" id="token" name="token" value="<% if (botSettings && botSettings.token) { %><%=botSettings.token %><% } %>">
+        </div>
+        <div class="col-sm-3 text-muted">
+            <em>Required</em>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="ownerID" class=" col-sm-3 col-form-label">Owner ID</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" id="ownerID" name="ownerID" value="<% if (botSettings && botSettings.ownerid) { %><%=botSettings.ownerid %><% } %>">
+            <small id="ownerIDhelp" class="form-text text-muted">
+                This is your numeric ID on Discord (enable developer mode, right click your user, Copy ID)
+            </small>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="commandPrefix" class=" col-sm-3 col-form-label">Command Prefix</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" id="commandPrefix" name="commandPrefix" value="<% if (botSettings && botSettings.commandprefix) { %><%=botSettings.commandprefix %><% } %>" required>
+        </div>
+        <div class="col-sm-3 text-muted">
+            <em>Required</em>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="channelName" class=" col-sm-3 col-form-label">Channel Name to Monitor</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" id="channelName" name="channelName" value="<% if (botSettings && botSettings.channelname) { %><%=botSettings.channelname %><% } %>">
+            <small class="form-text text-muted">
+                Leave blank to watch all channels.
+            </small>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="deleteCommandMessages" class="col-sm-3 form-check-label">Delete Command Messages</label>
+        <div class="col-sm-6">
+            <input type="checkbox" id="deleteCommandMessages" name="deleteCommandMessages" value="true" <% if (botSettings && botSettings.deletecommandmessages === 'true') { %>checked<% } %>>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="unknownCommandResponse" class=" col-sm-3 form-check-label">Unknown Command Response</label>
+        <div class="col-sm-6">
+            <input type="checkbox" id="unknownCommandResponse" name="unknownCommandResponse" value="true" <% if (botSettings && botSettings.unknowncommandresponse === 'true') { %>checked<% } %>>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-9">
+            <button class = "btn btn-lg btn-primary float-right" type = "submit" name = "submit">Submit</button>
+        </div>
+    </div>
+</form>

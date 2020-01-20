@@ -3,6 +3,9 @@ const session = require('express-session');
 const path = require('path');
 const BotClient = require('./BotClient.js');
 
+const {get, getURL, ucwords} = require('./util.js');
+
+const {version} = require('../package.json');
 
 class WebServer {
     constructor (WebDatabase, bot) {
@@ -11,6 +14,8 @@ class WebServer {
         this.WebDatabase = WebDatabase;
         this.bot = bot;
         this.currentView = 'general';
+        this.successMsg = '';
+        this.errorMsg = '';
     }
 
     onReady() {
@@ -41,7 +46,9 @@ class WebServer {
                 res.redirect('/config');
             } else {
                 res.render('login', {
-                    loginMessage: 'Login failed! Username or password incorrect.'
+                    title: 'Mellow Login',
+                    errorMsg: 'Login failed! Username or password incorrect.',
+                    successMsg: ''
                 });
             }
         }
@@ -66,7 +73,84 @@ class WebServer {
             this.restartBot();
 
             this.currentView = req.path.replace('/', '');
+
+            this.successMsg = ucwords(this.currentView) + ' configuration saved.';
+
             res.redirect('/config');
+        }
+    }
+
+    onConfigReset(api) {
+        return (req, res) => {
+            this.WebDatabase.resetConfigTable(api);
+            this.restartBot();
+
+            this.currentView = req.path.split('/')[1];
+
+            this.successMsg = ucwords(this.currentView) + ' configuration reset.';
+
+            res.redirect('/config');
+        }
+    }
+
+    onTestAPI(api) {
+        return (req, res) => {
+            //let config = this.WebDatabase.webConfig;
+            let config = req.body;
+            let url;
+            let apiHeader = {};
+
+            switch (api) {
+                case "ombi":
+                    apiHeader = {'ApiKey': config.apikey};
+                    // removed Status URL - currently works without an API key:
+                    // url = getURL(config.ombi.host, config.ombi.port, config.ombi.ssl, config.ombi.baseurl + '/api/v1/Status/info');
+
+                    // For the moment, get the most popular movie list
+                    url = getURL(config.host, config.port, config.ssl, config.baseurl + '/api/v1/Search/movie/popular');
+                    break;
+                case "tautulli":
+                    url = getURL(config.host, config.port, config.ssl, config.baseurl + '/api/v2?apikey=' + config.apikey + '&cmd=status');
+                    break;
+                case "sonarr":
+                    url = getURL(config.host, config.port, config.ssl, config.baseurl + '/api/system/status?apikey=' + config.apikey);
+                    console.log(url);
+                    break;
+                case "radarr":
+                    url = getURL(config.host, config.port, config.ssl, config.baseurl + '/api/system/status?apikey=' + config.apikey);
+                    break;
+                default:
+                    // no idea what api it is, so fail anyway
+                    res.status(500).send(JSON.stringify({'status': 'error'}));
+                    break;
+            }
+
+            if (url) {
+                let defaultHeaders = {
+                    'accept': 'application/json',
+                    'User-Agent': `Mellow/${process.env.npm_package_version}`
+                };
+
+                let requestHeaders = {...defaultHeaders, ...apiHeader};
+
+                get({
+                    headers: requestHeaders,
+                    url: url
+                }).then((resolve) => {
+                    res.setHeader('Content-Type', 'application/json');
+
+                    // check that there is actually JSON supplied
+                    try {
+                        JSON.parse(resolve.body);
+                        res.send(resolve.body);
+                    } catch (e) {
+                        res.status(500).send(JSON.stringify({...{response: error}, ...{status: 'error'}}));
+                    }
+                }).catch((error) => {
+                    // if there was an error, throw a 500 and provide more details on the error, if available
+                    res.status(500).send(JSON.stringify({...{response: error}, ...{status: 'error'}}));
+                });
+            }
         }
     }
 
@@ -79,12 +163,19 @@ class WebServer {
             this.app.use(express.urlencoded({extended: true}));
             this.app.use(session({ resave: true, secret: 'asdkjn2398easojdfh9238hrihsf', saveUninitialized: true}));
             this.app.use(express.static(this.path));
-    
+
+            // set version number etc
+            this.app.locals.site = {
+                version: version
+            };
+
             this.app.get('/', (req, res) => res.redirect('/login'));
             this.app.get('/login', async (req, res) => {
                 if (req.session.user_id != 10000) {
                     res.render('login', {
-                        loginMessage: ''
+                        title: 'Mellow Login',
+                        successMsg: this.successMsg,
+                        errorMsg: this.errorMsg
                     });
                 } else {
                     res.redirect('/config');
@@ -96,6 +187,9 @@ class WebServer {
                 if (req.session.user_id == 10000 || !this.WebDatabase.webConfig.general) {
                     const config = this.WebDatabase.webConfig;
                     res.render('config', {
+                        title: 'Mellow Configuration',
+                        successMsg: this.successMsg,
+                        errorMsg: this.errorMsg,
                         currentView: this.currentView,
                         generalSettings: (config.general) ? config.general : '',
                         botSettings: (config.bot) ? config.bot : '',
@@ -107,6 +201,8 @@ class WebServer {
                 } else {
                     res.redirect('/login');
                 }
+                // then unset the messages
+                this.successMsg = this.errorMsg = '';
             });
             this.app.post('/general', this.onConfigSave());
             this.app.post('/bot', this.onConfigSave());
@@ -114,7 +210,17 @@ class WebServer {
             this.app.post('/tautulli', this.onConfigSave());
             this.app.post('/sonarr', this.onConfigSave());
             this.app.post('/radarr', this.onConfigSave());
-            this.app.post('/logout', this.onLogout());
+            this.app.get('/logout', this.onLogout());
+
+            this.app.post('/ombi/test', this.onTestAPI('ombi'));
+            this.app.post('/tautulli/test', this.onTestAPI('tautulli'));
+            this.app.post('/sonarr/test', this.onTestAPI('sonarr'));
+            this.app.post('/radarr/test', this.onTestAPI('radarr'));
+
+            this.app.get('/ombi/reset', this.onConfigReset('ombi'));
+            this.app.get('/tautulli/reset', this.onConfigReset('tautulli'));
+            this.app.get('/sonarr/reset', this.onConfigReset('sonarr'));
+            this.app.get('/radarr/reset', this.onConfigReset('radarr'));
 
             this.app.listen(5060, this.onReady());
         } catch(error) {

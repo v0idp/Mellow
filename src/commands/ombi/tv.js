@@ -30,7 +30,7 @@ function getTVDBID(ombi, msg, name) {
 			headers: {'accept' : 'application/json',
 			'ApiKey': ombi.apikey,
 			'User-Agent': `Mellow/${process.env.npm_package_version}`},
-			url: getURL(ombi.host, ombi.port, ombi.ssl, '/api/v1/Search/tv/' + name)
+			url: getURL(ombi.host, ombi.port, ombi.ssl, ombi.baseurl + '/api/v1/Search/tv/' + name)
 		}).then(({response, body}) => {
 			let data = JSON.parse(body)
 
@@ -50,27 +50,28 @@ function getTVDBID(ombi, msg, name) {
 		
 				msg.channel.awaitMessages(m => (!isNaN(parseInt(m.content)) || m.content.startsWith('cancel')) && m.author.id == msg.author.id, { max: 1, time: 120000, errors: ['time'] })
 				.then((collected) => {
-					let message = collected.first().content
-					let selection = parseInt(message)
-		
+					let message = collected.first().content;
+					let selection = parseInt(message);
+					
+					deleteCommandMessages(message);
 					if (message.startsWith('cancel')) {
 						msg.reply('Cancelled command.');
 					} else if (selection > 0 && selection <= data.length) {
-						return resolve(data[selection - 1].id)
+						return resolve(data[selection - 1].id);
 					} else {
-						msg.reply('Please enter a valid selection!')
+						msg.reply('Please enter a valid selection!');
 					}
 					return resolve()
 				})
-				.catch((collected) => {
+				.catch(() => {
 					msg.reply('Cancelled command.');
-					return resolve()
+					return resolve();
 				});
 			} else if (!data.length) {
 				msg.reply('Couldn\'t find the TV show you were looking for. Is the name correct?');
-				return resolve()
+				return resolve();
 			} else {
-				return resolve(data[0].id)
+				return resolve(data[0].id);
 			}
 		})
 		.catch((error) => {
@@ -92,19 +93,19 @@ function requestTVShow(ombi, msg, showMsg, show) {
 					headers: {'accept' : 'application/json',
 					'Content-Type' : 'application/json',
 					'ApiKey': ombi.apikey,
-					'ApiAlias' : `${msg.author.username}#${msg.author.discriminator}`,
+					'ApiAlias' : `${encodeURI(msg.author.username)}#${msg.author.discriminator}`,
 					'UserName' : ombi.username ? ombi.username : undefined,
 					'User-Agent': `Mellow/${process.env.npm_package_version}`},
-					url: getURL(ombi.host, ombi.port, ombi.ssl, '/api/v1/Request/tv/'),
+					url: getURL(ombi.host, ombi.port, ombi.ssl, ombi.baseurl + '/api/v1/Request/tv/'),
 					body: JSON.stringify({ "tvDbId": show.id, "requestAll" : true })
-				}).then((resolve) => {
+				}).then(() => {
 					return msg.reply(`Requested ${show.title} in Ombi.`);
 				}).catch((error) => {
 					console.error(error);
 					return msg.reply('There was an error in your request.');
 				});
 			}
-		}).catch(collected => {
+		}).catch(() => {
 			return showMsg;
 		});
 	}
@@ -133,21 +134,23 @@ module.exports = class searchTVCommand extends commando.Command {
 
 	async run (msg, args) {
 		if (!args.name) {
+			deleteCommandMessages(msg);
 			return msg.reply('Please enter a valid TV show name!');
 		}
 
-		let ombi = this.client.webDatabase.webConfig.ombi
-		let tvdbid = null
+		let ombi = this.client.webDatabase.webConfig.ombi;
+		let tvdbid = null;
 
+		deleteCommandMessages(msg);
 		if (args.name.startsWith("tvdb:")) {
-			let matches = /^tvdb:(\d+)$/.exec(args.name)
+			let matches = /^tvdb:(\d+)$/.exec(args.name);
 			if (matches) {
-				tvdbid = matches[1]
+				tvdbid = matches[1];
 			} else {
 				return msg.reply('Please enter a valid TheTVDB ID!');
 			}
 		} else {
-			tvdbid = await getTVDBID(ombi, msg, args.name)
+			tvdbid = await getTVDBID(ombi, msg, args.name);
 		}
 
 		if (tvdbid) {
@@ -155,14 +158,13 @@ module.exports = class searchTVCommand extends commando.Command {
 				headers: {'accept' : 'application/json',
 				'ApiKey': ombi.apikey,
 				'User-Agent': `Mellow/${process.env.npm_package_version}`},
-				url: getURL(ombi.host, ombi.port, ombi.ssl, '/api/v1/Search/tv/info/' + tvdbid)
+				url: getURL(ombi.host, ombi.port, ombi.ssl, ombi.baseurl + '/api/v1/Search/tv/info/' + tvdbid)
 			})
 			.then(({response, body}) => {
-				let data = JSON.parse(body)
+				let data = JSON.parse(body);
 				outputTVShow(msg, data).then((dataMsg) => {
-					deleteCommandMessages(msg, this.client);
 					requestTVShow(ombi, msg, dataMsg, data);
-				})
+				});
 			})
 			.catch((error) => {
 				console.error(error);

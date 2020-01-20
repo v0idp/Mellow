@@ -1,6 +1,7 @@
 const Commando = require('discord.js-commando');
 const path = require('path');
 const sqlite = require('sqlite');
+const fs = require('fs');
 
 class BotClient extends Commando.Client {
 	constructor (webDatabase, ownerid, commandprefix) {
@@ -12,81 +13,18 @@ class BotClient extends Commando.Client {
 		this.isReady = false;
 	}
 
-	onReady () {
-		return () => {
-			console.log(`BotClient ready and logged in as ${this.user.tag} (${this.user.id}). Prefix set to ${this.commandPrefix}. Use ${this.commandPrefix}help to view the commands list!`);
-			this.user.setAFK(true);
-			this.user.setActivity(`${this.commandPrefix}help`, { type: 'PLAYING' });
-			this.isReady = true;
-		};
-	}
-
-	onCommandPrefixChange () {
-		return (guild, prefix) => {
-			console.log(`Prefix ${prefix === '' ? 'removed' : `changed to ${prefix || 'the default'}`} ${guild ? `in guild ${guild.name} (${guild.id})` : 'globally'}.`);
-		};
-	}
-
-	onDisconnect () {
-		return () => {
-			console.warn('Disconnected!');
-		};
-	}
-
-	onReconnect () {
-		return () => {
-			console.warn('Reconnecting...');
-		};
-	}
-
-	onCmdErr () {
-		return (cmd, err) => {
-			if (err instanceof Commando.FriendlyError)
-				return;
-			console.error(`Error in command ${cmd.groupID}:${cmd.memberName}`, err);
-		};
-	}
-
-	onCmdBlock () {
-		return (msg, reason) => {
-			console.log(`Command ${msg.command ? `${msg.command.groupID}:${msg.command.memberName}` : ''} blocked; ${reason}`);
-		};
-	}
-
-	onCmdStatusChange () {
-		return (guild, command, enabled) => {
-			console.log(`Command ${command.groupID}:${command.memberName} ${enabled ? 'enabled' : 'disabled'} ${guild ? `in guild ${guild.name} (${guild.id})` : 'globally'}.`);
-		};
-	}
-
-	onGroupStatusChange () {
-		return (guild, group, enabled) => {
-			console.log(`Group ${group.id} ${enabled ? 'enabled' : 'disabled'} ${guild ? `in guild ${guild.name} (${guild.id})` : 'globally'}.`);
-		};
-	}
-
-	onMessage () {
-		return (msg) => {
-			// nothing here yet
-		};
-	}
-
 	init () {
 		return new Promise((resolve, reject) => {
 			try {
-				// register our events for logging purposes
-				this.on('ready', this.onReady())
-				.on('commandPrefixChange', this.onCommandPrefixChange())
-				.on('error', console.error)
-				.on('warn', console.warn)
-				//.on('debug', console.log)
-				.on('disconnect', this.onDisconnect())
-				.on('reconnecting', this.onReconnect())
-				.on('commandError', this.onCmdErr())
-				.on('commandBlocked', this.onCmdBlock())
-				.on('commandStatusChange', this.onCmdStatusChange())
-				.on('groupStatusChange', this.onGroupStatusChange())
-				.on('message', this.onMessage());
+				// dynamically register our events based on the content of the events folder
+				fs.readdir("./src/events/", (err, files) => {
+					if (err) return console.error(err);
+					files.forEach(file => {
+						let eventFunction = require(`./events/${file}`);
+						let eventName = file.split(".")[0];
+						this.on(eventName, (...args) => eventFunction.run(this, ...args));
+					});
+				});
 
 				// set provider sqlite so we can actually save our config permanently
 				this.setProvider(
