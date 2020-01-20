@@ -24,7 +24,7 @@ class Database {
     }
 
     resetConfigTable(table) {
-        newWebConfig = this.webConfig;
+        let newWebConfig = this.webConfig;
         newWebConfig[table] = template[table];
         storeData(newWebConfig);
     }
