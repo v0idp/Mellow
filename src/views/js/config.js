@@ -93,4 +93,19 @@ $(function() {
         // fire off to the test that does the hard work
         testApi(request.api, cfg);
     });
+
+    // are you sure?!
+    $('.reset-button').click(function() {
+        return confirm('Are you sure?');
+    });
+
+    // show current tab on load / refresh
+    $("ul.nav-tabs > li > a").on("shown.bs.tab", function(e) {
+        var id = $(e.target).attr("href").substr(1);
+        window.location.hash = id;
+    });
+
+    // on load of the page: switch to the currently selected tab
+    var hash = window.location.hash;
+    $('#nav-tabs a[href="' + hash + '"]').tab('show');
 });
