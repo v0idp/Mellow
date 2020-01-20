@@ -3,7 +3,7 @@ const session = require('express-session');
 const path = require('path');
 const BotClient = require('./BotClient.js');
 
-const {get, getURL} = require('./util.js');
+const {get, getURL, ucwords} = require('./util.js');
 
 
 class WebServer {
@@ -13,6 +13,8 @@ class WebServer {
         this.WebDatabase = WebDatabase;
         this.bot = bot;
         this.currentView = 'general';
+        this.successMsg = '';
+        this.errorMsg = '';
     }
 
     onReady() {
@@ -43,7 +45,9 @@ class WebServer {
                 res.redirect('/config');
             } else {
                 res.render('login', {
-                    loginMessage: 'Login failed! Username or password incorrect.'
+                    title: 'Mellow Login',
+                    errorMsg: 'Login failed! Username or password incorrect.',
+                    successMsg: ''
                 });
             }
         }
@@ -68,32 +72,38 @@ class WebServer {
             this.restartBot();
 
             this.currentView = req.path.replace('/', '');
+
+            this.successMsg = ucwords(this.currentView) + ' configuration saved.';
+
             res.redirect('/config');
         }
     }
 
     testApi(api) {
         return (req, res) => {
-            let config = this.WebDatabase.webConfig;
+            //let config = this.WebDatabase.webConfig;
+            let config = req.body;
             let url;
             let apiHeader = {};
+
             switch (api) {
                 case "ombi":
-                    apiHeader = {'ApiKey': config.ombi.apikey};
+                    apiHeader = {'ApiKey': config.apikey};
                     // removed Status URL - currently works without an API key:
                     // url = getURL(config.ombi.host, config.ombi.port, config.ombi.ssl, config.ombi.baseurl + '/api/v1/Status/info');
 
                     // For the moment, get the most popular movie list
-                    url = getURL(config.ombi.host, config.ombi.port, config.ombi.ssl, config.ombi.baseurl + '/api/v1/Search/movie/popular');
+                    url = getURL(config.host, config.port, config.ssl, config.baseurl + '/api/v1/Search/movie/popular');
                     break;
                 case "tautulli":
-                    url = getURL(config.tautulli.host, config.tautulli.port, config.tautulli.ssl, config.tautulli.baseurl + '/api/v2?apikey=' + config.tautulli.apikey + '&cmd=status');
+                    url = getURL(config.host, config.port, config.ssl, config.baseurl + '/api/v2?apikey=' + config.apikey + '&cmd=status');
                     break;
                 case "sonarr":
-                    url = getURL(config.sonarr.host, config.sonarr.port, config.sonarr.ssl, config.sonarr.baseurl + '/api/system/status?apikey=' + config.sonarr.apikey);
+                    url = getURL(config.host, config.port, config.ssl, config.baseurl + '/api/system/status?apikey=' + config.apikey);
+                    console.log(url);
                     break;
                 case "radarr":
-                    url = getURL(config.radarr.host, config.radarr.port, config.radarr.ssl, config.radarr.baseurl + '/api/system/status?apikey=' + config.radarr.apikey);
+                    url = getURL(config.host, config.port, config.ssl, config.baseurl + '/api/system/status?apikey=' + config.apikey);
                     break;
                 default:
                     // no idea what api it is, so fail anyway
@@ -144,7 +154,9 @@ class WebServer {
             this.app.get('/login', async (req, res) => {
                 if (req.session.user_id != 10000) {
                     res.render('login', {
-                        loginMessage: ''
+                        title: 'Mellow Login',
+                        successMsg: this.successMsg,
+                        errorMsg: this.errorMsg
                     });
                 } else {
                     res.redirect('/config');
@@ -156,6 +168,9 @@ class WebServer {
                 if (req.session.user_id == 10000 || !this.WebDatabase.webConfig.general) {
                     const config = this.WebDatabase.webConfig;
                     res.render('config', {
+                        title: 'Mellow Configuration',
+                        successMsg: this.successMsg,
+                        errorMsg: this.errorMsg,
                         currentView: this.currentView,
                         generalSettings: (config.general) ? config.general : '',
                         botSettings: (config.bot) ? config.bot : '',
@@ -167,6 +182,8 @@ class WebServer {
                 } else {
                     res.redirect('/login');
                 }
+                // then unset the messages
+                this.successMsg = this.errorMsg = '';
             });
             this.app.post('/general', this.onConfigSave());
             this.app.post('/bot', this.onConfigSave());
@@ -176,10 +193,10 @@ class WebServer {
             this.app.post('/radarr', this.onConfigSave());
             this.app.post('/logout', this.onLogout());
 
-            this.app.get('/ombi/test', this.testApi('ombi'));
-            this.app.get('/tautulli/test', this.testApi('tautulli'));
-            this.app.get('/sonarr/test', this.testApi('sonarr'));
-            this.app.get('/radarr/test', this.testApi('radarr'));
+            this.app.post('/ombi/test', this.testApi('ombi'));
+            this.app.post('/tautulli/test', this.testApi('tautulli'));
+            this.app.post('/sonarr/test', this.testApi('sonarr'));
+            this.app.post('/radarr/test', this.testApi('radarr'));
 
             this.app.listen(5060, this.onReady());
         } catch(error) {

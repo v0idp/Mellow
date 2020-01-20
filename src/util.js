@@ -61,6 +61,14 @@ const getURL = function(host, port, ssl, args) {
         `${args}`);
 }
 
+
+const ucwords = function(str) {
+    return (str + '')
+        .replace(/^(.)|\s+(.)/g, function ($1) {
+            return $1.toUpperCase()
+        })
+}
+
 module.exports = {
     checkURLPrefix,
     getURL,
@@ -68,5 +76,6 @@ module.exports = {
 	deleteCommandMessages,
 	momentFormat,
 	get,
-    post
+    post,
+    ucwords
 };
