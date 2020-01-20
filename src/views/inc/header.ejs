@@ -70,19 +70,12 @@
     </style>
 <% } %>
 <main role="main" class="container">
-    <% if (successMsg) { %>
-    <div class="alert alert-success">
-        <%=successMsg%>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <div id="main-alert" class="alert <% if (successMsg) { %>alert-success <% } else if (errorMsg) { %>alert-danger<% } else { %>collapse<% } %>">
+        <span class="message">
+            <% if (successMsg) { %><%=successMsg%><% } %>
+            <% if (errorMsg) { %><%=errorMsg%><% } %>
+        </span>
+        <button type="button" class="close" data-parent-id="#main-alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    <% } %>
-    <% if (errorMsg) { %>
-    <div class="alert alert-danger">
-        <%=errorMsg%>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <% } %>
