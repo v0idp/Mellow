@@ -1,0 +1,57 @@
+<div class="alert alert-dark">
+    Sonarr support is <strong>coming soon</strong>. These settings are not currently required for the bot to function.
+</div>
+
+<form class="form-setting" role="form" id="form-sonarr" action="/sonarr" method="post">
+    <div class="form-group row">
+        <label for="host" class=" col-sm-3 col-form-label">Host or IP</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control host" name="host" value="<% if (sonarrSettings && sonarrSettings.host) { %><%=sonarrSettings.host %><% } %>" required>
+        </div>
+        <div class="col-sm-3 text-muted">
+            <em>Required</em>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="port" class=" col-sm-3 col-form-label">Port</label>
+        <div class="col-sm-6">
+            <input type="number" class="form-control port" name="port" value="<% if (sonarrSettings && sonarrSettings.port) { %><%=sonarrSettings.port %><% } %>">
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="baseurl" class=" col-sm-3 col-form-label">Base URL</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control baseurl" name="baseUrl" value="<% if (sonarrSettings && sonarrSettings.baseurl) { %><%=sonarrSettings.baseurl %><% } %>">
+            <small class="form-text text-muted">
+                Only enter this if you have a custom base URL, for example with a reverse proxy.
+            </small>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="ssl" class="col-sm-3 form-check-label">SSL</label>
+        <div class="col-sm-6">
+            <input type="checkbox" class="ssl" name="ssl" value="true" <% if (sonarrSettings && sonarrSettings.ssl === 'true') { %>checked<% } %>>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="apikey" class=" col-sm-3 col-form-label">API Key</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control apikey" name="apiKey" value="<% if (sonarrSettings && sonarrSettings.apikey) { %><%=sonarrSettings.apikey %><% } %>" required>
+        </div>
+        <div class="col-sm-3 text-muted">
+            <em>Required</em>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6 offset-sm-3">
+            <button class = "btn btn-lg btn-primary float-left testApi" data-api="sonarr" type = "button" >Test Connectivity</button>
+            <button class = "btn btn-lg btn-primary float-right" type = "submit" name = "submit">Submit</button>
+            <a href="/sonarr/reset" class="btn btn-lg btn-outline-primary  reset-button float-right">Reset</a>
+        </div>
+    </div>
+</form>

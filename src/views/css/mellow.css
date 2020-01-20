@@ -1,0 +1,80 @@
+#nav-tabs {
+    margin-bottom: 20px;
+}
+nav a {
+    color: #fff;
+}
+
+.nav-link.active, .btn-primary {
+    background: #77AAFF !important;
+}
+.navbar {
+    padding-left: 0;
+
+}
+.navbar a {
+    display: flex;
+    align-items:center;
+}
+.navbar img {
+    margin-right: 10px;
+    height: 30px;
+    vertical-align:middle
+}
+.col-sm-3.text-muted {
+    line-height: 35px;
+    vertical-align: middle;
+}
+
+a.reset-button {
+    border-color: #fff;
+    color: #ffffff;
+    margin-right: 20px;
+}
+
+/* sign in form css */
+.form-signin {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+    text-align: center;
+}
+.form-signin .checkbox {
+    font-weight: 400;
+}
+.form-signin .form-control {
+    position: relative;
+    box-sizing: border-box;
+    height: auto;
+    padding: 10px;
+    font-size: 16px;
+}
+.form-signin .form-control:focus {
+    z-index: 2;
+}
+.form-signin input[type="text"] {
+    margin-bottom: 10px;
+}
+.form-signin input[type="password"] {
+    margin-bottom: 10px;
+}
+
+/* sticky footer */
+html {
+    position: relative;
+    min-height: 100%;
+}
+main {
+    margin-bottom: 60px; /* Margin bottom by footer height  */
+}
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    color: #fff;
+    height: 60px; /* Set the fixed height of the footer here */
+    line-height: 60px; /* Vertically center the text there */
+    background-color: #444;
+}
+

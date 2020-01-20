@@ -28,7 +28,7 @@ function getTMDbID(ombi, msg, name) {
 			headers: {'accept' : 'application/json',
 			'ApiKey': ombi.apikey,
             'User-Agent': `Mellow/${process.env.npm_package_version}`},
-			url: getURL(ombi.host, ombi.port, ombi.ssl, '/api/v1/Search/movie/' + name)
+			url: getURL(ombi.host, ombi.port, ombi.ssl, ombi.baseurl + '/api/v1/Search/movie/' + name)
 		}).then(({response, body}) => {
 			let data = JSON.parse(body)
 
@@ -48,27 +48,28 @@ function getTMDbID(ombi, msg, name) {
 		
 				msg.channel.awaitMessages(m => (!isNaN(parseInt(m.content)) || m.content.startsWith('cancel')) && m.author.id == msg.author.id, { max: 1, time: 120000, errors: ['time'] })
 				.then((collected) => {
-					let message = collected.first().content
-					let selection = parseInt(message)
-		
+					let message = collected.first().content;
+					let selection = parseInt(message);
+					
+					deleteCommandMessages(message);
 					if (message.startsWith('cancel')) {
 						msg.reply('Cancelled command.');
 					} else if (selection > 0 && selection <= data.length) {
-						return resolve(data[selection - 1].id)
+						return resolve(data[selection - 1].id);
 					} else {
-						msg.reply('Please enter a valid selection!')
+						msg.reply('Please enter a valid selection!');
 					}
-					return resolve()
+					return resolve();
 				})
-				.catch((collected) => {
+				.catch(() => {
 					msg.reply('Cancelled command.');
-					return resolve()
+					return resolve();
 				});
 			} else if (!data.length) {
 				msg.reply('Couldn\'t find the movie you were looking for. Is the name correct?');
-				return resolve()
+				return resolve();
 			} else {
-				return resolve(data[0].id)
+				return resolve(data[0].id);
 			}
 		})
 		.catch((error) => {
@@ -90,10 +91,10 @@ function requestMovie(ombi, msg, movieMsg, movie) {
 					headers: {'accept' : 'application/json',
 					'Content-Type' : 'application/json',
 					'ApiKey': ombi.apikey,
-					'ApiAlias' : `${msg.author.username}#${msg.author.discriminator}`,
+					'ApiAlias' : `${encodeURI(msg.author.username)}#${msg.author.discriminator}`,
 					'UserName' : ombi.username ? ombi.username : undefined,
 					'User-Agent': `Mellow/${process.env.npm_package_version}`},
-					url: getURL(ombi.host, ombi.port, ombi.ssl, '/api/v1/Request/movie/'),
+					url: getURL(ombi.host, ombi.port, ombi.ssl, ombi.baseurl + '/api/v1/Request/movie/'),
 					body: JSON.stringify({ "theMovieDbId": movie.theMovieDbId })
 				}).then((resolve) => {
 					return msg.reply(`Requested ${movie.title} in Ombi.`);
@@ -102,7 +103,7 @@ function requestMovie(ombi, msg, movieMsg, movie) {
 					return msg.reply('There was an error in your request.');
 				});
 			}
-		}).catch(collected => {
+		}).catch(() => {
 			return movieMsg;
 		});
 	}
@@ -131,36 +132,37 @@ module.exports = class searchMovieCommand extends commando.Command {
 
 	async run (msg, args) {
 		if (!args.name) {
+			deleteCommandMessages(msg);
 			return msg.reply('Please enter a valid movie name!');
 		}
 
-		let ombi = this.client.webDatabase.webConfig.ombi
-		let tmdbid = null
+		let ombi = this.client.webDatabase.webConfig.ombi;
+		let tmdbid = null;
 
 		if (args.name.startsWith("tmdb:")) {
-			let matches = /^tmdb:(\d+)$/.exec(args.name)
+			let matches = /^tmdb:(\d+)$/.exec(args.name);
 			if (matches) {
-				tmdbid = matches[1]
+				tmdbid = matches[1];
 			} else {
 				return msg.reply('Please enter a valid TMDb ID!');
 			}
 		} else {
-			tmdbid = await getTMDbID(ombi, msg, args.name)
+			tmdbid = await getTMDbID(ombi, msg, args.name);
 		}
 
+		deleteCommandMessages(msg);
 		if (tmdbid) {
 			get({
 				headers: {'accept' : 'application/json',
 				'ApiKey': ombi.apikey,
 				'User-Agent': `Mellow/${process.env.npm_package_version}`},
-				url: getURL(ombi.host, ombi.port, ombi.ssl, '/api/v1/Search/movie/info/' + tmdbid)
+				url: getURL(ombi.host, ombi.port, ombi.ssl, ombi.baseurl + '/api/v1/Search/movie/info/' + tmdbid)
 			})
 			.then(({response, body}) => {
-				let data = JSON.parse(body)
+				let data = JSON.parse(body);
 				outputMovie(msg, data).then((dataMsg) => {
-					deleteCommandMessages(msg, this.client);
 					requestMovie(ombi, msg, dataMsg, data);
-				})
+				});
 			})
 			.catch((error) => {
 				console.error(error);
