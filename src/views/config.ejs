@@ -1,288 +1,54 @@
-<!-- views/login.ejs -->
-<meta charset="UTF-8">
+<%- include('inc/header'); -%>
 
-<title>Mellow Configuration</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-  integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-  crossorigin="anonymous">
-<link rel="stylesheet" type="text/css" href="styles/config.css">
+<ul class="nav nav-tabs" id="nav-tabs" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link <% if (currentView == "general") { %>active<% } %>" id="general-tab" data-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="true">General Settings</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link <% if (currentView == "bot") { %>active<% } %>" id="bot-tab" data-toggle="tab" href="#bot" role="tab" aria-controls="bot" aria-selected="false">Bot</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link <% if (currentView == "ombi") { %>active<% } %>" id="ombi-tab" data-toggle="tab" href="#ombi" role="tab" aria-controls="ombi" aria-selected="false">Ombi</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link <% if (currentView == "tautulli") { %>active<% } %>" id="tautulli-tab" data-toggle="tab" href="#tautulli" role="tab" aria-controls="tautulli" aria-selected="false">Tautulli</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link <% if (currentView == "sonarr") { %>active<% } %>" id="sonarr-tab" data-toggle="tab" href="#sonarr" role="tab" aria-controls="sonarr" aria-selected="false">Sonarr</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link <% if (currentView == "radarr") { %>active<% } %>" id="radarr-tab" data-toggle="tab" href="#radarr" role="tab" aria-controls="radarr" aria-selected="false">Radarr</a>
+    </li>
 
-<div class="top-bar">
-  <button class="top-bar-item button" onclick="openSetting('General')">General</button>
-  <button class="top-bar-item button" onclick="openSetting('Bot')">Bot</button>
-  <button class="top-bar-item button" onclick="openSetting('Ombi')">Ombi</button>
-  <button class="top-bar-item button" onclick="openSetting('Tautulli')">Tautulli</button>
-  <button class="top-bar-item button" onclick="openSetting('Sonarr')">Sonarr</button>
-  <button class="top-bar-item button" onclick="openSetting('Radarr')">Radarr</button>
-  <form role = "form" action = "/logout" method = "post"><button class="top-bar-item-right button" type = "submit" name = "logout">Logout</button></form>
+</ul>
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show <% if (currentView == "general") { %>show active<% } %>" id="general" role="tabpanel" aria-labelledby="general-tab">
+        <%- include('tabs/general'); -%>
+    </div>
+
+    <div class="tab-pane fade <% if (currentView == "bot") { %>show active<% } %>" id="bot" role="tabpanel" aria-labelledby="bot-tab">
+        <%- include('tabs/bot'); -%>
+    </div>
+
+    <div class="tab-pane fade <% if (currentView == "ombi") { %>show active<% } %>" id="ombi" role="tabpanel" aria-labelledby="ombi-tab">
+        <%- include('tabs/ombi'); -%>
+    </div>
+
+    <div class="tab-pane fade <% if (currentView == "tautulli") { %>show active<% } %>" id="tautulli" role="tabpanel" aria-labelledby="tautulli-tab">
+        <%- include('tabs/tautulli'); -%>
+    </div>
+
+    <div class="tab-pane fade <% if (currentView == "sonarr") { %>show active<% } %>" id="sonarr" role="tabpanel" aria-labelledby="sonarr-tab">
+        <%- include('tabs/sonarr'); -%>
+    </div>
+
+    <div class="tab-pane fade <% if (currentView == "radarr") { %>show active<% } %>" id="radarr" role="tabpanel" aria-labelledby="radarr-tab">
+        <%- include('tabs/radarr'); -%>
+    </div>
+
 </div>
 
-<div id="General" class="container setting" style="<% if (currentView == "general") { %><%="display:initial"%><% } else { %><%="display:none"%><% } %>">
-    <h2>General Settings</h2>
-    <form class = "form-setting" role = "form" action = "/general" method = "post">
-      <h2 class="h2-setting">Username</h2>
-      <input type = "text" class = "form-control" name = "username" value = "<% if (generalSettings && generalSettings.username) { %><%=generalSettings.username %><% } %>" required>
-      <h2 class="h2-setting">Password</h2>
-      <input type = "password" class = "form-control" name = "password" value = "<% if (generalSettings && generalSettings.password) { %><%=generalSettings.password %><% } %>" required>
-      <button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "submit">Submit</button>
-    </form>
-</div>
+<%- include('inc/footer'); -%>
+<script src="/js/config.js"></script>
 
-<div id="Bot" class="container setting" style="<% if (currentView == "bot") { %><%="display:initial"%><% } else { %><%="display:none"%><% } %>">
-  <h2>Bot Settings</h2>
-  <form class = "form-setting" role = "form" action = "/bot" method = "post">
-    <h2 class="h2-setting">Token</h2>
-    <input type = "text" class = "form-control" name = "token" value = "<% if (botSettings && botSettings.token) { %><%=botSettings.token %><% } %>" required>
-    <h2 class="h2-setting">Owner ID</h2>
-    <input type = "tel" class = "form-control" name = "ownerID" value = "<% if (botSettings && botSettings.ownerid) { %><%=botSettings.ownerid %><% } %>">
-    <h2 class="h2-setting">Command Prefix</h2>
-    <input type = "text" class = "form-control" name = "commandPrefix" value = "<% if (botSettings && botSettings.commandprefix) { %><%=botSettings.commandprefix %><% } %>" required>
-    <h2 class="h2-setting">Channelname to Monitor</h2>
-    <input type = "text" class = "form-control" name = "channelName" value = "<% if (botSettings && botSettings.channelname) { %><%=botSettings.channelname %><% } %>">
-    <p>(Leave blank to watch all channels.)</p>
-    <div class="slide">
-      <input type="checkbox" value="true" id="slide" name="deleteCommandMessages" <% if (botSettings && botSettings.deletecommandmessages === 'true') { %> <? checked ?> <% } %>></input>
-      <label for="slide"></label>
-    </div>
-    <h2 class="h2-setting">Delete Command Messages</h2>
-    <div class="slide">
-        <input type="checkbox" value="true" id="slide2" name="unknownCommandResponse" <% if (botSettings && botSettings.unknowncommandresponse === 'true') { %> <? checked ?> <% } %>></input>
-        <label for="slide2"></label>
-      </div>
-      <h2 class="h2-setting">Unknown Command Response</h2>
-    <button class = "btn btn-lg btn-primary btn-block" type = "submit" name = "submit">Submit</button>
-  </form>
-</div>
-
-<div id="Ombi" class="container setting" style="<% if (currentView == "ombi") { %><%="display:initial"%><% } else { %><%="display:none"%><% } %>">
-  <h2>Ombi Settings</h2>
-  <form class = "form-setting" role = "form" action = "/ombi" method = "post">
-    <h2 class="h2-setting">Host or IP</h2>
-    <input type = "text" class = "form-control" name = "host" value = "<% if (ombiSettings && ombiSettings.host) { %><%=ombiSettings.host %><% } %>">
-    <h2 class="h2-setting">Port</h2>
-    <input type = "tel" class = "form-control" name = "port" value = "<% if (ombiSettings && ombiSettings.port) { %><%=ombiSettings.port %><% } %>">
-    <h2 class="h2-setting">Base URL</h2>
-    <input type = "tel" class = "form-control" name = "baseUrl" value = "<% if (ombiSettings && ombiSettings.baseurl) { %><%=ombiSettings.baseurl %><% } %>">
-    <p>(Only enter this if you have a custom base URL, for example with a reverse proxy)</p>
-    <h2 class="h2-setting">API Key</h2>
-    <input type = "text" class = "form-control" name = "apiKey" value = "<% if (ombiSettings && ombiSettings.apikey) { %><%=ombiSettings.apikey %><% } %>">
-    <div class="slide">
-      <input type="checkbox" value="true" id="slide3" name="ssl" <% if (ombiSettings && ombiSettings.ssl === "true") { %> <? checked ?> <% } %>></input>
-      <label for="slide3"></label>
-    </div>
-    <h2 class="h2-setting">SSL</h2>
-    <h2 class="h2-setting">Request TV Shows (Discord Role Name)</h2>
-    <input type = "text" class = "form-control" name = "requestTV" value = "<% if (ombiSettings && ombiSettings.requesttv) { %><%=ombiSettings.requesttv %><% } %>">
-    <p>(Leave blank if anyone can request.)</p>
-    <h2 class="h2-setting">Request Movies (Discord Role Name)</h2>
-    <input type = "text" class = "form-control" name = "requestMovie" value = "<% if (ombiSettings && ombiSettings.requestmovie) { %><%=ombiSettings.requestmovie %><% } %>">
-    <p>(Leave blank if anyone can request.)</p>
-    <h2 class="h2-setting">Ombi Username</h2>
-    <input type = "text" class = "form-control" name = "userName" value = "<% if (ombiSettings && ombiSettings.username) { %><%=ombiSettings.username %><% } %>">
-    <p>(Enter Ombi username if you want custom permissions.)</p>
-
-    <div class="row buttons">
-      <div class="col-sm-6">
-        <button class = "btn btn-lg btn-secondary" type = "button" onclick="testApi('ombi');" >Test API</button>
-      </div>
-      <div class="col-sm-6">
-        <button class = "btn btn-lg btn-primary" type = "submit" name = "submit">Submit</button>
-      </div>
-    </div>
-
-    <div class="alerts">
-      <div class="alert alert-success" id="ombiOk">
-        <span id="ombiStatusOk" class="ok"></span>
-      </div>
-      <div class="alert alert-danger" id="ombiFailed">
-        <span id="ombiStatusFailed" class="failed"></span>
-      </div>
-    </div>
-
-  </form>
-</div>
-
-<div id="Tautulli" class="container setting" style="<% if (currentView == "tautulli") { %><%="display:initial"%><% } else { %><%="display:none"%><% } %>">
-  <h2>Tautulli Settings</h2>
-  <form class = "form-setting" role = "form" action = "/tautulli" method = "post">
-    <h2 class="h2-setting">Host or IP</h2>
-    <input type = "text" class = "form-control" name = "host" value = "<% if (tautulliSettings && tautulliSettings.host) { %><%=tautulliSettings.host %><% } %>">
-    <h2 class="h2-setting">Port</h2>
-    <input type = "tel" class = "form-control" name = "port" value = "<% if (tautulliSettings && tautulliSettings.port) { %><%=tautulliSettings.port %><% } %>">
-    <h2 class="h2-setting">Base URL</h2>
-    <input type = "tel" class = "form-control" name = "baseUrl" value = "<% if (tautulliSettings && tautulliSettings.baseurl) { %><%=tautulliSettings.baseurl %><% } %>">
-    <p>(Only enter this if you have a custom base URL, for example with a reverse proxy)</p>
-    <h2 class="h2-setting">API Key</h2>
-    <input type = "text" class = "form-control" name = "apiKey" value = "<% if (tautulliSettings && tautulliSettings.apikey) { %><%=tautulliSettings.apikey %><% } %>">
-    <div class="slide">
-      <input type="checkbox" value="true" id="slide4" name="ssl" <% if (tautulliSettings && tautulliSettings.ssl === "true") { %> <? checked ?> <% } %>></input>
-      <label for="slide4"></label>
-    </div>
-    <h2 class="h2-setting">SSL</h2>
-
-    <div class="row buttons">
-      <div class="col-sm-6">
-        <button class = "btn btn-lg btn-secondary" type = "button" onclick="testApi('tautulli');" >Test API</button>
-      </div>
-      <div class="col-sm-6">
-        <button class = "btn btn-lg btn-primary" type = "submit" name = "submit">Submit</button>
-      </div>
-    </div>
-
-    <div class="alerts">
-      <div class="alert alert-success" id="tautulliOk">
-        <span id="tautulliStatusOk" class="ok"></span>
-      </div>
-      <div class="alert alert-danger" id="tautulliFailed">
-        <span id="tautulliStatusFailed" class="failed"></span>
-      </div>
-    </div>
-
-  </form>
-</div>
-
-<div id="Sonarr" class="container setting" style="<% if (currentView == "sonarr") { %><%="display:initial"%><% } else { %><%="display:none"%><% } %>">
-  <h2>Sonarr Settings</h2>
-  <form class = "form-setting" role = "form" action = "/sonarr" method = "post">
-    <h2 class="h2-setting">Host or IP</h2>
-    <input type = "text" class = "form-control" name = "host" value = "<% if (sonarrSettings && sonarrSettings.host) { %><%=sonarrSettings.host %><% } %>">
-    <h2 class="h2-setting">Port</h2>
-    <input type = "tel" class = "form-control" name = "port" value = "<% if (sonarrSettings && sonarrSettings.port) { %><%=sonarrSettings.port %><% } %>">
-    <h2 class="h2-setting">Base URL</h2>
-    <input type = "tel" class = "form-control" name = "baseUrl" value = "<% if (sonarrSettings && sonarrSettings.baseurl) { %><%=sonarrSettings.baseurl %><% } %>">
-    <p>(Only enter this if you have a custom base URL, for example with a reverse proxy)</p>
-    <h2 class="h2-setting">API Key</h2>
-    <input type = "text" class = "form-control" name = "apiKey" value = "<% if (sonarrSettings && sonarrSettings.apikey) { %><%=sonarrSettings.apikey %><% } %>">
-    <div class="slide">
-      <input type="checkbox" value="true" id="slide5" name="ssl" <% if (sonarrSettings && sonarrSettings.ssl === "true") { %> <? checked ?> <% } %>></input>
-      <label for="slide5"></label>
-    </div>
-    <h2 class="h2-setting">SSL</h2>
-
-    <div class="row buttons">
-      <div class="col-sm-6">
-        <button class = "btn btn-lg btn-secondary" type = "button" onclick="testApi('sonarr');" >Test API</button>
-      </div>
-      <div class="col-sm-6">
-        <button class = "btn btn-lg btn-primary" type = "submit" name = "submit">Submit</button>
-      </div>
-    </div>
-
-    <div class="alerts">
-      <div class="alert alert-success" id="sonarrOk">
-        <span id="sonarrStatusOk" class="ok"></span>
-      </div>
-      <div class="alert alert-danger" id="sonarrFailed">
-        <span id="sonarrStatusFailed" class="failed"></span>
-      </div>
-    </div>
-
-  </form>
-</div>
-
-<div id="Radarr" class="container setting" style="<% if (currentView == "radarr") { %><%="display:initial"%><% } else { %><%="display:none"%><% } %>">
-  <h2>Radarr Settings</h2>
-  <form class = "form-setting" role = "form" action = "/radarr" method = "post">
-    <h2 class="h2-setting">Host or IP</h2>
-    <input type = "text" class = "form-control" name = "host" value = "<% if (radarrSettings && radarrSettings.host) { %><%=radarrSettings.host %><% } %>">
-    <h2 class="h2-setting">Port</h2>
-    <input type = "tel" class = "form-control" name = "port" value = "<% if (radarrSettings && radarrSettings.port) { %><%=radarrSettings.port %><% } %>">
-    <h2 class="h2-setting">Base URL</h2>
-    <input type = "tel" class = "form-control" name = "baseUrl" value = "<% if (radarrSettings && radarrSettings.baseurl) { %><%=radarrSettings.baseurl %><% } %>">
-    <p>(Only enter this if you have a custom base URL, for example with a reverse proxy)</p>
-    <h2 class="h2-setting">API Key</h2>
-    <input type = "text" class = "form-control" name = "apiKey" value = "<% if (radarrSettings && radarrSettings.apikey) { %><%=radarrSettings.apikey %><% } %>">
-    <div class="slide">
-      <input type="checkbox" value="true" id="slide6" name="ssl" <% if (radarrSettings && radarrSettings.ssl === "true") { %> <? checked ?> <% } %>></input>
-      <label for="slide6"></label>
-    </div>
-    <h2 class="h2-setting">SSL</h2>
-
-    <div class="row buttons">
-      <div class="col-sm-6">
-        <button class = "btn btn-lg btn-secondary" type = "button" onclick="testApi('radarr');" >Test API</button>
-      </div>
-      <div class="col-sm-6">
-        <button class = "btn btn-lg btn-primary" type = "submit" name = "submit">Submit</button>
-      </div>
-    </div>
-
-    <div class="alerts">
-      <div class="alert alert-success" id="radarrOk">
-        <span id="radarrStatusOk" class="ok"></span>
-      </div>
-      <div class="alert alert-danger" id="radarrFailed">
-        <span id="radarrStatusFailed" class="failed"></span>
-      </div>
-    </div>
-
-  </form>
-</div>
-
-<script>
-  function openSetting(settingName) {
-      var i;
-      var x = document.getElementsByClassName("setting");
-      for (i = 0; i < x.length; i++) {
-        x[i].style.display = "none";  
-      }
-      document.getElementById(settingName).style.display = "block";  
-      currentSetting = settingName;
-  }
-
-  function setSuccessMsg(msg, api) {
-      document.getElementById(api + 'Ok').style.display = "block";
-      document.getElementById(api + 'Failed').style.display = "none";
-      document.getElementById(api + 'StatusOk').innerHTML = msg;
-      document.getElementById(api + 'StatusFailed').innerHTML = '';
-  }
-
-  function setFailedMsg(msg, api) {
-      document.getElementById(api + 'Failed').style.display = "block";
-      document.getElementById(api + 'Ok').style.display = "none";
-      document.getElementById(api + 'StatusFailed').innerHTML = msg;
-      document.getElementById(api + 'StatusOk').innerHTML = '';
-  }
-
-  function testApi(api) {
-      let url = '/' + api + '/test';
-
-      fetchAsync(url).then(function(res) {
-          let buildMsg;
-          if ((res.status === "error")) {
-              buildMsg = "Connection failed. ";
-
-              let hardFailures = [400, 403, 404, 502];
-
-              if (hardFailures.includes(res.response.statusCode)) {
-                  buildMsg += res.response.statusCode;
-              } else {
-                  if ((api === "tautulli") && (res.response.body)) {
-                        let detail = JSON.parse(res.response.body);
-                        buildMsg += detail.response.message;
-                  }
-              }
-              setFailedMsg(buildMsg, api);
-          } else {
-              buildMsg = "Connection successful! ";
-              switch(api) {
-                  case "radarr":
-                  case "sonarr":
-                      buildMsg += "Version " + res.version;
-                      break;
-              }
-
-              setSuccessMsg(buildMsg, api);
-          }
-      });
-
-  }
-  async function fetchAsync (url, api) {
-      let response = await fetch(url);
-      let data = await response.json();
-      if (api === "radarr") {
-
-      }
-      return data;
-  }
-</script>
+<%- include('inc/post-script-footer'); -%>
