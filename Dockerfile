@@ -16,6 +16,7 @@ RUN cd /tmp && npm install --loglevel=warn \
 
 COPY src $APP/src
 COPY data $APP/data
+COPY package.json $APP
 
 WORKDIR $APP
 
