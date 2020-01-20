@@ -4,7 +4,7 @@
    <img src="logo.png" width="256" height="256" link="https://discord.gg/zx2BWp2">
 </p>
 <p align="center">
-   Mellow can communicate with several APIs like Ombi, Sonarr, Radarr and Tautulli which are related to home streaming. Based off of node:lts
+   Mellow can communicate with several APIs like Ombi, Sonarr, Radarr and Tautulli which are related to home streaming to use those services directly in your Discord client.
 </p>
 
 ## Features
