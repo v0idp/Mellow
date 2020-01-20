@@ -1,4 +1,11 @@
 $(function() {
+    function ucwords(str) {
+        return (str + '')
+            .replace(/^(.)|\s+(.)/g, function ($1) {
+                return $1.toUpperCase();
+            })
+    }
+
     function testApi(api, cfg) {
         let url = '/' + api + '/test';
 
@@ -44,17 +51,19 @@ $(function() {
         return await response.json();
     }
 
-
     function setSuccessMsg(msg, api) {
-        $('#' + api + '-message').html(msg).removeClass('alert-danger').removeClass('alert-warning').addClass('alert-success').show();
+        $('#main-alert .message').html(ucwords(api) + ': ' + msg);
+        $('#main-alert').removeClass('collapse').removeClass('alert-danger').removeClass('alert-warning').addClass('alert-success').show();
     }
 
     function setFailedMsg(msg, api) {
-        $('#' + api + '-message').html(msg).removeClass('alert-success').removeClass('alert-warning').addClass('alert-danger').show();
+        $('#main-alert .message').html(ucwords(api) + ': ' + msg);
+        $('#main-alert').removeClass('collapse').removeClass('alert-success').removeClass('alert-warning').addClass('alert-danger').show();
     }
 
     function setWarningMsg(msg, api) {
-        $('#' + api + '-message').html(msg).removeClass('alert-success').removeClass('alert-danger').addClass('alert-warning').show();
+        $('#main-alert .message').html(ucwords(api) + ': ' + msg);
+        $('#main-alert').removeClass('collapse').removeClass('alert-success').removeClass('alert-danger').addClass('alert-warning').show();
     }
 
     $('.testApi').click(function() {
@@ -92,6 +101,10 @@ $(function() {
 
         // fire off to the test that does the hard work
         testApi(request.api, cfg);
+    });
+
+    $('button.close').click(function() {
+        $($(this).data('parent-id')).hide();
     });
 
     // are you sure?!
