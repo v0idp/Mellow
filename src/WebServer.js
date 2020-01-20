@@ -191,7 +191,7 @@ class WebServer {
             this.app.post('/tautulli', this.onConfigSave());
             this.app.post('/sonarr', this.onConfigSave());
             this.app.post('/radarr', this.onConfigSave());
-            this.app.post('/logout', this.onLogout());
+            this.app.get('/logout', this.onLogout());
 
             this.app.post('/ombi/test', this.testApi('ombi'));
             this.app.post('/tautulli/test', this.testApi('tautulli'));
