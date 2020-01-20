@@ -44,14 +44,15 @@ function getTMDbID(ombi, msg, name) {
 				showEmbed.setTitle('Ombi Movie Search')
 				.setDescription('Please select one of the search results. To abort answer **cancel**')
 				.addField('__Search Results__', fieldContent);
-				msg.embed(showEmbed);
-		
+				
+				const aMsg = msg.embed(showEmbed);
 				msg.channel.awaitMessages(m => (!isNaN(parseInt(m.content)) || m.content.startsWith('cancel')) && m.author.id == msg.author.id, { max: 1, time: 120000, errors: ['time'] })
 				.then((collected) => {
 					let message = collected.first().content;
 					let selection = parseInt(message);
 					
-					deleteCommandMessages(message);
+					aMsg.then(deleteCommandMessages);
+					deleteCommandMessages(collected.first());
 					if (message.startsWith('cancel')) {
 						msg.reply('Cancelled command.');
 					} else if (selection > 0 && selection <= data.length) {
