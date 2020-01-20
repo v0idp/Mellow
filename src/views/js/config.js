@@ -72,7 +72,6 @@ $(function() {
 
         // make sure that we actually have enough data to proceed first...
         if (!request.host || !request.port || !request.apikey) {
-            console.log(request.host, request.port, request.apikey);
             setWarningMsg('One or more required fields are missing. Please double check your configuration.', request.api);
             return false;
         }
