@@ -5,6 +5,7 @@ const BotClient = require('./BotClient.js');
 
 const {get, getURL, ucwords} = require('./util.js');
 
+const {version} = require('../package.json');
 
 class WebServer {
     constructor (WebDatabase, bot) {
@@ -162,7 +163,12 @@ class WebServer {
             this.app.use(express.urlencoded({extended: true}));
             this.app.use(session({ resave: true, secret: 'asdkjn2398easojdfh9238hrihsf', saveUninitialized: true}));
             this.app.use(express.static(this.path));
-    
+
+            // set version number etc
+            this.app.locals.site = {
+                version: version
+            };
+
             this.app.get('/', (req, res) => res.redirect('/login'));
             this.app.get('/login', async (req, res) => {
                 if (req.session.user_id != 10000) {

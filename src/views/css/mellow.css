@@ -59,3 +59,22 @@ a.reset-button {
 .form-signin input[type="password"] {
     margin-bottom: 10px;
 }
+
+/* sticky footer */
+html {
+    position: relative;
+    min-height: 100%;
+}
+main {
+    margin-bottom: 60px; /* Margin bottom by footer height  */
+}
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    color: #fff;
+    height: 60px; /* Set the fixed height of the footer here */
+    line-height: 60px; /* Vertically center the text there */
+    background-color: #444;
+}
+
