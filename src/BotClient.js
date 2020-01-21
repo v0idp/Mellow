@@ -2,6 +2,7 @@ const Commando = require('discord.js-commando');
 const path = require('path');
 const sqlite = require('sqlite');
 const fs = require('fs');
+const APIHandler = require('./api_handlers/api.js');
 
 class BotClient extends Commando.Client {
 	constructor (webDatabase, ownerid, commandprefix) {
@@ -10,6 +11,7 @@ class BotClient extends Commando.Client {
 			"commandPrefix": (commandprefix !== '') ? commandprefix : '$'
 		});
 		this.webDatabase = webDatabase;
+		this.API = new APIHandler(webDatabase.getConfig());
 		this.isReady = false;
 	}
 
@@ -72,7 +74,7 @@ class BotClient extends Commando.Client {
 					}
 					return (message.channel.name.toLowerCase() !== bot.channelname.toLowerCase()) ? 'Not allowed in this channel' : false;
 				});
-
+				
 				// login client with bot token
 				this.login(this.webDatabase.webConfig.bot.token)
 					.then((token) => resolve(token))
