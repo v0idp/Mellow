@@ -5,10 +5,10 @@ const Tautulli = require('./tautulli.js');
 
 class APIHandler {
     constructor (config) {
-        this.ombi = new Ombi(config);
-        this.radarr = new Radarr(config);
-        this.sonarr = new Sonarr(config);
-        this.tautulli = new Tautulli(config);
+        this.ombi = new Ombi(config.ombi);
+        this.radarr = new Radarr(config.radarr);
+        this.sonarr = new Sonarr(config.sonarr);
+        this.tautulli = new Tautulli(config.tautulli);
     }
 }
 
