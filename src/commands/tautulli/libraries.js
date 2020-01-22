@@ -34,7 +34,7 @@ module.exports = class librariesCommand extends commando.Command {
 			return msg.embed(libraryEmbed);
 		}).catch(() => {
 			deleteCommandMessages(msg);
-			return msg.reply('Couldn\'t get libraries! Something went wrong.');
+			return msg.reply('Something went wrong! Couldn\'t get libraries.');
 		});
     }
 };

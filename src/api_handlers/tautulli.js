@@ -1,6 +1,6 @@
 const { get, getURL } = require('./../util.js');
 
-class Tautulli {
+module.exports = class Tautulli {
     constructor(config) {
         this.config = config;
         this.endpoints = {
@@ -16,7 +16,7 @@ class Tautulli {
                 'User-Agent': `Mellow/${process.env.npm_package_version}`},
                 url: this.endpoints["libraries"]
             }).then((response) => {
-                let jsonResponse = JSON.parse(response.body);
+                const jsonResponse = JSON.parse(response.body);
                 resolve(jsonResponse);
             }).catch((err) => {
                 console.log(err);
@@ -40,5 +40,3 @@ class Tautulli {
         });
     }
 }
-
-module.exports = Tautulli;
