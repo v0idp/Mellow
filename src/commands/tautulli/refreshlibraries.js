@@ -1,5 +1,5 @@
 const commando = require('discord.js-commando');
-const {deleteCommandMessages, get, getURL} = require('../../util.js');
+const { deleteCommandMessages } = require('../../util.js');
 
 module.exports = class refreshLibrariesCommand extends commando.Command {
 	constructor (client) {
@@ -18,7 +18,7 @@ module.exports = class refreshLibrariesCommand extends commando.Command {
 			deleteCommandMessages(msg);
 			return msg.reply('Refreshed all libraries in Tautulli.');
 		}).catch(() => {
-			return msg.reply('Couldn\'t refresh libraries! Something went wrong.');
+			return msg.reply('Something went wrong! Couldn\'t refresh libraries.');
 		});
     }
 };
