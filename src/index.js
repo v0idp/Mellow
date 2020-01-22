@@ -11,10 +11,10 @@ const start = function () {
         if (botConfig && botConfig.token) {
             bot = new BotClient(webDatabase, botConfig.ownerid, botConfig.commandprefix);
             bot.init().catch((err) => {
-                console.log('Failed initializing DiscordBot! Please check your bot settings.');
+                console.log('Failed initializing DiscordBot! Please check your bot configurations.');
                 console.error(err);
             });
-        } else console.log('There is no bot token provided. Please check your settings!');
+        } else console.log('There is no bot token provided. Please check your configurations.');
         new WebServer(webDatabase, bot).init();
     }).catch(console.error);
 }

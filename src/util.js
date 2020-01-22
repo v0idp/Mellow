@@ -58,7 +58,7 @@ const getURL = function(host, port, ssl, args) {
     return url.parse(`${(ssl === 'true') ? 'https://' : 'http://'}` +
         `${(host.match(/^http(s)?:\/\//)) ? host.split('//')[1] : host}` +
         `${(port) ? `:${port}` : ''}` +
-        `${args}`);
+        `${args}`).href;
 }
 
 
@@ -69,6 +69,12 @@ const ucwords = function(str) {
         })
 }
 
+const replacePlaceholders = function(str, placerholders) {
+    return str.replace(/%\w+%/g, (all) => {
+        return placerholders[all] || all;
+    });
+}
+
 module.exports = {
     checkURLPrefix,
     getURL,
@@ -77,5 +83,6 @@ module.exports = {
 	momentFormat,
 	get,
     post,
-    ucwords
+    ucwords,
+    replacePlaceholders
 };
