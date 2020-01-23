@@ -90,13 +90,13 @@ module.exports = class searchMovieCommand extends commando.Command {
 	
 	requestMovie(msg, movieMsg, movie) {
 		const ombi = this.client.webDatabase.loadConfigTable('ombi');
-		if ((!ombi.requestmovie || msg.member.roles.some(role => role.name === ombi.requestmovie)) && (!movie.available && !movie.requested && !movie.approved)) {
+		if ((!ombi.requestmovie || msg.member.roles.some(role => role.name.toLowerCase() === ombi.requestmovie.toLowerCase())) && (!movie.available && !movie.requested && !movie.approved)) {
 			msg.reply('If you want to request this movie please click on the ⬇ reaction.');
 			movieMsg.react('⬇');
 			
 			movieMsg.awaitReactions((reaction, user) => reaction.emoji.name === '⬇' && user.id === msg.author.id, { max: 1, time: 120000 }).then(collected => {
 				if (collected.first()) {
-					this.client.API.ombi.requestMovie(movie.theMovieDbId, `${encodeURI(msg.author.username)}#${msg.author.discriminator}`).then(() => {
+					this.client.API.ombi.requestMovie(movie.theMovieDbId, `${encodeURI(msg.author.username.toLowerCase())}#${msg.author.discriminator}`).then(() => {
 						return msg.reply(`Requested ${movie.title} in Ombi.`);
 					}).catch(() => {
 						return msg.reply('Something went wrong! Couldn\'t request movie.');

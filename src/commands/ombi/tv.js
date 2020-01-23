@@ -92,13 +92,13 @@ module.exports = class searchTVShowCommand extends commando.Command {
 	
 	requestTVShow(msg, showMsg, show) {
 		const ombi = this.client.webDatabase.loadConfigTable('ombi');
-		if ((!ombi.requesttv || msg.member.roles.some(role => role.name === ombi.requesttv)) && (!show.available && !show.requested && !show.approved)) {
+		if ((!ombi.requesttv || msg.member.roles.some(role => role.name.toLowerCase() === ombi.requesttv.toLowerCase())) && (!show.available && !show.requested && !show.approved)) {
 			msg.reply('If you want to request this tv show please click on the ⬇ reaction.');
 			showMsg.react('⬇');
 			
 			showMsg.awaitReactions((reaction, user) => reaction.emoji.name === '⬇' && user.id === msg.author.id, { max: 1, time: 120000 }).then(collected => {
 				if (collected.first()) {
-					this.client.API.ombi.requestTVShow(show.id, `${encodeURI(msg.author.username)}#${msg.author.discriminator}`).then(() => {
+					this.client.API.ombi.requestTVShow(show.id, `${encodeURI(msg.author.username.toLowerCase())}#${msg.author.discriminator}`).then(() => {
 						return msg.reply(`Requested ${show.title} in Ombi.`);
 					}).catch(() => {
 						return msg.reply('Something went wrong! Couldn\'t request tv show.');
@@ -112,7 +112,7 @@ module.exports = class searchTVShowCommand extends commando.Command {
 	}
 
 	async run (msg, args) {
-		deleteCommandMessages(msg);
+		this.client.deleteCommandMessages(msg);
 		if (!args.name) {
 			return msg.reply('Please enter a valid tv show name.');
 		}

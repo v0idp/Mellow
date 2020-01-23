@@ -63,7 +63,7 @@ module.exports = class Ombi {
                 'Content-Type' : 'application/json',
                 'ApiKey': this.config.apikey,
                 'ApiAlias' : name,
-                'UserName' : this.config.username ? this.config.username : '',
+                'UserName' : this.config.username ? this.config.username : 'api',
                 'User-Agent': `Mellow/${process.env.npm_package_version}`},
                 url: replacePlaceholders(this.endpoints['requestContent'], { "%TYPE%":type }),
                 body: JSON.stringify(body)
