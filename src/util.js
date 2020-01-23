@@ -1,24 +1,16 @@
 const request = require('request');
 const Promise = require('bluebird');
-const path = require('path');
 const url = require('url');
-const webConfig = require(path.join(__dirname, '..', 'data', 'settings.json'));
-
-const deleteCommandMessages = function (msg) {
-    if (msg.deletable && (webConfig.bot.deletecommandmessages) === 'true' ? true : false) {
-        return msg.delete();
-    }
-};
 
 const capitalizeFirstLetter = function (string) {
 	return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
-};
+}
 
 const momentFormat = function (date, client) {
 	const moment = require('moment');
 
 	return moment(date).format(`MMMM Do YYYY [at] ${client.provider.get('global', 'timeformat', '24') === '24' ? 'HH:mm:ss' : 'hh:mm:ss A'} [UTC]Z`);
-};
+}
 
 const get = function(options) {
     return new Promise(function(resolve, reject) {
@@ -58,7 +50,7 @@ const getURL = function(host, port, ssl, args) {
     return url.parse(`${(ssl === 'true') ? 'https://' : 'http://'}` +
         `${(host.match(/^http(s)?:\/\//)) ? host.split('//')[1] : host}` +
         `${(port) ? `:${port}` : ''}` +
-        `${args}`);
+        `${args}`).href;
 }
 
 
@@ -69,13 +61,19 @@ const ucwords = function(str) {
         })
 }
 
+const replacePlaceholders = function(str, placerholders) {
+    return str.replace(/%\w+%/g, (all) => {
+        return placerholders[all] || all;
+    });
+}
+
 module.exports = {
     checkURLPrefix,
     getURL,
 	capitalizeFirstLetter,
-	deleteCommandMessages,
 	momentFormat,
 	get,
     post,
-    ucwords
+    ucwords,
+    replacePlaceholders
 };
