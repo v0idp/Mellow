@@ -1,9 +1,9 @@
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
-const BotClient = require('./BotClient.js');
-const { get, getURL, ucwords } = require('./util.js');
-const { version } = require('../package.json');
+const BotClient = require('../BotClient.js');
+const { get, getURL, ucwords } = require('../util.js');
+const { version } = require('../../package.json');
 
 module.exports = class WebServer {
     constructor (WebDatabase, bot) {
