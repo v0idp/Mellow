@@ -1,5 +1,5 @@
 const BotClient = require('./BotClient.js');
-const WebServer = require('./WebServer.js');
+const WebServer = require('./web/WebServer.js');
 const Database = require('./Database.js');
 const { migrateALL } = require('./migration/migration.js');
 const { version } = require('../package.json');
