@@ -1,7 +1,6 @@
 const Discord = require('discord.js');
 const commando = require('discord.js-commando');
 const path = require('path');
-const { deleteCommandMessages } = require('../../util.js');
 
 module.exports = class searchMovieCommand extends commando.Command {
 	constructor (client) {
@@ -66,8 +65,8 @@ module.exports = class searchMovieCommand extends commando.Command {
 						let message = collected.first().content;
 						let selection = parseInt(message);
 						
-						aMsg.then(deleteCommandMessages);
-						deleteCommandMessages(collected.first());
+						aMsg.then(this.client.deleteCommandMessages);
+						this.client.deleteCommandMessages(collected.first());
 						if (message.startsWith('cancel')) {
 							msg.reply('Cancelled command.');
 						} else if (selection > 0 && selection <= data.length) {
@@ -111,7 +110,7 @@ module.exports = class searchMovieCommand extends commando.Command {
 	}
 
 	async run (msg, args) {
-		deleteCommandMessages(msg);
+		this.client.deleteCommandMessages(msg);
 		if (!args.name) {
 			return msg.reply('Please enter a valid movie name.');
 		}

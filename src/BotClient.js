@@ -15,6 +15,12 @@ class BotClient extends Commando.Client {
 		this.isReady = false;
 	}
 
+	deleteCommandMessages (msg) {
+		if (msg.deletable && this.webDatabase.loadConfigTable('bot').deletecommandmessages === 'true') {
+			return msg.delete();
+		}
+	}
+
 	init () {
 		return new Promise((resolve, reject) => {
 			try {
