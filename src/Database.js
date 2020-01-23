@@ -10,7 +10,7 @@ const storeData = (data) => {
     }
 }
 
-class Database {
+module.exports = class Database {
     constructor() {
         this.webConfig = require(path.join(__dirname, '..', 'data', 'settings.json'));
     }
@@ -74,5 +74,3 @@ class Database {
         storeData(newWebConfig);
     }
 }
-
-module.exports = Database;
