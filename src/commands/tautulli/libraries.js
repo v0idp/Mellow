@@ -1,7 +1,6 @@
 const Discord = require('discord.js');
 const commando = require('discord.js-commando');
 const path = require('path');
-const { deleteCommandMessages } = require('../../util.js');
 
 module.exports = class librariesCommand extends commando.Command {
 	constructor (client) {
@@ -30,10 +29,10 @@ module.exports = class librariesCommand extends commando.Command {
 					libraryEmbed.addField(obj.section_name, `${obj.count} Shows\n${obj.parent_count} Seasons\n${obj.child_count} Episodes`, true);
 				}
 			}
-			deleteCommandMessages(msg);
+			this.client.deleteCommandMessages(msg);
 			return msg.embed(libraryEmbed);
 		}).catch(() => {
-			deleteCommandMessages(msg);
+			this.client.deleteCommandMessages(msg);
 			return msg.reply('Something went wrong! Couldn\'t get libraries.');
 		});
     }
