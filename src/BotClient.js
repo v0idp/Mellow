@@ -2,15 +2,23 @@ const Commando = require('discord.js-commando');
 const path = require('path');
 const sqlite = require('sqlite');
 const fs = require('fs');
+const APIHandler = require('./api_handlers/api.js');
 
-class BotClient extends Commando.Client {
+module.exports = class BotClient extends Commando.Client {
 	constructor (webDatabase, ownerid, commandprefix) {
 		super({
 			"owner": (ownerid !== '') ? ownerid : null,
 			"commandPrefix": (commandprefix !== '') ? commandprefix : '$'
 		});
 		this.webDatabase = webDatabase;
+		this.API = new APIHandler(webDatabase.getConfig());
 		this.isReady = false;
+	}
+
+	deleteCommandMessages = (msg) => {
+		if (msg.deletable && this.webDatabase.loadConfigTable('bot').deletecommandmessages === 'true') {
+			return msg.delete();
+		}
 	}
 
 	init () {
@@ -58,9 +66,9 @@ class BotClient extends Commando.Client {
 					if(checkGroups.indexOf(group.name.toLowerCase()) > -1) {
 						const groupConfig = this.webDatabase.webConfig[group.name.toLowerCase()];
 						if (groupConfig.host === "" || groupConfig.apikey === "")
-						group.commands.forEach((command) => {
-							this.registry.unregisterCommand(command);
-						});
+							group.commands.forEach((command) => {
+								this.registry.unregisterCommand(command);
+							});
 					}
 				});
 
@@ -72,7 +80,7 @@ class BotClient extends Commando.Client {
 					}
 					return (message.channel.name.toLowerCase() !== bot.channelname.toLowerCase()) ? 'Not allowed in this channel' : false;
 				});
-
+				
 				// login client with bot token
 				this.login(this.webDatabase.webConfig.bot.token)
 					.then((token) => resolve(token))
@@ -90,5 +98,3 @@ class BotClient extends Commando.Client {
 		return this.destroy();
 	}
 }
-
-module.exports = BotClient;
