@@ -15,7 +15,7 @@ module.exports = class BotClient extends Commando.Client {
 		this.isReady = false;
 	}
 
-	deleteCommandMessages (msg) {
+	deleteCommandMessages = (msg) => {
 		if (msg.deletable && this.webDatabase.loadConfigTable('bot').deletecommandmessages === 'true') {
 			return msg.delete();
 		}
