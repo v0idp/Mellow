@@ -30,7 +30,7 @@ module.exports = class searchTVShowCommand extends commando.Command {
 		.setTimestamp(new Date())
 		.setImage(show.banner)
 		.setURL(`https://www.thetvdb.com/?id=${show.id}&tab=series`)
-		.attachFiles(path.join(__dirname, '..', '..', 'resources', 'tvdb.png'))
+		.attachFiles(path.join(__dirname, '..', '..', '..', 'resources', 'tvdb.png'))
 		.setThumbnail('attachment://tvdb.png')
 		.addField('__Network__', show.network, true)
 		.addField('__Status__', show.status, true);
@@ -67,8 +67,8 @@ module.exports = class searchTVShowCommand extends commando.Command {
 						let message = collected.first().content;
 						let selection = parseInt(message);
 						
-						aMsg.then(this.client.deleteCommandMessages);
-						this.client.deleteCommandMessages(collected.first());
+						aMsg.then((m) => m.delete());
+						if (collected.first().deletable) collected.first().delete();
 						if (message.startsWith('cancel')) {
 							msg.reply('Cancelled command.');
 						} else if (selection > 0 && selection <= data.length) {
@@ -91,7 +91,7 @@ module.exports = class searchTVShowCommand extends commando.Command {
 	}
 	
 	requestTVShow(msg, showMsg, show) {
-		const ombi = this.client.webDatabase.loadConfigTable('ombi');
+		const ombi = this.client.webDatabase.getConfig()['ombi'];
 		if ((!ombi.requesttv || msg.member.roles.some(role => role.name.toLowerCase() === ombi.requesttv.toLowerCase())) && (!show.available && !show.requested && !show.approved)) {
 			msg.reply('If you want to request this tv show please click on the ⬇ reaction.');
 			showMsg.react('⬇');

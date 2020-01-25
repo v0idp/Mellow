@@ -1,6 +1,6 @@
 {
   "name": "mellow",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "main": "src/index.js",
   "author": "void* <voidp@protonmail.com> (https://github.com/v0idp)",
   "repository": {
@@ -21,13 +21,19 @@
     "start": "node src/index.js"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "bluebird": "^3.5.5",
+    "cookie-parser": "^1.4.4",
     "discord.js": "discordjs/discord.js",
     "discord.js-commando": "discordjs/Commando",
     "ejs": "^2.6.2",
     "express": "^4.17.1",
-    "express-session": "^1.16.2",
+    "express-promise-router": "^3.0.3",
+    "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
+    "npm": "^6.13.6",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
     "request": "^2.88.0",
     "sqlite": "^3.0.3",
     "url": "^0.11.0"

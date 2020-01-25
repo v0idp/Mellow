@@ -1,8 +1,7 @@
 const Commando = require('discord.js-commando');
 const path = require('path');
-const sqlite = require('sqlite');
 const fs = require('fs');
-const APIHandler = require('./api_handlers/api.js');
+const APIHandler = require('../api_handlers/api.js');
 
 module.exports = class BotClient extends Commando.Client {
 	constructor (webDatabase, ownerid, commandprefix) {
@@ -16,7 +15,7 @@ module.exports = class BotClient extends Commando.Client {
 	}
 
 	deleteCommandMessages = (msg) => {
-		if (msg.deletable && this.webDatabase.loadConfigTable('bot').deletecommandmessages === 'true') {
+		if (msg.deletable && this.webDatabase.getConfig()['bot'].deletecommandmessages === 'true') {
 			return msg.delete();
 		}
 	}
@@ -25,7 +24,7 @@ module.exports = class BotClient extends Commando.Client {
 		return new Promise((resolve, reject) => {
 			try {
 				// dynamically register our events based on the content of the events folder
-				fs.readdir("./src/events/", (err, files) => {
+				fs.readdir(path.join(__dirname, 'events'), (err, files) => {
 					if (err) return console.error(err);
 					files.forEach(file => {
 						let eventFunction = require(`./events/${file}`);
@@ -33,12 +32,6 @@ module.exports = class BotClient extends Commando.Client {
 						this.on(eventName, (...args) => eventFunction.run(this, ...args));
 					});
 				});
-
-				// set provider sqlite so we can actually save our config permanently
-				this.setProvider(
-				sqlite.open(path.join(__dirname.slice(0, -3), 'data', 'BotSettings.sqlite3'))
-				.then(db => new Commando.SQLiteProvider(db)).catch((err) => reject(err))
-				).catch(console.error);
 
 				// first we register groups and commands
 				this.registry
@@ -52,10 +45,8 @@ module.exports = class BotClient extends Commando.Client {
 				.registerDefaultTypes()
 				.registerDefaultCommands({
 					'help': true,
-					'prefix': true,
 					'ping': true,
 					'eval': false,
-					'commandState': true,
 					'unknownCommand': (this.webDatabase.webConfig.bot.unknowncommandresponse === 'true') ? true : false
 				}).registerCommandsIn(path.join(__dirname, 'commands'));
 
