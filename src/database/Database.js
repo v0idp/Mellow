@@ -1,11 +1,11 @@
 const path = require('path');
 const fs = require('fs');
-const template = require('./migration/settings_format.json');
+const template = require('./settings_format.json');
 const bcrypt = require('bcryptjs');
 
 const storeData = (data) => {
     try {
-        fs.writeFileSync(path.join(__dirname, '..', 'data', 'settings.json'), JSON.stringify(data))
+        fs.writeFileSync(path.join(__dirname, '..', '..', 'data', 'settings.json'), JSON.stringify(data))
     } catch (err) {
         console.error(err)
     }
@@ -13,15 +13,15 @@ const storeData = (data) => {
 
 module.exports = class Database {
     constructor() {
-        this.webConfig = require(path.join(__dirname, '..', 'data', 'settings.json'));
+        this.webConfig = require(path.join(__dirname, '..', '..', 'data', 'settings.json'));
     }
 
     getConfig() {
-        return require(path.join(__dirname, '..', 'data', 'settings.json'));
+        return require(path.join(__dirname, '..', '..', 'data', 'settings.json'));
     }
 
     resetConfigTable(table) {
-        let newWebConfig = require(path.join(__dirname, '..', 'data', 'settings.json'));
+        let newWebConfig = require(path.join(__dirname, '..', '..', 'data', 'settings.json'));
         for (const key in template[table]) {
             newWebConfig[table][key] = template[table][key];
         }
@@ -29,7 +29,7 @@ module.exports = class Database {
     }
 
     async saveConfig(request) {
-        let newWebConfig = require(path.join(__dirname, '..', 'data', 'settings.json'));
+        let newWebConfig = require(path.join(__dirname, '..', '..', 'data', 'settings.json'));
         if (request.originalUrl == '/general') {
             const salt = await bcrypt.genSalt(10);
             const pwHash = await bcrypt.hash(request.body.password, salt);
