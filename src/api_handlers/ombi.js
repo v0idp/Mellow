@@ -16,7 +16,7 @@ module.exports = class Ombi {
                 headers: {'accept' : 'application/json',
                 'ApiKey': this.config.apikey,
                 'User-Agent': `Mellow/${process.env.npm_package_version}`},
-                url: replacePlaceholders(this.endpoints['searchContent'], { "%TYPE%":type, "%NAME%":name })
+                url: replacePlaceholders(this.endpoints['searchContent'], { "%TYPE%":type, "%NAME%":encodeURI(name) })
             }).then(({response, body}) => {
                 if (response.statusCode === 200) {
                     const data = JSON.parse(body);
