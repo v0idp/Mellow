@@ -1,4 +1,4 @@
-const BotClient = require('./BotClient.js');
+const BotClient = require('./bots/DiscordBot.js');
 const WebServer = require('./web/WebServer.js');
 const Database = require('./Database.js');
 const { migrateALL } = require('./migration/migration.js');

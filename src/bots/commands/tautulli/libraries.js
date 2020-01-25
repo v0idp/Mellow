@@ -19,7 +19,7 @@ module.exports = class librariesCommand extends commando.Command {
 			let libraryEmbed = new Discord.MessageEmbed()
 			.setTitle('Server Libraries')
 			.setTimestamp(new Date())
-			.attachFiles(path.join(__dirname, '..', '..', 'resources', 'libraries.png'))
+			.attachFiles(path.join(__dirname, '..', '..', '..', 'resources', 'libraries.png'))
 			.setThumbnail('attachment://libraries.png');
 			for (let i = 0; i < Object.keys(jsonResponse.response.data).length; i++) {
 				let obj = jsonResponse.response.data[i];

@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const template = require('./migration/settings_format.json');
+const bcrypt = require('bcryptjs');
 
 const storeData = (data) => {
     try {
@@ -16,34 +17,32 @@ module.exports = class Database {
     }
 
     getConfig() {
-        return this.webConfig;
-    }
-
-    loadConfigTable(table) {
-        return this.webConfig[table];
+        return require(path.join(__dirname, '..', 'data', 'settings.json'));
     }
 
     resetConfigTable(table) {
-        let newWebConfig = this.webConfig;
+        let newWebConfig = require(path.join(__dirname, '..', 'data', 'settings.json'));
         for (const key in template[table]) {
             newWebConfig[table][key] = template[table][key];
         }
         storeData(newWebConfig);
     }
 
-    saveConfig(request) {
-        let newWebConfig = this.webConfig;
-        if (request.path == '/general') {
+    async saveConfig(request) {
+        let newWebConfig = require(path.join(__dirname, '..', 'data', 'settings.json'));
+        if (request.originalUrl == '/general') {
+            const salt = await bcrypt.genSalt(10);
+            const pwHash = await bcrypt.hash(request.body.password, salt);
             newWebConfig.general.username = request.body.username;
-            newWebConfig.general.password = request.body.password;
-        } else if (request.path == '/bot') {
+            newWebConfig.general.password = pwHash;
+        } else if (request.originalUrl == '/bot') {
             newWebConfig.bot.token = request.body.token;
             newWebConfig.bot.ownerid = request.body.ownerID;
             newWebConfig.bot.commandprefix = request.body.commandPrefix;
             newWebConfig.bot.deletecommandmessages = (request.body.deleteCommandMessages) ? 'true' : 'false';
             newWebConfig.bot.unknowncommandresponse = (request.body.unknownCommandResponse) ? 'true' : 'false';
             newWebConfig.bot.channelname = request.body.channelName;
-        } else if (request.path == '/ombi' && request.body.apiKey != '' && request.body.host != '') {
+        } else if (request.originalUrl == '/ombi' && request.body.apiKey != '' && request.body.host != '') {
             newWebConfig.ombi.host = request.body.host;
             newWebConfig.ombi.port = request.body.port;
             newWebConfig.ombi.baseurl = request.body.baseUrl;
@@ -52,19 +51,19 @@ module.exports = class Database {
             newWebConfig.ombi.requesttv = request.body.requestTV.toLowerCase();
             newWebConfig.ombi.requestmovie = request.body.requestMovie.toLowerCase();
             newWebConfig.ombi.username = request.body.userName.toLowerCase();
-        } else if (request.path == '/tautulli' && request.body.apiKey != '' && request.body.host != '') {
+        } else if (request.originalUrl == '/tautulli' && request.body.apiKey != '' && request.body.host != '') {
             newWebConfig.tautulli.host = request.body.host;
             newWebConfig.tautulli.port = request.body.port;
             newWebConfig.tautulli.baseurl = request.body.baseUrl;
             newWebConfig.tautulli.apikey = request.body.apiKey;
             newWebConfig.tautulli.ssl = (request.body.ssl) ? 'true' : 'false';
-        } else if (request.path == '/sonarr' && request.body.apiKey != '' && request.body.host != '') {
+        } else if (request.originalUrl == '/sonarr' && request.body.apiKey != '' && request.body.host != '') {
             newWebConfig.sonarr.host = request.body.host;
             newWebConfig.sonarr.port = request.body.port;
             newWebConfig.sonarr.baseurl = request.body.baseUrl;
             newWebConfig.sonarr.apikey = request.body.apiKey;
             newWebConfig.sonarr.ssl = (request.body.ssl) ? 'true' : 'false';
-        } else if (request.path == '/radarr' && request.body.apiKey != '' && request.body.host != '') {
+        } else if (request.originalUrl == '/radarr' && request.body.apiKey != '' && request.body.host != '') {
             newWebConfig.radarr.host = request.body.host;
             newWebConfig.radarr.port = request.body.port;
             newWebConfig.radarr.baseurl = request.body.baseUrl;
