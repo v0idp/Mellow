@@ -47,7 +47,7 @@ To start the bot just simply type
 npm run start
 ```
 
-After starting the bot you will need to configure it by visiting ``youripordomain:5060``
+After starting the bot you will need to configure it by visiting ``youripordomain:port``
 and filling out the Bot Settings which will start the bot with your token.
 The default login credentials are username:``mellow`` password: ``default``. Please change these as soon as possible!
 Note: It's recommended to set a username and password in General Settings. This way only you can access the web interface.
@@ -60,6 +60,7 @@ If you want to use this bot in a docker container you have to follow these steps
 ```
 docker run -d --restart=unless-stopped --name mellow \
    -v /opt/appdata/mellow/:/usr/src/app/data/ \
+   -e PORT=5060 \
    -p 5060:5060 \
    voidp/mellow
 ```
