@@ -6,6 +6,6 @@ const passStrats = require('../config/passport.js');
 const passJwt = passport.authenticate('userJwt', { failureRedirect: '/login' });
 
 router.route('/').post(passJwt, config.save);
-router.route('/status').get(passJwt, general.status);
+router.route('/status').get(general.status);
 
 module.exports = router;

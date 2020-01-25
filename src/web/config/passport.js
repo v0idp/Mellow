@@ -2,7 +2,7 @@ const passport = require('passport');
 const JwtStrategy = require('passport-jwt').Strategy;
 const { ExtractJwt } = require('passport-jwt');
 const { JWT_SECRET } = require('./keys');
-const Database = require('../../Database.js');
+const Database = require('../../database/Database.js');
 const webDatabase = new Database();
 
 passport.use('userJwt', new JwtStrategy({
