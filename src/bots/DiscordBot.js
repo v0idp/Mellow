@@ -65,8 +65,12 @@ module.exports = class BotClient extends Commando.Client {
 
 				this.dispatcher.addInhibitor((message) => {
 					// Older versions of the DB may not have channelName defined
-					const bot = this.webDatabase.webConfig.bot;
+					const bot = this.webDatabase.getConfig()['bot'];
 					if (!bot.channelname || bot.channelname.length == 0) {
+						return false;
+					}
+					else if (!message.guild.channels.has(bot.channelname)) {
+						console.log(`The channel to monitor you entered doesn\'t exist in this guild. (${message.guild.id})`);
 						return false;
 					}
 					return (message.channel.name.toLowerCase() !== bot.channelname.toLowerCase()) ? 'Not allowed in this channel' : false;
