@@ -2,10 +2,10 @@ const bcrypt = require('bcryptjs');
 const JWT = require('jsonwebtoken');
 const { JWT_SECRET } = require('../config/keys');
 
-const signToken = (username, rememberme) => {
-    return JWT.sign({user: username}, JWT_SECRET, (!rememberme) ? {
+const signToken = (username) => {
+    return JWT.sign({user: username}, JWT_SECRET, {
         expiresIn: '30m'
-    } : null);
+    });
 }
 
 const render = async (req, res) => {
@@ -17,7 +17,7 @@ const render = async (req, res) => {
 }
 
 const login = async (req, res) => {
-    const { username, password, rememberme } = req.body;
+    const { username, password } = req.body;
     const general = req.webserver.WebDatabase.getConfig()['general'];
     if (username === general.username && await bcrypt.compare(password, general.password)) {
         const token = signToken(username);
