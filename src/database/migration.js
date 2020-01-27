@@ -2,7 +2,10 @@ const fs = require('fs');
 const path = require('path');
 const Promise = require('bluebird');
 const sqlite = require('sqlite');
+const bcrypt = require('bcryptjs');
 const newSettings = require('./settings_format.json');
+
+const BCRYPT_PATTERN = /^\$2[ayb]\$.{56}$/
 
 const migrateSQLITE = function() {
     return new Promise(async (resolve, reject) => {
@@ -37,7 +40,7 @@ const migrateSQLITE = function() {
 }
 
 const migrateJSON = function() {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             const settingsPath = path.join(__dirname, '..', '..', 'data', 'settings.json')
             let oldSettings;
@@ -45,6 +48,13 @@ const migrateJSON = function() {
         
             if (fs.existsSync(settingsPath)) {
                 oldSettings = require(settingsPath);
+                
+                if (!oldSettings.general.password.match(BCRYPT_PATTERN)) {
+                    migrated = false
+                    const salt = await bcrypt.genSalt(10);
+                    const pwHash = await bcrypt.hash(oldSettings.general.password, salt);
+                    oldSettings.general.password = pwHash;
+                }
 
                 const oProps = Object.getOwnPropertyNames(oldSettings);
                 let oSize = oProps.length;
@@ -57,14 +67,16 @@ const migrateJSON = function() {
                 if (oSize !== nSize) {
                     console.log("JSON Settings found! Migrating settings to new settings...");
                     migrated = false;
-                    for (const key in oldSettings)
-                        for (const k in oldSettings[key])
-                            if (newSettings[key].hasOwnProperty(k))
-                                newSettings[key][k] = oldSettings[key][k];
                 }
                 else {
                     console.log("JSON Settings already up-to-date! Skipping...");
                 }
+
+                if (!migrated)
+                    for (const key in oldSettings)
+                        for (const k in oldSettings[key])
+                            if (newSettings[key].hasOwnProperty(k))
+                                newSettings[key][k] = oldSettings[key][k];
             }
             else {
                 console.log("No JSON settings found! Creating new JSON settings file...");
