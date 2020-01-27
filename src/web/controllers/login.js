@@ -22,7 +22,7 @@ const login = async (req, res) => {
     if (username === general.username && await bcrypt.compare(password, general.password)) {
         const token = signToken(username);
         const dMaxAge = new Date();
-        dMaxAge.setSeconds(dMaxAge.getSeconds() + 5);
+        dMaxAge.setMinutes(dMaxAge.getMinutes() + 30);
         res
         .status(200)
         .cookie('token' , token, { 'maxAge': dMaxAge })
