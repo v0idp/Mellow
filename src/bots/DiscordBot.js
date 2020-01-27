@@ -7,7 +7,8 @@ module.exports = class BotClient extends Commando.Client {
 	constructor (webDatabase, ownerid, commandprefix) {
 		super({
 			"owner": (ownerid !== '') ? ownerid : null,
-			"commandPrefix": (commandprefix !== '') ? commandprefix : '$'
+			"commandPrefix": (commandprefix !== '') ? commandprefix : '$',
+			"invite": 'https://discord.gg/zx2BWp2'
 		});
 		this.webDatabase = webDatabase;
 		this.API = new APIHandler(webDatabase.getConfig());
