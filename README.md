@@ -60,6 +60,7 @@ If you want to use this bot in a docker container you have to follow these steps
 ```
 docker run -d --restart=unless-stopped --name mellow \
    -v /opt/appdata/mellow/:/usr/src/app/data/ \
+   -e JWT_SECRET=random_string
    -e PORT=5060 \
    -p 5060:5060 \
    voidp/mellow
