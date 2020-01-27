@@ -20,6 +20,4 @@ COPY package.json $APP
 
 WORKDIR $APP
 
-EXPOSE 5060
-
 CMD [ "pm2-runtime", "src/index.js" ]

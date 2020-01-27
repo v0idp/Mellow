@@ -1,7 +1,7 @@
 {
     "general": {
       "username": "mellow",
-      "password": "default"
+      "password": "$2a$10$hKxfwH5lKDxogjIPKR.9mOJi664EQ298OYiRt/HuqVjSHw8BRKEya"
     },
     "bot": {
       "token": "",

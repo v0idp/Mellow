@@ -30,7 +30,7 @@ module.exports = class searchMovieCommand extends commando.Command {
 		.setTimestamp(new Date())
 		.setImage('https://image.tmdb.org/t/p/w500' + movie.posterPath)
 		.setURL('https://www.themoviedb.org/movie/' + movie.theMovieDbId)
-		.attachFiles(path.join(__dirname, '..', '..', 'resources', 'tmdb.png'))
+		.attachFiles(path.join(__dirname, '..', '..', '..', 'resources', 'tmdb.png'))
 		.setThumbnail('attachment://tmdb.png');
 	
 		if (movie.available) movieEmbed.addField('__Available__', '✅', true);
@@ -65,8 +65,8 @@ module.exports = class searchMovieCommand extends commando.Command {
 						let message = collected.first().content;
 						let selection = parseInt(message);
 						
-						aMsg.then(this.client.deleteCommandMessages);
-						this.client.deleteCommandMessages(collected.first());
+						aMsg.then((m) => m.delete());
+						if (collected.first().deletable) collected.first().delete();
 						if (message.startsWith('cancel')) {
 							msg.reply('Cancelled command.');
 						} else if (selection > 0 && selection <= data.length) {
@@ -89,7 +89,7 @@ module.exports = class searchMovieCommand extends commando.Command {
 	}
 	
 	requestMovie(msg, movieMsg, movie) {
-		const ombi = this.client.webDatabase.loadConfigTable('ombi');
+		const ombi = this.client.webDatabase.getConfig()['ombi'];
 		if ((!ombi.requestmovie || msg.member.roles.some(role => role.name.toLowerCase() === ombi.requestmovie.toLowerCase())) && (!movie.available && !movie.requested && !movie.approved)) {
 			msg.reply('If you want to request this movie please click on the ⬇ reaction.');
 			movieMsg.react('⬇');

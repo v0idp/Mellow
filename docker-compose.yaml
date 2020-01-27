@@ -6,4 +6,7 @@ services:
       - "5060:5060"
     volumes: 
       - /opt/appdata/mellow/:/usr/src/app/data/
+    environment:
+      - PORT=5060
+      - JWT_SECRET=random_string
     restart: unless-stopped
