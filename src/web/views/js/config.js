@@ -27,13 +27,10 @@ $(function() {
                 setFailedMsg(buildMsg, api);
             } else {
                 buildMsg = "Connection successful! ";
-                switch(api) {
-                    case "radarr":
-                    case "sonarr":
-                        buildMsg += "Version " + res.version;
-                        break;
-                }
-
+                if (api === "tautulli")
+                    buildMsg += "Version " + res.response.data.version;
+                else
+                    buildMsg += "Version " + res.version;
                 setSuccessMsg(buildMsg, api);
             }
             $('#form-' + api + ' .testApi').html('Test Connectivity');

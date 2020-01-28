@@ -4,9 +4,10 @@ module.exports = class Radarr {
     constructor(config) {
         this.config = config;
         this.endpoints = {
-            "getMovies" : getURL(config.host, config.port, config.ssl, config.baseurl + `/api/movie?apikey=${config.apikey}`),
-            "getMovieByID" : getURL(config.host, config.port, config.ssl, config.baseurl + `/api/movie/%ID%?apikey=${config.apikey}`),
-            "movieLookup" : getURL(config.host, config.port, config.ssl, config.baseurl + `/api/movie/lookup?term=%NAME%&apikey=${config.apikey}`)
+            "/movie" : getURL(config.host, config.port, config.ssl, config.baseurl + `/api/movie?apikey=${config.apikey}`),
+            "/movie/id" : getURL(config.host, config.port, config.ssl, config.baseurl + `/api/movie/%ID%?apikey=${config.apikey}`),
+            "/movie/lookup" : getURL(config.host, config.port, config.ssl, config.baseurl + `/api/movie/lookup?term=%NAME%&apikey=${config.apikey}`),
+            "/system/status" : getURL(config.host, config.port, config.ssl, config.baseurl + `/api/system/status?apikey=${config.apikey}`)
         };
     }
 
@@ -15,7 +16,7 @@ module.exports = class Radarr {
             get({
                 headers: {'accept' : 'application/json',
                 'User-Agent': `Mellow/${process.env.npm_package_version}`},
-                url: this.endpoints['getMovies']
+                url: this.endpoints['/movie']
             }).then(({response, body}) => {
                 if (response.statusCode === 200) {
                     const data = JSON.parse(body);
@@ -23,11 +24,11 @@ module.exports = class Radarr {
                 }
                 else {
                     console.log(response);
-                    reject()
+                    reject(response);
                 }
             }).catch((err) => {
                 console.log(err);
-                reject();
+                reject(err);
             });
         });
     }
@@ -37,7 +38,7 @@ module.exports = class Radarr {
             get({
                 headers: {'accept' : 'application/json',
                 'User-Agent': `Mellow/${process.env.npm_package_version}`},
-                url: replacePlaceholders(this.endpoints['getMovieByID'], { "%ID%":id })
+                url: replacePlaceholders(this.endpoints['/movie/id'], { "%ID%":id })
             }).then(({response, body}) => {
                 if (response.statusCode === 200) {
                     const data = JSON.parse(body);
@@ -45,11 +46,11 @@ module.exports = class Radarr {
                 }
                 else {
                     console.log(response);
-                    reject()
+                    reject(response);
                 }
             }).catch((err) => {
                 console.log(err);
-                reject();
+                reject(err);
             });
         });
     }
@@ -59,7 +60,7 @@ module.exports = class Radarr {
             get({
                 headers: {'accept' : 'application/json',
                 'User-Agent': `Mellow/${process.env.npm_package_version}`},
-                url: replacePlaceholders(this.endpoints['movieLookup'], { "%NAME%":encodeURI(name) })
+                url: replacePlaceholders(this.endpoints['/movie/lookup'], { "%NAME%":encodeURI(name) })
             }).then(({response, body}) => {
                 if (response.statusCode === 200) {
                     const data = JSON.parse(body);
@@ -67,11 +68,33 @@ module.exports = class Radarr {
                 }
                 else {
                     console.log(response);
-                    reject()
+                    reject(response);
                 }
             }).catch((err) => {
                 console.log(err);
-                reject();
+                reject(err);
+            });
+        });
+    }
+
+    getSystemStatus() {
+        return new Promise((resolve, reject) => {
+            get({
+                headers: {'accept' : 'application/json',
+                'User-Agent': `Mellow/${process.env.npm_package_version}`},
+                url: this.endpoints['/system/status']
+            }).then(({response, body}) => {
+                if (response.statusCode === 200) {
+                    const data = JSON.parse(body);
+                    resolve(data);
+                }
+                else {
+                    console.log(response);
+                    reject(response);
+                }
+            }).catch((err) => {
+                console.log(err);
+                reject(err);
             });
         });
     }
