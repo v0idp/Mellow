@@ -17,6 +17,7 @@
       "baseurl": "",
       "apikey": "",
       "ssl": "false",
+      "defaultservice": "",
       "requesttv": "",
       "requestmovie": "",
       "username": ""
