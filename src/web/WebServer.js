@@ -32,7 +32,7 @@ module.exports = class WebServer {
         }
         const botConfig = this.WebDatabase.getConfig()['bot'];
         if (botConfig && botConfig.token) {
-            this.bot = new BotClient(this.WebDatabase, botConfig.ownerid, botConfig.commandprefix);
+            this.bot = new BotClient(this.WebDatabase, botConfig.token, botConfig.ownerid, botConfig.commandprefix);
             this.bot.init().catch(() => { console.error('Failed initializing BotClient. Is your token correct?') });
         }
         else {

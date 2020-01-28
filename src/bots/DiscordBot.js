@@ -4,12 +4,13 @@ const fs = require('fs');
 const APIHandler = require('../api_handlers/api.js');
 
 module.exports = class BotClient extends Commando.Client {
-	constructor (webDatabase, ownerid, commandprefix) {
+	constructor (webDatabase, token, ownerid, commandprefix) {
 		super({
 			"owner": (ownerid !== '') ? ownerid : null,
 			"commandPrefix": (commandprefix !== '') ? commandprefix : '$',
 			"invite": 'https://discord.gg/zx2BWp2'
 		});
+		this.token = token;
 		this.webDatabase = webDatabase;
 		this.API = new APIHandler(webDatabase.getConfig());
 		this.isReady = false;
@@ -78,19 +79,18 @@ module.exports = class BotClient extends Commando.Client {
 				});
 				
 				// login client with bot token
-				this.login(this.webDatabase.webConfig.bot.token)
+				this.login(this.token)
 					.then((token) => resolve(token))
 					.catch((err) => reject(err));
 			}
 			catch (err) {
-				reject(err)
+				reject(err);
 			}
 		});
-		
 	}
 
 	deinit () {
 		this.isReady = false;
-		return this.destroy();
+		this.destroy();
 	}
 }

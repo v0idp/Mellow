@@ -1,8 +1,8 @@
-<form class="form-setting" role="form" action="/bot" method="post">
+<form class="form-setting" role="form" id="form-bot" action="/bot" method="post">
     <div class="form-group row">
         <label for="token" class=" col-sm-3 col-form-label">Token</label>
         <div class="col-sm-6">
-            <input type="text" class="form-control" id="token" name="token" value="<% if (botSettings && botSettings.token) { %><%=botSettings.token %><% } %>">
+            <input type="text" class="form-control token" id="token" name="token" value="<% if (botSettings && botSettings.token) { %><%=botSettings.token %><% } %>" required>
         </div>
         <div class="col-sm-3 text-muted">
             <em>Required</em>
@@ -22,10 +22,7 @@
     <div class="form-group row">
         <label for="commandPrefix" class=" col-sm-3 col-form-label">Command Prefix</label>
         <div class="col-sm-6">
-            <input type="text" class="form-control" id="commandPrefix" name="commandPrefix" value="<% if (botSettings && botSettings.commandprefix) { %><%=botSettings.commandprefix %><% } %>" required>
-        </div>
-        <div class="col-sm-3 text-muted">
-            <em>Required</em>
+            <input type="text" class="form-control" id="commandPrefix" name="commandPrefix" value="<% if (botSettings && botSettings.commandprefix) { %><%=botSettings.commandprefix %><% } %>">
         </div>
     </div>
 
@@ -64,7 +61,8 @@
     </div>
 
     <div class="row">
-        <div class="col-sm-9">
+        <div class="col-sm-6 offset-sm-3">
+            <button class = "btn btn-lg btn-primary float-left testBot" data-bot="bot" type = "button">Test Connectivity</button>
             <button class = "btn btn-lg btn-primary float-right" type = "submit" name = "submit">Submit</button>
             <a href="/bot/reset" class="btn btn-lg btn-outline-primary reset-button float-right">Reset</a>
         </div>

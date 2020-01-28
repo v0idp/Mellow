@@ -6,6 +6,28 @@ $(function() {
             })
     }
 
+    function testBot(bot, cfg) {
+        let url = '/' + bot + '/test';
+
+        fetchAsync(url, cfg).then(function(res) {
+            let buildMsg;
+            if ((res.status === "error")) {
+                buildMsg = "Connection failed. ";
+
+                let hardFailures = [400, 403, 404, 502];
+
+                if (hardFailures.includes(res.response.statusCode)) {
+                    buildMsg += res.response.statusCode;
+                }
+                setFailedMsg(buildMsg, bot);
+            } else {
+                buildMsg = "Connection successful! ";
+                setSuccessMsg(buildMsg, bot);
+            }
+            $('#form-' + bot + ' .testBot').html('Test Connectivity');
+        });
+    }
+
     function testApi(api, cfg) {
         let url = '/' + api + '/test';
 
@@ -35,7 +57,6 @@ $(function() {
             }
             $('#form-' + api + ' .testApi').html('Test Connectivity');
         });
-
     }
 
     async function fetchAsync (url, config={}) {
@@ -63,7 +84,42 @@ $(function() {
         $('#main-alert').removeClass('collapse').removeClass('alert-success').removeClass('alert-danger').addClass('alert-warning').show();
     }
 
-    $('.testApi').click(function() {
+    $('.testBot').click(function(e) {
+        e.preventDefault();
+        let request = {};
+
+        // figure out which bot this is
+        request.bot = $(this).data('bot');
+
+        // grab bot details from the relevant form
+        request.token = $('#form-' + request.bot + ' input.token').val();
+        console.log(request.token)
+
+        // make sure that we actually have enough data to proceed first...
+        if (!request.token) {
+            setWarningMsg('One or more required fields are missing. Please double check your configuration.', request.bot);
+            return false;
+        }
+
+        // load a fancy spinning thingy
+        $(this).html('<i class="fas fa-spinner fa-pulse"></i> Testing...');
+
+        // tell the ajax function this is a post request, and we're sending data
+        let cfg = {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(request)
+        };
+
+        // fire off to the test that does the hard work
+        testBot(request.bot, cfg);
+    })
+
+    $('.testApi').click(function(e) {
+        e.preventDefault();
         let request = {};
 
         // figure out which api this is
@@ -83,7 +139,7 @@ $(function() {
         }
 
         // load a fancy spinning thingy
-        $(this).html('<i class="fas fa-spinner fa-pulse"></i> Testing...')
+        $(this).html('<i class="fas fa-spinner fa-pulse"></i> Testing...');
 
 
         // tell the ajax function this is a post request, and we're sending data
@@ -105,7 +161,8 @@ $(function() {
     });
 
     // are you sure?!
-    $('.reset-button').click(function() {
+    $('.reset-button').click(function(e) {
+        e.preventDefault();
         return confirm('Are you sure?');
     });
 
