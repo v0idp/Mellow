@@ -170,7 +170,7 @@ module.exports = class Sonarr {
                     "titleSlug": series.titleSlug,
                     "images": series.images,
                     "seasons": series.seasons, // TODO: add functionality to request individual seasons
-                    "path" : rootfolder.path + series.title,
+                    "rootFolderPath" : rootfolder.path,
                     "addOptions":
                     {
                         "ignoreEpisodesWithFiles": ignoreEpisodesWithFiles,
