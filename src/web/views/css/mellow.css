@@ -32,6 +32,13 @@ a.reset-button {
     margin-right: 20px;
 }
 
+@media only screen and (max-width: 768px) {
+    a.reset-button {
+        margin-right: 0;
+        margin-top: 10px;
+    }
+}
+
 /* sign in form css */
 .form-signin {
     width: 100%;

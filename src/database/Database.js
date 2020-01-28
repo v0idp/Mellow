@@ -48,6 +48,7 @@ module.exports = class Database {
             newWebConfig.ombi.baseurl = request.body.baseUrl;
             newWebConfig.ombi.apikey = request.body.apiKey;
             newWebConfig.ombi.ssl = (request.body.ssl) ? 'true' : 'false';
+            newWebConfig.ombi.defaultservice = request.body.defaultservice;
             newWebConfig.ombi.requesttv = request.body.requestTV.toLowerCase();
             newWebConfig.ombi.requestmovie = request.body.requestMovie.toLowerCase();
             newWebConfig.ombi.username = request.body.userName.toLowerCase();
