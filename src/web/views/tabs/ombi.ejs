@@ -44,17 +44,6 @@
     </div>
 
     <div class="form-group row">
-        <label for="defaultservice" class=" col-sm-3 col-form-label">Default Service</label>
-        <div class="col-sm-6">
-            <select name="defaultservice" id="defaultservice" class="form-control defaultservice">
-                <option value=""></option>
-                <option value="ombi" <% if (ombiSettings && ombiSettings.defaultservice == "ombi") { %>selected<% }%>>Ombi</option>
-                <option value="sonarradar" <% if (ombiSettings && ombiSettings.defaultservice == "sonarradar") { %>selected<% }%>>Sonarr / Radarr</option>
-            </select>
-        </div>
-    </div>
-
-    <div class="form-group row">
         <label for="requesttv" class=" col-sm-3 col-form-label">Request TV Shows</label>
         <div class="col-sm-6">
             <input type="text" class="form-control requesttv" name="requestTV" value="<% if (ombiSettings && ombiSettings.requesttv) { %><%=ombiSettings.requesttv %><% } %>">
