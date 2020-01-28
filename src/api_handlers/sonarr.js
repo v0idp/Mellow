@@ -164,13 +164,13 @@ module.exports = class Sonarr {
                 'User-Agent': `Mellow/${process.env.npm_package_version}`},
                 url: this.endpoints['/series'],
                 body: {
-                    "tvdbId": series.id,
+                    "tvdbId": series.tvdbId,
                     "title": series.title,
                     "profileId": profile.id,
                     "titleSlug": series.titleSlug,
                     "images": series.images,
                     "seasons": series.seasons, // TODO: add functionality to request individual seasons
-                    "rootFolderPath" : rootfolder.path,
+                    "rootFolderPath": rootfolder.path,
                     "addOptions":
                     {
                         "ignoreEpisodesWithFiles": ignoreEpisodesWithFiles,
