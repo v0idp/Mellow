@@ -33,59 +33,8 @@ const reset = async (req, res) => {
     res.redirect('/config');
 }
 
-const test = async (req, res) => {
-    let config = req.body;
-    let url;
-    let apiHeader = {};
-
-    switch (req.originalUrl.split('/')[1]) {
-        case "ombi":
-            apiHeader = {'ApiKey': config.apikey};
-            url = getURL(config.host, config.port, config.ssl, config.baseurl + '/api/v1/Search/movie/popular');
-            break;
-        case "tautulli":
-            url = getURL(config.host, config.port, config.ssl, config.baseurl + '/api/v2?apikey=' + config.apikey + '&cmd=status');
-            break;
-        case "sonarr":
-            url = getURL(config.host, config.port, config.ssl, config.baseurl + '/api/system/status?apikey=' + config.apikey);
-            console.log(url);
-            break;
-        case "radarr":
-            url = getURL(config.host, config.port, config.ssl, config.baseurl + '/api/system/status?apikey=' + config.apikey);
-            break;
-        default:
-            res.status(500).send(JSON.stringify({'status': 'error'}));
-            break;
-    }
-
-    if (url) {
-        const defaultHeaders = {
-            'accept': 'application/json',
-            'User-Agent': `Mellow/${process.env.npm_package_version}`
-        };
-
-        const requestHeaders = {...defaultHeaders, ...apiHeader};
-
-        get({
-            headers: requestHeaders,
-            url: url
-        }).then((resolve) => {
-            res.setHeader('Content-Type', 'application/json');
-            try {
-                JSON.parse(resolve.body);
-                res.send(resolve.body);
-            } catch (error) {
-                res.status(500).send(JSON.stringify({...{response: error}, ...{status: 'error'}}));
-            }
-        }).catch((error) => {
-            res.status(500).send(JSON.stringify({...{response: error}, ...{status: 'error'}}));
-        });
-    }
-}
-
 module.exports = {
     render,
     save,
-    reset,
-    test
+    reset
 }
