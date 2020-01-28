@@ -9,7 +9,8 @@
       "commandprefix": "",
       "channelname": "",
       "deletecommandmessages": "false",
-      "unknowncommandresponse": "false"
+      "unknowncommandresponse": "false",
+      "defaultservice": "ombi"
     },
     "ombi": {
       "host": "",
@@ -17,7 +18,6 @@
       "baseurl": "",
       "apikey": "",
       "ssl": "false",
-      "defaultservice": "",
       "requesttv": "",
       "requestmovie": "",
       "username": ""

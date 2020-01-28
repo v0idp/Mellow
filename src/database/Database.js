@@ -42,13 +42,13 @@ module.exports = class Database {
             newWebConfig.bot.deletecommandmessages = (request.body.deleteCommandMessages) ? 'true' : 'false';
             newWebConfig.bot.unknowncommandresponse = (request.body.unknownCommandResponse) ? 'true' : 'false';
             newWebConfig.bot.channelname = request.body.channelName;
+            newWebConfig.bot.defaultservice = request.body.defaultservice;
         } else if (request.originalUrl == '/ombi' && request.body.apiKey != '' && request.body.host != '') {
             newWebConfig.ombi.host = request.body.host;
             newWebConfig.ombi.port = request.body.port;
             newWebConfig.ombi.baseurl = request.body.baseUrl;
             newWebConfig.ombi.apikey = request.body.apiKey;
             newWebConfig.ombi.ssl = (request.body.ssl) ? 'true' : 'false';
-            newWebConfig.ombi.defaultservice = request.body.defaultservice;
             newWebConfig.ombi.requesttv = request.body.requestTV.toLowerCase();
             newWebConfig.ombi.requestmovie = request.body.requestMovie.toLowerCase();
             newWebConfig.ombi.username = request.body.userName.toLowerCase();
