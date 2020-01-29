@@ -79,6 +79,7 @@ module.exports = class Database {
             newWebConfig.radarr.ssl = (request.body.ssl) ? 'true' : 'false';
             newWebConfig.radarr.profile = request.body.profile;
             newWebConfig.radarr.rootfolder = request.body.rootfolder;
+            newWebConfig.radarr.minimumavailability = request.body.minimumavailability;
         }
         storeData(newWebConfig);
     }

@@ -50,6 +50,7 @@
       "apikey": "",
       "ssl": "false",
       "profile": "0",
-      "rootfolder": "0"
+      "rootfolder": "0",
+      "minimumavailability": "Announced"
     }
   }
