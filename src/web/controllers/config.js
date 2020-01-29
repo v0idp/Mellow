@@ -8,8 +8,10 @@ const render = async (req, res) => {
     radarr = new Radarr(config['radarr']);
 
     sonarrProfiles = await sonarr.getProfiles().catch(() => {});
-    radarrProfiles = await radarr.getProfiles().catch(() => {});
     sonarrRootFolders = await sonarr.getRootFolders().catch(() => {});
+    sonarrLanguageProfiles = await sonarr.getLanguageProfiles().catch(() => {});
+    
+    radarrProfiles = await radarr.getProfiles().catch(() => {});
     radarrRootFolders = await radarr.getRootFolders().catch(() => {});
     
     res.status(200)
@@ -24,12 +26,13 @@ const render = async (req, res) => {
         tautulliSettings:  (config.tautulli) ? config.tautulli : '',
         sonarrSettings:  (config.sonarr) ? config.sonarr : '',
         radarrSettings:  (config.radarr) ? config.radarr : '',
-        profiles: {
-            sonarr: (sonarrProfiles) ? sonarrProfiles : undefined,
-            radarr: (radarrProfiles) ? radarrProfiles : undefined
+        sonarrOptions: {
+            profiles: (sonarrProfiles) ? sonarrProfiles : undefined,
+            rootfolders: (sonarrRootFolders) ? sonarrRootFolders : undefined,
+            languageprofiles: (sonarrLanguageProfiles) ? sonarrLanguageProfiles : undefined,
         },
-        rootfolders: {
-            sonarr: (sonarrRootFolders) ? sonarrRootFolders : undefined,
+        radarrOptions: {
+            profiles: (radarrProfiles) ? radarrProfiles : undefined,
             radarr: (radarrRootFolders) ? radarrRootFolders : undefined
         }
     });

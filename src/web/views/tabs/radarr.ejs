@@ -52,9 +52,9 @@
         <div class="col-sm-6">
             <select name="profile" id="profile" class="form-control profile" required>
                 <option value=0></option>
-                <% if (profiles.radarr) { %>
-                    <% for (let i = 1; i <= profiles.radarr.length; i++) { %>
-                        <option value=<%= i %> <% if (radarrSettings && parseInt(radarrSettings.profile) == i) { %>selected<% }%>><%= profiles.radarr[i-1].name %></option>
+                <% if (radarrOptions.radarr) { %>
+                    <% for (let i = 1; i <= radarrOptions.radarr.length; i++) { %>
+                        <option value=<%= i %> <% if (radarrSettings && parseInt(radarrSettings.profile) == i) { %>selected<% }%>><%= radarrOptions.radarr[i-1].name %></option>
                     <% } %>
                 <% } %>
             </select>
@@ -72,9 +72,9 @@
         <div class="col-sm-6">
             <select name="rootfolder" id="rootfolder" class="form-control rootfolder" required>
                 <option value=0></option>
-                <% if (rootfolders.radarr) { %>
-                    <% for (let i = 1; i <= rootfolders.radarr.length; i++) { %>
-                        <option value=<%= i %> <% if (radarrSettings && parseInt(radarrSettings.rootfolder) == i) { %>selected<% }%>><%= rootfolders.radarr[i-1].path %></option>
+                <% if (radarrOptions.radarr) { %>
+                    <% for (let i = 1; i <= radarrOptions.radarr.length; i++) { %>
+                        <option value=<%= i %> <% if (radarrSettings && parseInt(radarrSettings.rootfolder) == i) { %>selected<% }%>><%= radarrOptions.radarr[i-1].path %></option>
                     <% } %>
                 <% } %>
             </select>

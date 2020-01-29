@@ -65,7 +65,11 @@ module.exports = class Database {
             newWebConfig.sonarr.apikey = request.body.apiKey;
             newWebConfig.sonarr.ssl = (request.body.ssl) ? 'true' : 'false';
             newWebConfig.sonarr.profile = request.body.profile;
+            newWebConfig.sonarr.profileanime = request.body.profileanime;
             newWebConfig.sonarr.rootfolder = request.body.rootfolder;
+            newWebConfig.sonarr.rootfolderanime = request.body.rootfolderanime;
+            newWebConfig.sonarr.languageprofile = request.body.languageprofile;
+            newWebConfig.sonarr.seasonfolders = (request.body.seasonfolders) ? 'true' : 'false';
         } else if (request.originalUrl == '/radarr' && request.body.apiKey != '' && request.body.host != '') {
             newWebConfig.radarr.host = request.body.host;
             newWebConfig.radarr.port = request.body.port;
