@@ -191,7 +191,7 @@ module.exports = class Sonarr {
         });
     }
 
-    addSeries(series, profile, rootfolder, ignoreEpisodesWithFiles = true, ignoreEpisodesWithoutFiles = false, searchForMissingEpisodes = false) {
+    addSeries(series, profile, rootfolder, seasonsfolder = false, monitored = true, ignoreEpisodesWithFiles = true, ignoreEpisodesWithoutFiles = false, searchForMissingEpisodes = false, languageprofile = undefined) {
         return new Promise((resolve, reject) => {
             post({
                 headers: {'accept' : 'application/json',
@@ -205,6 +205,9 @@ module.exports = class Sonarr {
                     "images": series.images,
                     "seasons": series.seasons, // TODO: add functionality to request individual seasons
                     "rootFolderPath": rootfolder.path,
+                    "seasonFolder": seasonsfolder,
+                    "monitored": monitored,
+                    "languageProfileId": languageprofile,
                     "addOptions":
                     {
                         "ignoreEpisodesWithFiles": ignoreEpisodesWithFiles,
