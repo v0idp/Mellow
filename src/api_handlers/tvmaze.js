@@ -12,7 +12,7 @@ module.exports = class TVMaze {
             get({
                 headers: {'accept' : 'application/json',
                 'User-Agent': `Mellow/${process.env.npm_package_version}`},
-                url: this.endpoints['/profile']
+                url: replacePlaceholders(this.endpoints['/lookup/shows'], { "%ID%":id })
             }).then(({response, body}) => {
                 if (response.statusCode === 200) {
                     const data = JSON.parse(body);
