@@ -34,13 +34,17 @@
       "port": "",
       "baseurl": "",
       "apikey": "",
-      "ssl": "false"
+      "ssl": "false",
+      "profile": "0",
+      "rootfolder": "0"
     },
     "radarr": {
       "host": "",
       "port": "",
       "baseurl": "",
       "apikey": "",
-      "ssl": "false"
+      "ssl": "false",
+      "profile": "0",
+      "rootfolder": "0"
     }
   }

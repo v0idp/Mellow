@@ -47,11 +47,51 @@
         </div>
     </div>
 
+    <div class="form-group row">
+        <label for="profile" class=" col-sm-3 col-form-label">Profile for Requests</label>
+        <div class="col-sm-6">
+            <select name="profile" id="profile" class="form-control profile" required>
+                <option value=0></option>
+                <% if (profiles.sonarr) { %>
+                    <% for (let i = 1; i <= profiles.sonarr.length; i++) { %>
+                        <option value=<%= i %> <% if (sonarrSettings && parseInt(sonarrSettings.profile) == i) { %>selected<% }%>><%= profiles.sonarr[i-1].name %></option>
+                    <% } %>
+                <% } %>
+            </select>
+            <small class="form-text text-muted">
+                After successfully saving your configuration, select a profile. (Otherwise requests won't work)
+            </small>
+        </div>
+        <div class="col-sm-3 text-muted">
+            <em>Required</em>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="rootfolder" class=" col-sm-3 col-form-label">Rootfolder for Requests</label>
+        <div class="col-sm-6">
+            <select name="rootfolder" id="rootfolder" class="form-control rootfolder" required>
+                <option value=0></option>
+                <% if (rootfolders.sonarr) { %>
+                    <% for (let i = 1; i <= rootfolders.sonarr.length; i++) { %>
+                        <option value=<%= i %> <% if (sonarrSettings && parseInt(sonarrSettings.rootfolder) == i) { %>selected<% }%>><%= rootfolders.sonarr[i-1].path %></option>
+                    <% } %>
+                <% } %>
+            </select>
+            <small class="form-text text-muted">
+                After successfully saving your configuration, select a rootfolder. (Otherwise requests won't work)
+            </small>
+        </div>
+        <div class="col-sm-3 text-muted">
+            <em>Required</em>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-sm-6 offset-sm-3">
             <button class = "btn btn-lg btn-primary float-left testApi" data-api="sonarr" type = "button" >Test Connectivity</button>
             <button class = "btn btn-lg btn-primary float-right" type = "submit" name = "submit">Submit</button>
-            <a href="/sonarr/reset" class="btn btn-lg btn-outline-primary  reset-button float-right">Reset</a>
+            <a href="/sonarr/reset" class="btn btn-lg btn-outline-primary reset-button float-right">Reset</a>
         </div>
     </div>
 </form>

@@ -10,7 +10,7 @@ passport.use('userJwt', new JwtStrategy({
     secretOrKey: JWT_SECRET
 }, async (payload, done) => {
     try {
-        const { username } = webDatabase.getConfig()['general'];
+        const { username } = webDatabase.webConfig.general;
         if (username !== payload.user)
             return done(null, false, { message: 'username does not exist!'});
         done(null, true);

@@ -161,8 +161,7 @@ $(function() {
     });
 
     // are you sure?!
-    $('.reset-button').click(function(e) {
-        e.preventDefault();
+    $('.reset-button').click(function() {
         return confirm('Are you sure?');
     });
 

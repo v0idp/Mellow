@@ -91,11 +91,9 @@ module.exports = class Sonarr {
                     resolve(data);
                 }
                 else {
-                    console.log(response);
                     reject(response);
                 }
             }).catch((err) => {
-                console.log(err);
                 reject(err);
             });
         });
@@ -130,11 +128,9 @@ module.exports = class Sonarr {
                     resolve(data);
                 }
                 else {
-                    console.log(response);
                     reject(response);
                 }
             }).catch((err) => {
-                console.log(err);
                 reject(err);
             });
         });
