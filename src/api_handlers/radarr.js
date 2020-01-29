@@ -153,25 +153,13 @@ module.exports = class Radarr {
         });
     }
 
-    addMovie(movie, profile, rootfolder, monitored = false, searchForMovie = true) {
+    addMovie(newMovie) {
         return new Promise((resolve, reject) => {
             post({
                 headers: {'accept' : 'application/json',
                 'User-Agent': `Mellow/${process.env.npm_package_version}`},
                 url: this.endpoints['/movie'],
-                body: {
-                    "tmdbId": movie.tmdbId,
-                    "title": movie.title,
-                    "qualityProfileId": profile.id,
-                    "titleSlug": movie.titleSlug,
-                    "images": movie.images,
-                    "rootFolderPath": rootfolder.path,
-                    "year": movie.year,
-                    "monitored": monitored,
-                    "addOptions": {
-                        "searchForMovie": searchForMovie
-                    }
-                }
+                body: newMovie
             }).then(({response, body}) => {
                 if (response.statusCode === 200) {
                     const data = JSON.parse(body);

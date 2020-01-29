@@ -40,7 +40,8 @@
       "rootfolder": "0",
       "rootfolderanime": "0",
       "languageprofile": "0",
-      "seasonfolders": "false"
+      "seasonfolders": "false",
+      "v3": "false"
     },
     "radarr": {
       "host": "",

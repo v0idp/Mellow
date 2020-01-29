@@ -4,6 +4,13 @@
 
 <form class="form-setting" role="form" id="form-sonarr" action="/sonarr" method="post">
     <div class="form-group row">
+        <label for="v3" class="col-sm-3 form-check-label">V3</label>
+        <div class="col-sm-6">
+            <input type="checkbox" class="v3" name="v3" value="true" <% if (sonarrSettings && sonarrSettings.v3 === 'true') { %>checked<% } %>>
+        </div>
+    </div>
+
+    <div class="form-group row">
         <label for="host" class=" col-sm-3 col-form-label">Host or IP</label>
         <div class="col-sm-6">
             <input type="text" class="form-control host" name="host" value="<% if (sonarrSettings && sonarrSettings.host) { %><%=sonarrSettings.host %><% } %>" required>

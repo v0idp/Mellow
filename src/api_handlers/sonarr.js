@@ -191,30 +191,13 @@ module.exports = class Sonarr {
         });
     }
 
-    addSeries(series, profile, rootfolder, seasonsfolder = false, monitored = true, ignoreEpisodesWithFiles = true, ignoreEpisodesWithoutFiles = false, searchForMissingEpisodes = false, languageprofile = undefined) {
+    addSeries(newSeries) {
         return new Promise((resolve, reject) => {
             post({
                 headers: {'accept' : 'application/json',
                 'User-Agent': `Mellow/${process.env.npm_package_version}`},
                 url: this.endpoints['/series'],
-                body: {
-                    "tvdbId": series.tvdbId,
-                    "title": series.title,
-                    "profileId": profile.id,
-                    "titleSlug": series.titleSlug,
-                    "images": series.images,
-                    "seasons": series.seasons, // TODO: add functionality to request individual seasons
-                    "rootFolderPath": rootfolder.path,
-                    "seasonFolder": seasonsfolder,
-                    "monitored": monitored,
-                    "languageProfileId": languageprofile,
-                    "addOptions":
-                    {
-                        "ignoreEpisodesWithFiles": ignoreEpisodesWithFiles,
-                        "ignoreEpisodesWithoutFiles": ignoreEpisodesWithoutFiles,
-                        "searchForMissingEpisodes": searchForMissingEpisodes
-                    }
-                }
+                body: newSeries
             }).then(({response, body}) => {
                 if (response.statusCode === 200) {
                     const data = JSON.parse(body);

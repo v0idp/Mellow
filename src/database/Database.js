@@ -70,6 +70,7 @@ module.exports = class Database {
             newWebConfig.sonarr.rootfolderanime = request.body.rootfolderanime;
             newWebConfig.sonarr.languageprofile = request.body.languageprofile;
             newWebConfig.sonarr.seasonfolders = (request.body.seasonfolders) ? 'true' : 'false';
+            newWebConfig.sonarr.v3 = (request.body.v3) ? 'true' : 'false';
         } else if (request.originalUrl == '/radarr' && request.body.apiKey != '' && request.body.host != '') {
             newWebConfig.radarr.host = request.body.host;
             newWebConfig.radarr.port = request.body.port;
