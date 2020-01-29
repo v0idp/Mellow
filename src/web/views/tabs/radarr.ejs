@@ -50,8 +50,8 @@
     <div class="form-group row">
         <label for="profile" class=" col-sm-3 col-form-label">Profile</label>
         <div class="col-sm-6">
-            <select name="profile" id="profile" class="form-control profile" required>
-                <option value=0></option>
+            <select name="profile" id="profile" class="form-control profile">
+                <option value=0>Please select</option>
                 <% if (radarrOptions.radarr) { %>
                     <% for (let i = 1; i <= radarrOptions.radarr.length; i++) { %>
                         <option value=<%= i %> <% if (radarrSettings && parseInt(radarrSettings.profile) == i) { %>selected<% }%>><%= radarrOptions.radarr[i-1].name %></option>
@@ -62,16 +62,13 @@
                 After successfully saving your configuration, select a profile. (Otherwise requests won't work)
             </small>
         </div>
-        <div class="col-sm-3 text-muted">
-            <em>Required</em>
-        </div>
     </div>
 
     <div class="form-group row">
         <label for="rootfolder" class=" col-sm-3 col-form-label">Rootfolder</label>
         <div class="col-sm-6">
-            <select name="rootfolder" id="rootfolder" class="form-control rootfolder" required>
-                <option value=0></option>
+            <select name="rootfolder" id="rootfolder" class="form-control rootfolder">
+                <option value=0>Please select</option>
                 <% if (radarrOptions.radarr) { %>
                     <% for (let i = 1; i <= radarrOptions.radarr.length; i++) { %>
                         <option value=<%= i %> <% if (radarrSettings && parseInt(radarrSettings.rootfolder) == i) { %>selected<% }%>><%= radarrOptions.radarr[i-1].path %></option>
@@ -82,8 +79,17 @@
                 After successfully saving your configuration, select a rootfolder. (Otherwise requests won't work)
             </small>
         </div>
-        <div class="col-sm-3 text-muted">
-            <em>Required</em>
+    </div>
+
+    <div class="form-group row">
+        <label for="minimumavailability" class=" col-sm-3 col-form-label">Default Service</label>
+        <div class="col-sm-6">
+            <select name="minimumavailability" id="minimumavailability" class="form-control minimumavailability">
+                <option value="Announced" <% if (radarrSettings && radarrSettings.minimumavailability == "Announced") { %>selected<% }%>>Announced</option>
+                <option value="InCinemas" <% if (radarrSettings && radarrSettings.minimumavailability == "InCinemas") { %>selected<% }%>>In Cinemas</option>
+                <option value="Released" <% if (radarrSettings && radarrSettings.minimumavailability == "Released") { %>selected<% }%>>Physical / Web</option>
+                <option value="PreDb" <% if (radarrSettings && radarrSettings.minimumavailability == "PreDb") { %>selected<% }%>>PreDb</option>
+            </select>
         </div>
     </div>
 
