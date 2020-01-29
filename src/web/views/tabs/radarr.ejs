@@ -47,6 +47,46 @@
         </div>
     </div>
 
+    <div class="form-group row">
+        <label for="profile" class=" col-sm-3 col-form-label">Profile for Requests</label>
+        <div class="col-sm-6">
+            <select name="profile" id="profile" class="form-control profile" required>
+                <option value=0></option>
+                <% if (profiles.radarr) { %>
+                    <% for (let i = 1; i <= profiles.radarr.length; i++) { %>
+                        <option value=<%= i %> <% if (radarrSettings && parseInt(radarrSettings.profile) == i) { %>selected<% }%>><%= profiles.radarr[i-1].name %></option>
+                    <% } %>
+                <% } %>
+            </select>
+            <small class="form-text text-muted">
+                After successfully saving your configuration, select a profile. (Otherwise requests won't work)
+            </small>
+        </div>
+        <div class="col-sm-3 text-muted">
+            <em>Required</em>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="rootfolder" class=" col-sm-3 col-form-label">Rootfolder for Requests</label>
+        <div class="col-sm-6">
+            <select name="rootfolder" id="rootfolder" class="form-control rootfolder" required>
+                <option value=0></option>
+                <% if (rootfolders.radarr) { %>
+                    <% for (let i = 1; i <= rootfolders.radarr.length; i++) { %>
+                        <option value=<%= i %> <% if (radarrSettings && parseInt(radarrSettings.rootfolder) == i) { %>selected<% }%>><%= rootfolders.radarr[i-1].path %></option>
+                    <% } %>
+                <% } %>
+            </select>
+            <small class="form-text text-muted">
+                After successfully saving your configuration, select a rootfolder. (Otherwise requests won't work)
+            </small>
+        </div>
+        <div class="col-sm-3 text-muted">
+            <em>Required</em>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-sm-6 offset-sm-3">
             <button class = "btn btn-lg btn-primary float-left testApi" data-api="radarr" type = "button" class="" >Test Connectivity</button>

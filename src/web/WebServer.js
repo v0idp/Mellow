@@ -30,7 +30,7 @@ module.exports = class WebServer {
         } catch (err) {
             console.log('No BotClient is running to restart. Starting a new BotClient...');
         }
-        const botConfig = this.WebDatabase.getConfig()['bot'];
+        const botConfig = this.WebDatabase.webConfig.bot;
         if (botConfig && botConfig.token) {
             this.bot = new BotClient(this.WebDatabase, botConfig.token, botConfig.ownerid, botConfig.commandprefix);
             this.bot.init().catch(() => { console.error('Failed initializing BotClient. Is your token correct?') });

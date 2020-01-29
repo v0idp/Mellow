@@ -21,7 +21,7 @@ module.exports = class Database {
     }
 
     resetConfigTable(table) {
-        let newWebConfig = require(path.join(__dirname, '..', '..', 'data', 'settings.json'));
+        let newWebConfig = this.getConfig();
         for (const key in template[table]) {
             newWebConfig[table][key] = template[table][key];
         }
@@ -29,7 +29,7 @@ module.exports = class Database {
     }
 
     async saveConfig(request) {
-        let newWebConfig = require(path.join(__dirname, '..', '..', 'data', 'settings.json'));
+        let newWebConfig = this.getConfig();
         if (request.originalUrl == '/general') {
             const salt = await bcrypt.genSalt(10);
             const pwHash = await bcrypt.hash(request.body.password, salt);
@@ -64,12 +64,16 @@ module.exports = class Database {
             newWebConfig.sonarr.baseurl = request.body.baseUrl;
             newWebConfig.sonarr.apikey = request.body.apiKey;
             newWebConfig.sonarr.ssl = (request.body.ssl) ? 'true' : 'false';
+            newWebConfig.sonarr.profile = request.body.profile;
+            newWebConfig.sonarr.rootfolder = request.body.rootfolder;
         } else if (request.originalUrl == '/radarr' && request.body.apiKey != '' && request.body.host != '') {
             newWebConfig.radarr.host = request.body.host;
             newWebConfig.radarr.port = request.body.port;
             newWebConfig.radarr.baseurl = request.body.baseUrl;
             newWebConfig.radarr.apikey = request.body.apiKey;
             newWebConfig.radarr.ssl = (request.body.ssl) ? 'true' : 'false';
+            newWebConfig.radarr.profile = request.body.profile;
+            newWebConfig.radarr.rootfolder = request.body.rootfolder;
         }
         storeData(newWebConfig);
     }
