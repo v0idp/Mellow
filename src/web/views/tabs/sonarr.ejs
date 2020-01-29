@@ -48,42 +48,94 @@
     </div>
 
     <div class="form-group row">
-        <label for="profile" class=" col-sm-3 col-form-label">Profile</label>
+        <label for="profile" class=" col-sm-3 col-form-label">Quality Profiles</label>
         <div class="col-sm-6">
-            <select name="profile" id="profile" class="form-control profile" required>
+            <select name="profile" id="profile" class="form-control profile">
                 <option value=0></option>
-                <% if (profiles.sonarr) { %>
-                    <% for (let i = 1; i <= profiles.sonarr.length; i++) { %>
-                        <option value=<%= i %> <% if (sonarrSettings && parseInt(sonarrSettings.profile) == i) { %>selected<% }%>><%= profiles.sonarr[i-1].name %></option>
+                <% if (sonarrOptions.profiles) { %>
+                    <% for (let i = 1; i <= sonarrOptions.profiles.length; i++) { %>
+                        <option value=<%= i %> <% if (sonarrSettings && parseInt(sonarrSettings.profile) == i) { %>selected<% }%>><%= sonarrOptions.profiles[i-1].name %></option>
                     <% } %>
                 <% } %>
             </select>
             <small class="form-text text-muted">
-                After successfully saving your configuration, select a profile. (Otherwise requests won't work)
+                After successfully saving your configuration, select a quality profile. (Otherwise requests won't work)
             </small>
-        </div>
-        <div class="col-sm-3 text-muted">
-            <em>Required</em>
         </div>
     </div>
 
     <div class="form-group row">
-        <label for="rootfolder" class=" col-sm-3 col-form-label">Rootfolder</label>
+        <label for="profileanime" class=" col-sm-3 col-form-label">Quality Profiles (Anime)</label>
         <div class="col-sm-6">
-            <select name="rootfolder" id="rootfolder" class="form-control rootfolder" required>
+            <select name="profileanime" id="profileanime" class="form-control profileanime">
                 <option value=0></option>
-                <% if (rootfolders.sonarr) { %>
-                    <% for (let i = 1; i <= rootfolders.sonarr.length; i++) { %>
-                        <option value=<%= i %> <% if (sonarrSettings && parseInt(sonarrSettings.rootfolder) == i) { %>selected<% }%>><%= rootfolders.sonarr[i-1].path %></option>
+                <% if (sonarrOptions.profiles) { %>
+                    <% for (let i = 1; i <= sonarrOptions.profiles.length; i++) { %>
+                        <option value=<%= i %> <% if (sonarrSettings && parseInt(sonarrSettings.profileanime) == i) { %>selected<% }%>><%= sonarrOptions.profiles[i-1].name %></option>
                     <% } %>
                 <% } %>
             </select>
             <small class="form-text text-muted">
-                After successfully saving your configuration, select a rootfolder. (Otherwise requests won't work)
+                After successfully saving your configuration, select a quality profile. (Otherwise requests won't work)
             </small>
         </div>
-        <div class="col-sm-3 text-muted">
-            <em>Required</em>
+    </div>
+
+    <div class="form-group row">
+        <label for="rootfolder" class=" col-sm-3 col-form-label">Default Root folders</label>
+        <div class="col-sm-6">
+            <select name="rootfolder" id="rootfolder" class="form-control rootfolder">
+                <option value=0></option>
+                <% if (sonarrOptions.rootfolders) { %>
+                    <% for (let i = 1; i <= sonarrOptions.rootfolders.length; i++) { %>
+                        <option value=<%= i %> <% if (sonarrSettings && parseInt(sonarrSettings.rootfolder) == i) { %>selected<% }%>><%= sonarrOptions.rootfolders[i-1].path %></option>
+                    <% } %>
+                <% } %>
+            </select>
+            <small class="form-text text-muted">
+                After successfully saving your configuration, select a default root folder. (Otherwise requests won't work)
+            </small>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="rootfolderanime" class=" col-sm-3 col-form-label">Default Root folders (Anime)</label>
+        <div class="col-sm-6">
+            <select name="rootfolderanime" id="rootfolderanime" class="form-control rootfolderanime">
+                <option value=0></option>
+                <% if (sonarrOptions.rootfolders) { %>
+                    <% for (let i = 1; i <= sonarrOptions.rootfolders.length; i++) { %>
+                        <option value=<%= i %> <% if (sonarrSettings && parseInt(sonarrSettings.rootfolderanime) == i) { %>selected<% }%>><%= sonarrOptions.rootfolders[i-1].path %></option>
+                    <% } %>
+                <% } %>
+            </select>
+            <small class="form-text text-muted">
+                After successfully saving your configuration, select a default root rolder. (Otherwise requests won't work)
+            </small>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="languageprofile" class=" col-sm-3 col-form-label">Language Profiles</label>
+        <div class="col-sm-6">
+            <select name="languageprofile" id="languageprofile" class="form-control languageprofile">
+                <option value=0></option>
+                <% if (sonarrOptions.languageprofiles) { %>
+                    <% for (let i = 1; i <= sonarrOptions.languageprofiles.length; i++) { %>
+                        <option value=<%= i %> <% if (sonarrSettings && parseInt(sonarrSettings.languageprofile) == i) { %>selected<% }%>><%= sonarrOptions.languageprofiles[i-1].name %></option>
+                    <% } %>
+                <% } %>
+            </select>
+            <small class="form-text text-muted">
+                After successfully saving your configuration, select a language profile. (Otherwise requests won't work)
+            </small>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="seasonfolders" class="col-sm-3 form-check-label">Enable season folders</label>
+        <div class="col-sm-6">
+            <input type="checkbox" class="seasonfolders" name="seasonfolders" value="true" <% if (sonarrSettings && sonarrSettings.seasonfolders === 'true') { %>checked<% } %>>
         </div>
     </div>
 

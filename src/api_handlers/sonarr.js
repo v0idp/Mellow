@@ -9,7 +9,8 @@ module.exports = class Sonarr {
             "/series/lookup" : getURL(config.host, config.port, config.ssl, config.baseurl + `/api/series/lookup?term=%NAME%&apikey=${config.apikey}`),
             "/profile" : getURL(config.host, config.port, config.ssl, config.baseurl + `/api/profile?apikey=${config.apikey}`),
             "/rootfolder" : getURL(config.host, config.port, config.ssl, config.baseurl + `/api/rootfolder?apikey=${config.apikey}`),
-            "/system/status" : getURL(config.host, config.port, config.ssl, config.baseurl + `/api/system/status?apikey=${config.apikey}`)
+            "/system/status" : getURL(config.host, config.port, config.ssl, config.baseurl + `/api/system/status?apikey=${config.apikey}`),
+            "/languageprofile" : getURL(config.host, config.port, config.ssl, config.baseurl + `/api/v3/languageprofile?apikey=${config.apikey}`)
         };
     }
 
@@ -146,6 +147,43 @@ module.exports = class Sonarr {
                 }
                 console.log(`rootfolder ID: ${id} not found.`);
                 reject(`rootfolder ID: ${id} not found.`);
+            }).catch((err) => {
+                console.log(err);
+                reject(err);
+            });
+        });
+    }
+
+    getLanguageProfiles() {
+        return new Promise((resolve, reject) => {
+            get({
+                headers: {'accept' : 'application/json',
+                'User-Agent': `Mellow/${process.env.npm_package_version}`},
+                url: this.endpoints['/languageprofile']
+            }).then(({response, body}) => {
+                if (response.statusCode === 200) {
+                    const data = JSON.parse(body);
+                    resolve(data);
+                }
+                else {
+                    reject(response);
+                }
+            }).catch((err) => {
+                reject(err);
+            });
+        });
+    }
+
+    getLanguageProfileByID(id) {
+        return new Promise((resolve, reject) => {
+            this.getLanguageProfiles().then((languageprofiles) => {
+                for (let i = 0; i < languageprofiles.length; i++) {
+                    if (languageprofiles[i].id === id) {
+                        resolve(languageprofiles[i]);
+                    }
+                }
+                console.log(`languageprofile ID: ${id} not found.`);
+                reject(`languageprofile ID: ${id} not found.`);
             }).catch((err) => {
                 console.log(err);
                 reject(err);

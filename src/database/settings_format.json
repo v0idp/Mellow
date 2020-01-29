@@ -36,7 +36,11 @@
       "apikey": "",
       "ssl": "false",
       "profile": "0",
-      "rootfolder": "0"
+      "profileanime": "0",
+      "rootfolder": "0",
+      "rootfolderanime": "0",
+      "languageprofile": "0",
+      "seasonfolders": "false"
     },
     "radarr": {
       "host": "",
