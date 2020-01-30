@@ -1,6 +1,6 @@
 <form class="form-setting" role="form" id="form-bot" action="/bot" method="post">
     <div class="form-group row">
-        <label for="token" class=" col-sm-3 col-form-label">Token</label>
+        <label for="token" class="col-sm-3 col-form-label">Token</label>
         <div class="col-sm-6">
             <input type="text" class="form-control token" id="token" name="token" value="<% if (botSettings && botSettings.token) { %><%=botSettings.token %><% } %>" required>
         </div>
@@ -10,7 +10,7 @@
     </div>
 
     <div class="form-group row">
-        <label for="ownerID" class=" col-sm-3 col-form-label">Owner ID</label>
+        <label for="ownerID" class="col-sm-3 col-form-label">Owner ID</label>
         <div class="col-sm-6">
             <input type="text" class="form-control" id="ownerID" name="ownerID" value="<% if (botSettings && botSettings.ownerid) { %><%=botSettings.ownerid %><% } %>">
             <small id="ownerIDhelp" class="form-text text-muted">
@@ -20,14 +20,14 @@
     </div>
 
     <div class="form-group row">
-        <label for="commandPrefix" class=" col-sm-3 col-form-label">Command Prefix</label>
+        <label for="commandPrefix" class="col-sm-3 col-form-label">Command Prefix</label>
         <div class="col-sm-6">
             <input type="text" class="form-control" id="commandPrefix" name="commandPrefix" value="<% if (botSettings && botSettings.commandprefix) { %><%=botSettings.commandprefix %><% } %>">
         </div>
     </div>
 
     <div class="form-group row">
-        <label for="channelName" class=" col-sm-3 col-form-label">Channel Name to Monitor</label>
+        <label for="channelName" class="col-sm-3 col-form-label">Channel Name to Monitor</label>
         <div class="col-sm-6">
             <input type="text" class="form-control" id="channelName" name="channelName" value="<% if (botSettings && botSettings.channelname) { %><%=botSettings.channelname %><% } %>">
             <small class="form-text text-muted">
@@ -37,7 +37,7 @@
     </div>
 
     <div class="form-group row">
-        <label for="defaultservice" class=" col-sm-3 col-form-label">Default Service</label>
+        <label for="defaultservice" class="col-sm-3 col-form-label">Default Service</label>
         <div class="col-sm-6">
             <select name="defaultservice" id="defaultservice" class="form-control defaultservice">
                 <option value="ombi" <% if (botSettings && botSettings.defaultservice == "ombi") { %>selected<% }%>>Ombi</option>
@@ -54,7 +54,7 @@
     </div>
 
     <div class="form-group row">
-        <label for="unknownCommandResponse" class=" col-sm-3 form-check-label">Unknown Command Response</label>
+        <label for="unknownCommandResponse" class="col-sm-3 form-check-label">Unknown Command Response</label>
         <div class="col-sm-6">
             <input type="checkbox" id="unknownCommandResponse" name="unknownCommandResponse" value="true" <% if (botSettings && botSettings.unknowncommandresponse === 'true') { %>checked<% } %>>
         </div>

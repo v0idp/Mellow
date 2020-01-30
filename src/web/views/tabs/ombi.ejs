@@ -1,80 +1,80 @@
 <form class="form-setting" role="form" id="form-ombi" action="/ombi" method="post">
-    <div class="form-group row">
-        <label for="host" class=" col-sm-3 col-form-label">Host or IP</label>
-        <div class="col-sm-6">
-            <input type="text" class="form-control host" name="host" value="<% if (ombiSettings && ombiSettings.host) { %><%=ombiSettings.host %><% } %>" required>
-        </div>
-        <div class="col-sm-3 text-muted">
-            <em>Required</em>
-        </div>
-    </div>
+    <div class="row">
+        <div class="col-12 col-md-7">
 
-    <div class="form-group row">
-        <label for="port" class=" col-sm-3 col-form-label">Port</label>
-        <div class="col-sm-6">
-            <input type="number" class="form-control port" name="port" value="<% if (ombiSettings && ombiSettings.port) { %><%=ombiSettings.port %><% } %>">
-        </div>
-    </div>
+            <div class="form-group row">
+                <label for="host" class="col-md-3 col-form-label">Host or IP *</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control host" name="host" value="<% if (ombiSettings && ombiSettings.host) { %><%=ombiSettings.host %><% } %>" required>
+                </div>
+            </div>
 
-    <div class="form-group row">
-        <label for="baseurl" class=" col-sm-3 col-form-label">Base URL</label>
-        <div class="col-sm-6">
-            <input type="text" class="form-control baseurl" name="baseUrl" value="<% if (ombiSettings && ombiSettings.baseurl) { %><%=ombiSettings.baseurl %><% } %>">
-            <small class="form-text text-muted">
-                Only enter this if you have a custom base URL, for example with a reverse proxy.
-            </small>
-        </div>
-    </div>
+            <div class="form-group row">
+                <label for="port" class="col-md-3 col-form-label">Port</label>
+                <div class="col-md-8">
+                    <input type="number" class="form-control port" name="port" value="<% if (ombiSettings && ombiSettings.port) { %><%=ombiSettings.port %><% } %>">
+                </div>
+            </div>
 
-    <div class="form-group row">
-        <label for="ssl" class="col-sm-3 form-check-label">SSL</label>
-        <div class="col-sm-6">
-            <input type="checkbox" class="ssl" name="ssl" value="true" <% if (ombiSettings && ombiSettings.ssl === 'true') { %>checked<% } %>>
-        </div>
-    </div>
+            <div class="form-group row">
+                <label for="baseurl" class="col-md-3 col-form-label">Base URL</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control baseurl" name="baseUrl" value="<% if (ombiSettings && ombiSettings.baseurl) { %><%=ombiSettings.baseurl %><% } %>">
+                    <small class="form-text text-muted">
+                        Only enter this if you have a custom base URL, for example with a reverse proxy.
+                    </small>
+                </div>
+            </div>
 
-    <div class="form-group row">
-        <label for="apikey" class=" col-sm-3 col-form-label">API Key</label>
-        <div class="col-sm-6">
-            <input type="text" class="form-control apikey" name="apiKey" value="<% if (ombiSettings && ombiSettings.apikey) { %><%=ombiSettings.apikey %><% } %>" required>
-        </div>
-        <div class="col-sm-3 text-muted">
-            <em>Required</em>
-        </div>
-    </div>
+            <div class="form-group row">
+                <label for="ssl" class="col-md-3 form-check-label">SSL</label>
+                <div class="col-md-8">
+                    <input type="checkbox" class="ssl" name="ssl" value="true" <% if (ombiSettings && ombiSettings.ssl === 'true') { %>checked<% } %>>
+                </div>
+            </div>
 
-    <div class="form-group row">
-        <label for="requesttv" class=" col-sm-3 col-form-label">Request TV Shows</label>
-        <div class="col-sm-6">
-            <input type="text" class="form-control requesttv" name="requestTV" value="<% if (ombiSettings && ombiSettings.requesttv) { %><%=ombiSettings.requesttv %><% } %>">
-            <small class="form-text text-muted">
-                Enter the Discord role name. Leave blank if anyone can request.
-            </small>
+            <div class="form-group row">
+                <label for="apikey" class="col-md-3 col-form-label">API Key *</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control apikey" name="apiKey" value="<% if (ombiSettings && ombiSettings.apikey) { %><%=ombiSettings.apikey %><% } %>" required>
+                </div>
+            </div>
         </div>
-    </div>
+        <div class="col-md-5">
+            <div class="form-group row">
+                <label for="requesttv" class="col-md-4 col-form-label">Request TV Shows</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control requesttv" name="requestTV" value="<% if (ombiSettings && ombiSettings.requesttv) { %><%=ombiSettings.requesttv %><% } %>">
+                    <small class="form-text text-muted">
+                        Enter the Discord role name. Leave blank if anyone can request.
+                    </small>
+                </div>
+            </div>
 
-    <div class="form-group row">
-        <label for="requestmovie" class=" col-sm-3 col-form-label">Request Movies</label>
-        <div class="col-sm-6">
-            <input type="text" class="form-control requestmovie" name="requestMovie" value="<% if (ombiSettings && ombiSettings.requestmovie) { %><%=ombiSettings.requestmovie %><% } %>">
-            <small class="form-text text-muted">
-                Enter the Discord role name. Leave blank if anyone can request.
-            </small>
-        </div>
-    </div>
+            <div class="form-group row">
+                <label for="requestmovie" class="col-md-4 col-form-label">Request Movies</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control requestmovie" name="requestMovie" value="<% if (ombiSettings && ombiSettings.requestmovie) { %><%=ombiSettings.requestmovie %><% } %>">
+                    <small class="form-text text-muted">
+                        Enter the Discord role name. Leave blank if anyone can request.
+                    </small>
+                </div>
+            </div>
 
-    <div class="form-group row">
-        <label for="username" class=" col-sm-3 col-form-label">Ombi Username</label>
-        <div class="col-sm-6">
-            <input type="text" class="form-control username" name="userName" value="<% if (ombiSettings && ombiSettings.username) { %><%=ombiSettings.username %><% } %>">
-            <small class="form-text text-muted">
-                Enter Ombi username if you want custom permissions.
-            </small>
+            <div class="form-group row">
+                <label for="username" class="col-md-4 col-form-label">Ombi Username</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control username" name="userName" value="<% if (ombiSettings && ombiSettings.username) { %><%=ombiSettings.username %><% } %>">
+                    <small class="form-text text-muted">
+                        Enter Ombi username if you want custom permissions.
+                    </small>
+                </div>
+            </div>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-sm-6 offset-sm-3">
+        <div class="col-12">
             <button class = "btn btn-lg btn-primary float-left testApi" data-api="ombi" type = "button" >Test Connectivity</button>
             <button class = "btn btn-lg btn-primary float-right" type = "submit" name = "submit">Submit</button>
             <a href="/ombi/reset" class="btn btn-lg btn-outline-primary reset-button float-right">Reset</a>
