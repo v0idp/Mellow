@@ -1,6 +1,6 @@
 <form class="form-setting" role ="form" action="/general" method="post">
     <div class="form-group row">
-        <label for="username" class=" col-sm-3 col-form-label">Username</label>
+        <label for="username" class="col-sm-3 col-form-label">Username</label>
         <div class="col-sm-6">
             <input type="text" class="form-control" id="username" name="username" value="<% if (generalSettings && generalSettings.username) { %><%=generalSettings.username %><% } %>" required>
         </div>
