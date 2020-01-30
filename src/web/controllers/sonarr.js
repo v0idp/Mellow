@@ -1,4 +1,4 @@
-const Sonarr = require('../../api_handlers/sonarr.js');
+const Sonarr = require('../../api/sonarr.js');
 
 const test = async (req, res) => {
     const sonarr = new Sonarr(req.body);

@@ -1,4 +1,4 @@
-const Ombi = require('../../api_handlers/ombi.js');
+const Ombi = require('../../api/ombi.js');
 
 const test = async (req, res) => {
     const ombi = new Ombi(req.body);

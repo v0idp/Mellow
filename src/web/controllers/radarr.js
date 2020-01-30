@@ -1,4 +1,4 @@
-const Radarr = require('../../api_handlers/radarr.js');
+const Radarr = require('../../api/radarr.js');
 
 const test = async (req, res) => {
     const radarr = new Radarr(req.body);

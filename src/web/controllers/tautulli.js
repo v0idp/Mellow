@@ -1,4 +1,4 @@
-const Tautulli = require('../../api_handlers/tautulli.js');
+const Tautulli = require('../../api/tautulli.js');
 
 const test = async (req, res) => {
     const tautulli = new Tautulli(req.body);
