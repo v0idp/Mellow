@@ -6,7 +6,7 @@ const APIHandler = require('../api/api.js');
 module.exports = class BotClient extends Commando.Client {
 	constructor (webDatabase, token, ownerid, commandprefix) {
 		super({
-			"owner": (ownerid !== '') ? ownerid : null,
+			"owner": (ownerid !== '') ? ownerid : undefined,
 			"commandPrefix": (commandprefix !== '') ? commandprefix : '$',
 			"invite": 'https://discord.gg/zx2BWp2'
 		});
