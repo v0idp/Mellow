@@ -3,98 +3,97 @@
 </div>
 
 <form class="form-setting" role="form" id="form-radarr" action="/radarr" method="post">
-    <div class="form-group row">
-        <label for="host" class=" col-sm-3 col-form-label">Host or IP</label>
-        <div class="col-sm-6">
-            <input type="text" class="form-control host" name="host" value="<% if (radarrSettings && radarrSettings.host) { %><%=radarrSettings.host %><% } %>" required>
-        </div>
-        <div class="col-sm-3 text-muted">
-            <em>Required</em>
-        </div>
-    </div>
+    <div class="row">
+        <div class="col-12 col-md-7">
+            <div class="form-group row">
+                <label for="host" class="col-md-3 col-form-label">Host or IP *</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control host" name="host" value="<% if (radarrSettings && radarrSettings.host) { %><%=radarrSettings.host %><% } %>" required>
+                </div>
+            </div>
 
-    <div class="form-group row">
-        <label for="port" class=" col-sm-3 col-form-label">Port</label>
-        <div class="col-sm-6">
-            <input type="number" class="form-control port" name="port" value="<% if (radarrSettings && radarrSettings.port) { %><%=radarrSettings.port %><% } %>">
-        </div>
-    </div>
+            <div class="form-group row">
+                <label for="port" class="col-md-3 col-form-label">Port</label>
+                <div class="col-md-8">
+                    <input type="number" class="form-control port" name="port" value="<% if (radarrSettings && radarrSettings.port) { %><%=radarrSettings.port %><% } %>">
+                </div>
+            </div>
 
-    <div class="form-group row">
-        <label for="baseurl" class=" col-sm-3 col-form-label">Base URL</label>
-        <div class="col-sm-6">
-            <input type="text" class="form-control baseurl" name="baseUrl" value="<% if (radarrSettings && radarrSettings.baseurl) { %><%=radarrSettings.baseurl %><% } %>">
-            <small class="form-text text-muted">
-                Only enter this if you have a custom base URL, for example with a reverse proxy.
-            </small>
-        </div>
-    </div>
+            <div class="form-group row">
+                <label for="baseurl" class="col-md-3 col-form-label">Base URL</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control baseurl" name="baseUrl" value="<% if (radarrSettings && radarrSettings.baseurl) { %><%=radarrSettings.baseurl %><% } %>">
+                    <small class="form-text text-muted">
+                        Only enter this if you have a custom base URL, for example with a reverse proxy.
+                    </small>
+                </div>
+            </div>
 
-    <div class="form-group row">
-        <label for="ssl" class="col-sm-3 form-check-label">SSL</label>
-        <div class="col-sm-6">
-            <input type="checkbox" class="ssl" name="ssl" value="true" <% if (radarrSettings && radarrSettings.ssl === 'true') { %>checked<% } %>>
-        </div>
-    </div>
+            <div class="form-group row">
+                <label for="ssl" class="col-md-3 form-check-label">SSL</label>
+                <div class="col-md-8">
+                    <input type="checkbox" class="ssl" name="ssl" value="true" <% if (radarrSettings && radarrSettings.ssl === 'true') { %>checked<% } %>>
+                </div>
+            </div>
 
-    <div class="form-group row">
-        <label for="apikey" class=" col-sm-3 col-form-label">API Key</label>
-        <div class="col-sm-6">
-            <input type="text" class="form-control apikey" name="apiKey" value="<% if (radarrSettings && radarrSettings.apikey) { %><%=radarrSettings.apikey %><% } %>" required>
+            <div class="form-group row">
+                <label for="apikey" class="col-md-3 col-form-label">API Key *</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control apikey" name="apiKey" value="<% if (radarrSettings && radarrSettings.apikey) { %><%=radarrSettings.apikey %><% } %>" required>
+                </div>
+            </div>
         </div>
-        <div class="col-sm-3 text-muted">
-            <em>Required</em>
-        </div>
-    </div>
+        <div class="col-md-5">
+            <div class="form-group row">
+                <label for="profile" class="col-md-4 col-form-label">Quality Profiles</label>
+                <div class="col-md-8">
+                    <select name="profile" id="profile-radarr" class="form-control profile">
+                        <option value=0>Please select</option>
+                        <% if (radarrOptions.profiles) { %>
+                            <% for (let i = 1; i <= radarrOptions.profiles.length; i++) { %>
+                                <option value=<%= i %> <% if (radarrSettings && parseInt(radarrSettings.profile) == i) { %>selected<% }%>><%= radarrOptions.profiles[i-1].name %></option>
+                            <% } %>
+                        <% } %>
+                    </select>
+                    <small class="form-text text-muted">
+                        After successfully saving your configuration, select a profile. (Otherwise requests won't work)
+                    </small>
+                </div>
+            </div>
 
-    <div class="form-group row">
-        <label for="profile" class=" col-sm-3 col-form-label">Quality Profiles</label>
-        <div class="col-sm-6">
-            <select name="profile" id="profile" class="form-control profile">
-                <option value=0>Please select</option>
-                <% if (radarrOptions.profiles) { %>
-                    <% for (let i = 1; i <= radarrOptions.profiles.length; i++) { %>
-                        <option value=<%= i %> <% if (radarrSettings && parseInt(radarrSettings.profile) == i) { %>selected<% }%>><%= radarrOptions.profiles[i-1].name %></option>
-                    <% } %>
-                <% } %>
-            </select>
-            <small class="form-text text-muted">
-                After successfully saving your configuration, select a profile. (Otherwise requests won't work)
-            </small>
-        </div>
-    </div>
+            <div class="form-group row">
+                <label for="rootfolder" class="col-md-4 col-form-label">Default Root folders</label>
+                <div class="col-md-8">
+                    <select name="rootfolder" id="rootfolder-radarr" class="form-control rootfolder">
+                        <option value=0>Please select</option>
+                        <% if (radarrOptions.rootfolders) { %>
+                            <% for (let i = 1; i <= radarrOptions.rootfolders.length; i++) { %>
+                                <option value=<%= i %> <% if (radarrSettings && parseInt(radarrSettings.rootfolder) == i) { %>selected<% }%>><%= radarrOptions.rootfolders[i-1].path %></option>
+                            <% } %>
+                        <% } %>
+                    </select>
+                    <small class="form-text text-muted">
+                        After successfully saving your configuration, select a rootfolder. (Otherwise requests won't work)
+                    </small>
+                </div>
+            </div>
 
-    <div class="form-group row">
-        <label for="rootfolder" class=" col-sm-3 col-form-label">Default Root folders</label>
-        <div class="col-sm-6">
-            <select name="rootfolder" id="rootfolder" class="form-control rootfolder">
-                <option value=0>Please select</option>
-                <% if (radarrOptions.rootfolders) { %>
-                    <% for (let i = 1; i <= radarrOptions.rootfolders.length; i++) { %>
-                        <option value=<%= i %> <% if (radarrSettings && parseInt(radarrSettings.rootfolder) == i) { %>selected<% }%>><%= radarrOptions.rootfolders[i-1].path %></option>
-                    <% } %>
-                <% } %>
-            </select>
-            <small class="form-text text-muted">
-                After successfully saving your configuration, select a rootfolder. (Otherwise requests won't work)
-            </small>
-        </div>
-    </div>
-
-    <div class="form-group row">
-        <label for="minimumavailability" class=" col-sm-3 col-form-label">Default Service</label>
-        <div class="col-sm-6">
-            <select name="minimumavailability" id="minimumavailability" class="form-control minimumavailability">
-                <option value="Announced" <% if (radarrSettings && radarrSettings.minimumavailability == "Announced") { %>selected<% }%>>Announced</option>
-                <option value="InCinemas" <% if (radarrSettings && radarrSettings.minimumavailability == "InCinemas") { %>selected<% }%>>In Cinemas</option>
-                <option value="Released" <% if (radarrSettings && radarrSettings.minimumavailability == "Released") { %>selected<% }%>>Physical / Web</option>
-                <option value="PreDb" <% if (radarrSettings && radarrSettings.minimumavailability == "PreDb") { %>selected<% }%>>PreDb</option>
-            </select>
+            <div class="form-group row">
+                <label for="minimumavailability" class="col-md-4 col-form-label">Default Service</label>
+                <div class="col-md-8">
+                    <select name="minimumavailability" id="minimumavailability" class="form-control minimumavailability">
+                        <option value="Announced" <% if (radarrSettings && radarrSettings.minimumavailability == "Announced") { %>selected<% }%>>Announced</option>
+                        <option value="InCinemas" <% if (radarrSettings && radarrSettings.minimumavailability == "InCinemas") { %>selected<% }%>>In Cinemas</option>
+                        <option value="Released" <% if (radarrSettings && radarrSettings.minimumavailability == "Released") { %>selected<% }%>>Physical / Web</option>
+                        <option value="PreDb" <% if (radarrSettings && radarrSettings.minimumavailability == "PreDb") { %>selected<% }%>>PreDb</option>
+                    </select>
+                </div>
+            </div>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-sm-6 offset-sm-3">
+        <div class="col-12">
             <button class = "btn btn-lg btn-primary float-left testApi" data-api="radarr" type = "button" class="" >Test Connectivity</button>
             <button class = "btn btn-lg btn-primary float-right" type = "submit" name = "submit">Submit</button>
             <a href="/radarr/reset" class="btn btn-lg btn-outline-primary reset-button float-right">Reset</a>
