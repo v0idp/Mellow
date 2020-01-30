@@ -39,9 +39,7 @@ module.exports = class BotClient extends Commando.Client {
 				this.registry
 				.registerDefaultGroups()
 				.registerGroups([
-					['ombi', 'Ombi'],
-					['sonarr', 'Sonarr'],
-					['radarr', 'Radarr'],
+					['searchrequest', 'Search & Request'],
 					['tautulli', 'Tautulli']
 				])
 				.registerDefaultTypes()
@@ -59,15 +57,13 @@ module.exports = class BotClient extends Commando.Client {
 					if(checkGroups.indexOf(group.name.toLowerCase()) > -1) {
 						const groupConfig = this.webDatabase.webConfig[group.name.toLowerCase()];
 						if (groupConfig.host === "" || groupConfig.apikey === "")
-							group.commands.forEach((command) => {
-								this.registry.unregisterCommand(command);
-							});
+							group.commands.forEach((command) => this.registry.unregisterCommand(command));
 					}
 				});
 
 				this.dispatcher.addInhibitor((message) => {
 					// Older versions of the DB may not have channelName defined
-					const bot = this.webDatabase.getConfig()['bot'];
+					const bot = this.webDatabase.webConfig['bot'];
 					if (!bot.channelname || bot.channelname.length == 0) {
 						return false;
 					}
