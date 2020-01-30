@@ -25,6 +25,7 @@ $(function() {
                 setSuccessMsg(buildMsg, bot);
             }
             $('#form-' + bot + ' .testBot').html('Test Connectivity');
+            window.scrollTo(0,0);
         });
     }
 
@@ -56,6 +57,7 @@ $(function() {
                 setSuccessMsg(buildMsg, api);
             }
             $('#form-' + api + ' .testApi').html('Test Connectivity');
+            window.scrollTo(0,0);
         });
     }
 
@@ -98,6 +100,7 @@ $(function() {
         // make sure that we actually have enough data to proceed first...
         if (!request.token) {
             setWarningMsg('One or more required fields are missing. Please double check your configuration.', request.bot);
+            window.scrollTo(0,0);
             return false;
         }
 
@@ -135,6 +138,7 @@ $(function() {
         // make sure that we actually have enough data to proceed first...
         if (!request.host || !request.apikey) {
             setWarningMsg('One or more required fields are missing. Please double check your configuration.', request.api);
+            window.scrollTo(0,0);
             return false;
         }
 
