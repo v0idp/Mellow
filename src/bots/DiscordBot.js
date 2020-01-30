@@ -1,7 +1,7 @@
 const Commando = require('discord.js-commando');
 const path = require('path');
 const fs = require('fs');
-const APIHandler = require('../api_handlers/api.js');
+const APIHandler = require('../api/api.js');
 
 module.exports = class BotClient extends Commando.Client {
 	constructor (webDatabase, token, ownerid, commandprefix) {

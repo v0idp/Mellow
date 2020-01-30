@@ -1,6 +1,6 @@
 const { ucwords } = require('../../util.js');
-const Sonarr = require('../../api_handlers/sonarr.js');
-const Radarr = require('../../api_handlers/radarr.js');
+const Sonarr = require('../../api/sonarr.js');
+const Radarr = require('../../api/radarr.js');
 
 const render = async (req, res) => {
     const config = req.webserver.WebDatabase.webConfig;
