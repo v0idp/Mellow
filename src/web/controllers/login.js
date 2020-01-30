@@ -4,7 +4,7 @@ const { JWT_SECRET } = require('../config/keys');
 
 const signToken = (username, rememberme) => {
     return JWT.sign({user: username}, JWT_SECRET, (rememberme === "true") ? 
-    null : {
+    undefined : {
         expiresIn: '30m'
     });
 }
