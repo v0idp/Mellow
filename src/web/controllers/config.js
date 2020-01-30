@@ -33,7 +33,7 @@ const render = async (req, res) => {
         },
         radarrOptions: {
             profiles: (radarrProfiles) ? radarrProfiles : undefined,
-            radarr: (radarrRootFolders) ? radarrRootFolders : undefined
+            rootfolders: (radarrRootFolders) ? radarrRootFolders : undefined
         }
     });
 }
