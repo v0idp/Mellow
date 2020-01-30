@@ -3,7 +3,7 @@ const tvmaze = new TVMaze();
 
 module.exports = buildSonarrSeries = (series, sonarr) => {
     if (sonarr.profile === "0" || sonar.rootfolder === "0") {
-        console.log("Please set quality profiles and default root folders in sonarr config!");
+        console.log("Please set quality profile and default root folder in sonarr config!");
         return undefined;
     }
 
