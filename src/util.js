@@ -31,8 +31,8 @@ const get = function(options) {
 
 const post = function(options) {
     return new Promise(function(resolve, reject) {
-        request.post(options, function(error, response, body){
-            if (!error && response.statusCode == 200) resolve({error, response, body});
+        request.post(options, function(error, response, body) {
+            if (!error && response.statusCode < 300) resolve({error, response, body});
             else reject({error, body});
         });
     });

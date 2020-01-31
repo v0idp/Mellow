@@ -37,8 +37,8 @@
       "ssl": "false",
       "profile": "0",
       "profileanime": "0",
-      "rootfolder": "0",
-      "rootfolderanime": "0",
+      "rootfolder": "",
+      "rootfolderanime": "",
       "languageprofile": "0",
       "seasonfolders": "false",
       "v3": "false"
@@ -50,7 +50,7 @@
       "apikey": "",
       "ssl": "false",
       "profile": "0",
-      "rootfolder": "0",
+      "rootfolder": "",
       "minimumavailability": "Announced"
     }
   }

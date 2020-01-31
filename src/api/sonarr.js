@@ -197,19 +197,19 @@ module.exports = class Sonarr {
                 headers: {'accept' : 'application/json',
                 'User-Agent': `Mellow/${process.env.npm_package_version}`},
                 url: this.endpoints['/series'],
-                body: newSeries
+                body: JSON.stringify(newSeries)
             }).then(({response, body}) => {
-                if (response.statusCode === 200) {
+                if (response.statusCode === 201) {
                     const data = JSON.parse(body);
                     resolve(data);
                 }
                 else {
                     console.log(response);
-                    reject(response);
+                    reject();
                 }
             }).catch((err) => {
                 console.log(err);
-                reject(err);
+                reject();
             });
         });
     }
