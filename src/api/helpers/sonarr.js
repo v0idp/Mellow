@@ -1,4 +1,4 @@
-const TVMaze = require('../tvMaze.js');
+const TVMaze = require('../tvmaze.js');
 const tvmaze = new TVMaze();
 
 module.exports = buildSonarrSeries = (series, sonarr) => {
