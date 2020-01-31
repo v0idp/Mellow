@@ -1,5 +1,6 @@
 const commando = require('discord.js-commando');
-const { executeMovie } = require('./services/ombi.js');
+const { executeMovie } = require('../../services/ombi.js');
+const executeAdd = require('../../services/radarr.js');
 
 module.exports = class searchMovieCommand extends commando.Command {
 	constructor (client) {
@@ -24,12 +25,19 @@ module.exports = class searchMovieCommand extends commando.Command {
 	async run (msg, args) {
 		const config = this.client.webDatabase.webConfig;
 
-		// check which service is set to default and available and then use that
-		// only use ombi until radarr is implemented completely
-		if (config.bot.defaultservice === 'ombi')
+		if (config.bot.defaultservice === 'ombi') {
 			if (config.ombi.host !== '' && config.ombi.apikey !== '')
-				return await executeMovie(this.client, msg, args);
-			else
-				return msg.reply('Please configure ombi first!');
+				return executeMovie(this.client, msg, args);
+			else if (config.sonarr.host !== '' && config.radarr.apikey !== '')
+				return executeAdd(this.client, msg, args);
+		}
+		else {
+			if (config.radarr.host !== '' && config.radarr.apikey !== '')
+				return executeAdd(this.client, msg, args);
+			else if (config.ombi.host !== '' && config.ombi.apikey !== '')
+				return executeMovie(this.client, msg, args);
+		}
+
+		return msg.reply('Please configure atleast **Ombi** or **Radarr** before using this command.');
 	}
 };

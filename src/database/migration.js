@@ -58,13 +58,25 @@ const migrateJSON = function() {
 
                 const oProps = Object.getOwnPropertyNames(oldSettings);
                 let oSize = oProps.length;
-                oProps.forEach((prop) => oSize += Object.getOwnPropertyNames(oldSettings[prop]).length);
+                let oPropSizes = [];
+                oProps.forEach((prop) => {
+                    oPropSizes.push(Object.getOwnPropertyNames(oldSettings[prop]).length);
+                    oSize += Object.getOwnPropertyNames(oldSettings[prop]).length;
+                });
 
                 const nProps = Object.getOwnPropertyNames(newSettings);
                 let nSize = nProps.length;
-                nProps.forEach((prop) => nSize += Object.getOwnPropertyNames(newSettings[prop]).length);
+                let nPropSizes = [];
+                nProps.forEach((prop) => {
+                    nPropSizes.push(Object.getOwnPropertyNames(newSettings[prop]).length);
+                    nSize += Object.getOwnPropertyNames(newSettings[prop]).length;
+                });
 
-                if (oSize !== nSize) {
+                for (let i = 0; i < oPropSizes.length; i++)
+                    if (oPropSizes[i] != nPropSizes[i])
+                        migrated = false;
+
+                if (oSize !== nSize || migrated === false) {
                     console.log("JSON Settings found! Migrating settings to new settings...");
                     migrated = false;
                 }

@@ -1,5 +1,6 @@
 const commando = require('discord.js-commando');
-const { executeTV } = require('./services/ombi.js');
+const { executeTV } = require('../../services/ombi.js');
+const executeAdd = require('../../services/sonarr.js');
 
 module.exports = class searchTVShowCommand extends commando.Command {
 	constructor (client) {
@@ -24,12 +25,19 @@ module.exports = class searchTVShowCommand extends commando.Command {
 	async run (msg, args) {
 		const config = this.client.webDatabase.webConfig;
 
-		// check which service is set to default and available and then use that
-		// only use ombi until sonarr is implemented completely
-		if (config.bot.defaultservice === 'ombi')
+		if (config.bot.defaultservice === 'ombi') {
 			if (config.ombi.host !== '' && config.ombi.apikey !== '')
-				return await executeTV(this.client, msg, args);
-			else
-				return msg.reply('Please configure ombi first!');
+				return executeTV(this.client, msg, args);
+			else if (config.sonarr.host !== '' && config.sonarr.apikey !== '')
+				return executeAdd(this.client, msg, args);
+		}
+		else {
+			if (config.sonarr.host !== '' && config.sonarr.apikey !== '')
+				return executeAdd(this.client, msg, args);
+			else if (config.ombi.host !== '' && config.ombi.apikey !== '')
+				return executeTV(this.client, msg, args);
+		}
+
+		return msg.reply('Please configure atleast **Ombi** or **Sonarr** before using this command.');
 	}
 };
