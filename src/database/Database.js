@@ -43,14 +43,14 @@ module.exports = class Database {
             newWebConfig.bot.unknowncommandresponse = (request.body.unknownCommandResponse) ? 'true' : 'false';
             newWebConfig.bot.channelname = request.body.channelName;
             newWebConfig.bot.defaultservice = request.body.defaultservice;
+            newWebConfig.bot.requesttv = request.body.requestTV.toLowerCase();
+            newWebConfig.bot.requestmovie = request.body.requestMovie.toLowerCase();
         } else if (request.originalUrl == '/ombi' && request.body.apiKey != '' && request.body.host != '') {
             newWebConfig.ombi.host = request.body.host;
             newWebConfig.ombi.port = request.body.port;
             newWebConfig.ombi.baseurl = request.body.baseUrl;
             newWebConfig.ombi.apikey = request.body.apiKey;
             newWebConfig.ombi.ssl = (request.body.ssl) ? 'true' : 'false';
-            newWebConfig.ombi.requesttv = request.body.requestTV.toLowerCase();
-            newWebConfig.ombi.requestmovie = request.body.requestMovie.toLowerCase();
             newWebConfig.ombi.username = request.body.userName.toLowerCase();
         } else if (request.originalUrl == '/tautulli' && request.body.apiKey != '' && request.body.host != '') {
             newWebConfig.tautulli.host = request.body.host;

@@ -4,12 +4,12 @@ const path = require('path');
 const outputMovie = (msg, movie) => {
     let movieEmbed = new Discord.MessageEmbed()
     .setTitle(`${movie.title} ${(movie.releaseDate) ? `(${movie.releaseDate.split('T')[0].substring(0,4)})` : ''}`)
-    .setDescription(movie.overview.substr(0, 255) + '(...)')
+    .setDescription(movie.overview.substr(0, 250) + '(...)')
     .setFooter(msg.author.username, `https://cdn.discordapp.com/avatars/${msg.author.id}/${msg.author.avatar}.png`)
     .setTimestamp(new Date())
     .setImage('https://image.tmdb.org/t/p/w500' + movie.posterPath)
     .setURL('https://www.themoviedb.org/movie/' + movie.theMovieDbId)
-    .attachFiles(path.join(__dirname, '../../../..', 'resources', 'tmdb.png'))
+    .attachFiles(path.join(__dirname, '../..', 'resources', 'tmdb.png'))
     .setThumbnail('attachment://tmdb.png');
 
     if (movie.available) movieEmbed.addField('__Available__', '✅', true);
@@ -25,12 +25,12 @@ const outputMovie = (msg, movie) => {
 const outputTVShow = (msg, show) => {
     let tvEmbed = new Discord.MessageEmbed()
     .setTitle(`${show.title} ${(show.firstAired) ? `(${show.firstAired.substring(0,4)})` : ''}`)
-    .setDescription(show.overview.substr(0, 255) + '(...)')
+    .setDescription(show.overview.substr(0, 250) + '(...)')
     .setFooter(msg.author.username, `https://cdn.discordapp.com/avatars/${msg.author.id}/${msg.author.avatar}.png`)
     .setTimestamp(new Date())
     .setImage(show.banner)
     .setURL(`https://www.thetvdb.com/?id=${show.id}&tab=series`)
-    .attachFiles(path.join(__dirname, '../../../..', 'resources', 'tvdb.png'))
+    .attachFiles(path.join(__dirname, '../..', 'resources', 'tvdb.png'))
     .setThumbnail('attachment://tvdb.png')
     .addField('__Network__', show.network, true)
     .addField('__Status__', show.status, true);
@@ -51,10 +51,10 @@ const getTMDbID = (client, msg, name) => {
             if (data.length > 1) {
                 let fieldContent = '';
                 data.forEach((movie, i) => {
-                    fieldContent += `${i+1}) ${movie.title} `
-                    if (movie.releaseDate) fieldContent += `(${movie.releaseDate.substring(0,4)}) `
-                    fieldContent += `[[TheMovieDb](https://www.themoviedb.org/movie/${movie.theMovieDbId})]\n`
-                })
+                    fieldContent += `${i+1}) ${movie.title} `;
+                    if (movie.releaseDate) fieldContent += `(${movie.releaseDate.substring(0,4)}) `;
+                    fieldContent += `[[TheMovieDb](https://www.themoviedb.org/movie/${movie.theMovieDbId})]\n`;
+                });
             
                 let showEmbed = new Discord.MessageEmbed();
                 showEmbed.setTitle('Ombi Movie Search')
@@ -96,10 +96,10 @@ const getTVDbID = (client, msg, name) => {
             if (data.length > 1) {
                 let fieldContent = '';
                 data.forEach((show, i) => {
-                    fieldContent += `${i+1}) ${show.title} `
-                    if (show.firstAired) fieldContent += `(${show.firstAired.substring(0,4)}) `
-                    fieldContent += `[[TheTVDb](https://www.thetvdb.com/?id=${show.id}&tab=series)]\n`
-                })
+                    fieldContent += `${i+1}) ${show.title} `;
+                    if (show.firstAired) fieldContent += `(${show.firstAired.substring(0,4)}) `;
+                    fieldContent += `[[TheTVDb](https://www.thetvdb.com/?id=${show.id}&tab=series)]\n`;
+                });
             
                 let showEmbed = new Discord.MessageEmbed();
                 showEmbed.setTitle('Ombi TV Show Search')
@@ -136,8 +136,8 @@ const getTVDbID = (client, msg, name) => {
 }
 
 const requestMovie = (client, msg, movieMsg, movie) => {
-    const ombi = client.webDatabase.webConfig['ombi'];
-    if ((!ombi.requestmovie || msg.member.roles.some(role => role.name.toLowerCase() === ombi.requestmovie.toLowerCase())) && (!movie.available && !movie.requested && !movie.approved)) {
+    const bot = client.webDatabase.webConfig['bot'];
+    if ((!bot.requestmovie || msg.member.roles.some(role => role.name.toLowerCase() === bot.requestmovie.toLowerCase())) && (!movie.available && !movie.requested && !movie.approved)) {
         msg.reply('If you want to request this movie please click on the ⬇ reaction.');
         movieMsg.react('⬇');
         
@@ -157,8 +157,8 @@ const requestMovie = (client, msg, movieMsg, movie) => {
 }
 
 const requestTVShow = (client, msg, showMsg, show) => {
-    const ombi = client.webDatabase.webConfig['ombi'];
-    if ((!ombi.requesttv || msg.member.roles.some(role => role.name.toLowerCase() === ombi.requesttv.toLowerCase())) && (!show.available && !show.requested && !show.approved)) {
+    const bot = client.webDatabase.webConfig['bot'];
+    if ((!bot.requesttv || msg.member.roles.some(role => role.name.toLowerCase() === bot.requesttv.toLowerCase())) && (!show.available && !show.requested && !show.approved)) {
         msg.reply('If you want to request this tv show please click on the ⬇ reaction.');
         showMsg.react('⬇');
         
@@ -198,7 +198,7 @@ const executeMovie = async (client, msg, args) => {
     if (tmdbid) {
         client.API.ombi.getMovieInformation(tmdbid).then((data) => {
             outputMovie(msg, data).then((dataMsg) => {
-                requestMovie(clien, msg, dataMsg, data);
+                requestMovie(client, msg, dataMsg, data);
             });
         }).catch(() => {
             return msg.reply('Something went wrong! Couldn\'t get movie information.');

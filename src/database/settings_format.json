@@ -10,7 +10,9 @@
       "channelname": "",
       "deletecommandmessages": "false",
       "unknowncommandresponse": "false",
-      "defaultservice": "ombi"
+      "defaultservice": "ombi",
+      "requesttv": "",
+      "requestmovie": ""
     },
     "ombi": {
       "host": "",
@@ -18,8 +20,6 @@
       "baseurl": "",
       "apikey": "",
       "ssl": "false",
-      "requesttv": "",
-      "requestmovie": "",
       "username": ""
     },
     "tautulli": {
