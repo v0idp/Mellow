@@ -18,7 +18,6 @@ const outputSeries = (msg, series) => {
     .addField('__Certification__', series.certification, true);
 
     if (series.id) seriesEmbed.addField('__Added__', '✅', true);
-    if (series.monitored) seriesEmbed.addField('__Monitored__', '✅', true);
 
     return msg.embed(seriesEmbed);
 }
@@ -74,7 +73,7 @@ const addSeries = (client, msg, series, seriesEmbed) => {
     if (typeof newSeries === "string") {
         return msg.reply(newSeries);
     }
-    if ((!bot.requesttv || msg.member.roles.some(role => role.name.toLowerCase() === bot.requesttv.toLowerCase()) && newSeries && !series.id)) {
+    if ((!bot.requesttv || msg.member.roles.some(role => role.name.toLowerCase() === bot.requesttv.toLowerCase())) && !series.id) {
         msg.reply('If you want to add this series please click on the ⬇ reaction.');
         seriesEmbed.react('⬇');
         

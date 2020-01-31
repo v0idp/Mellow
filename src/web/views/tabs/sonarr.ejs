@@ -62,7 +62,7 @@
                         <option value=0>Please select</option>
                         <% if (sonarrOptions.profiles) { %>
                             <% for (let i = 1; i <= sonarrOptions.profiles.length; i++) { %>
-                                <option value=<%= i %> <% if (sonarrSettings && parseInt(sonarrSettings.profile) == i) { %>selected<% }%>><%= sonarrOptions.profiles[i-1].name %></option>
+                                <option value=<%= sonarrOptions.profiles[i-1].id %> <% if (sonarrSettings && parseInt(sonarrSettings.profile) == i) { %>selected<% }%>><%= sonarrOptions.profiles[i-1].name %></option>
                             <% } %>
                         <% } %>
                     </select>
@@ -76,7 +76,7 @@
                         <option value=0>Please select</option>
                         <% if (sonarrOptions.profiles) { %>
                             <% for (let i = 1; i <= sonarrOptions.profiles.length; i++) { %>
-                                <option value=<%= i %> <% if (sonarrSettings && parseInt(sonarrSettings.profileanime) == i) { %>selected<% }%>><%= sonarrOptions.profiles[i-1].name %></option>
+                                <option value=<%= sonarrOptions.profiles[i-1].id %> <% if (sonarrSettings && parseInt(sonarrSettings.profileanime) == i) { %>selected<% }%>><%= sonarrOptions.profiles[i-1].name %></option>
                             <% } %>
                         <% } %>
                     </select>
@@ -90,7 +90,7 @@
                         <option value=0>Please select</option>
                         <% if (sonarrOptions.rootfolders) { %>
                             <% for (let i = 1; i <= sonarrOptions.rootfolders.length; i++) { %>
-                                <option value=<%= i %> <% if (sonarrSettings && parseInt(sonarrSettings.rootfolder) == i) { %>selected<% }%>><%= sonarrOptions.rootfolders[i-1].path %></option>
+                                <option value=<%= sonarrOptions.rootfolders[i-1].path %> <% if (sonarrSettings && sonarrSettings.rootfolder == sonarrOptions.rootfolders[i-1].path) { %>selected<% }%>><%= sonarrOptions.rootfolders[i-1].path %></option>
                             <% } %>
                         <% } %>
                     </select>
@@ -104,7 +104,7 @@
                         <option value=0>Please select</option>
                         <% if (sonarrOptions.rootfolders) { %>
                             <% for (let i = 1; i <= sonarrOptions.rootfolders.length; i++) { %>
-                                <option value=<%= i %> <% if (sonarrSettings && parseInt(sonarrSettings.rootfolderanime) == i) { %>selected<% }%>><%= sonarrOptions.rootfolders[i-1].path %></option>
+                                <option value=<%= sonarrOptions.rootfolders[i-1].path %> <% if (sonarrSettings && sonarrSettings.rootfolderanime == sonarrOptions.rootfolders[i-1].path) { %>selected<% }%>><%= sonarrOptions.rootfolders[i-1].path %></option>
                             <% } %>
                         <% } %>
                     </select>

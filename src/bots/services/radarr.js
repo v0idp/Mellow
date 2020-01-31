@@ -17,7 +17,6 @@ const outputMovie = (msg, movie) => {
     .addField('__Runtime__', `${movie.runtime}min`, true);
 
     if (movie.doesExist) movieEmbed.addField('__Added__', '✅', true);
-    if (movie.monitored) movieEmbed.addField('__Monitored__', '✅', true);
 
     return msg.embed(movieEmbed);
 }
@@ -26,7 +25,7 @@ const doesMovieExist = (client, tmdbId) => {
     return new Promise((resolve, reject) => {
         client.API.radarr.getMovies().then((movies) => {
             const fMovies = movies.filter((e) => e.tmdbId === tmdbId);
-            if (fMovies)
+            if (fMovies.length > 0)
                 resolve(true);
             else
                 resolve(false);
@@ -105,7 +104,7 @@ const addMovie = (client, msg, movie, movieEmbed) => {
     if (typeof newMovie === "string") {
         return msg.reply(newMovie);
     }
-    if ((!bot.requestmovie || msg.member.roles.some(role => role.name.toLowerCase() === bot.requestmovie.toLowerCase()) && !movie.doesExist)) {
+    if ((!bot.requestmovie || msg.member.roles.some(role => role.name.toLowerCase() === bot.requestmovie.toLowerCase())) && !movie.doesExist) {
         msg.reply('If you want to add this movie please click on the ⬇ reaction.');
         movieEmbed.react('⬇');
         
