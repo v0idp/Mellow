@@ -13,11 +13,20 @@
   "keywords": [
     "discord",
     "bot",
-    "commands"
+    "commands",
+    "mellow",
+    "sonarr",
+    "radarr",
+    "tautulli",
+    "plexpy",
+    "plex",
+    "ombi",
+    "docker",
+    "api",
+    "streaming"
   ],
   "license": "GPL-3.0",
   "scripts": {
-    "prestart": "npm install",
     "start": "node src/index.js"
   },
   "dependencies": {
