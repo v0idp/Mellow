@@ -18,13 +18,13 @@
 
 * [NodeJS 12.4.1 LTS or higher](https://nodejs.org/en/download/)
 
-## Create the bot
+## Create Bot
 
 Go to this website: https://discordapp.com/developers/applications/ and press ``new Application``. Copy the Client ID first, you will need that later.
 After you have done that go to the Settings Tab to the left and select Bot and press ``Add Bot``. You can now copy the Token from the Bot which you will
 need for the Mellow Configuration later on.
 
-## Invite the Bot
+## Invite Bot
 
 Before your Bot actually listen to the channels on your server you will have to invite it first. I recommend using this for beginners: https://discordapi.com/permissions.html
 Select the Permissions from below and paste the Client ID down there which you copied earlier. After that just click the link on the bottom and you will
