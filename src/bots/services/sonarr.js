@@ -5,7 +5,6 @@ const buildSonarrSeries = require('../../api/helpers/sonarr.js');
 const outputSeries = (msg, series) => {
     let seriesEmbed = new Discord.MessageEmbed()
     .setTitle(`${series.title} (${series.year})`)
-    .setDescription(series.overview.substr(0, 250) + '(...)')
     .setFooter(msg.author.username, `https://cdn.discordapp.com/avatars/${msg.author.id}/${msg.author.avatar}.png`)
     .setTimestamp(new Date())
     .setImage(series.remotePoster)
@@ -15,8 +14,9 @@ const outputSeries = (msg, series) => {
     .addField('__Network__', series.network, true)
     .addField('__Status__', series.status, true)
     .addField('__Seasons__', series.seasonCount, true)
-    .addField('__Certification__', series.certification, true);
 
+    if (series.overview) seriesEmbed.setDescription(series.overview.substr(0, 250) + '(...)');
+    if (series.certification) seriesEmbed.addField('__Certification__', series.certification, true);
     if (series.id) seriesEmbed.addField('__Added__', '✅', true);
 
     return msg.embed(seriesEmbed);

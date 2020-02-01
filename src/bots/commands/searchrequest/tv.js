@@ -38,6 +38,6 @@ module.exports = class searchTVShowCommand extends commando.Command {
 				return executeTV(this.client, msg, args);
 		}
 
-		return msg.reply('Please configure atleast **Ombi** or **Sonarr** before using this command.');
+		return msg.reply('Please configure **Ombi** or **Sonarr** before using this command.');
 	}
 };
