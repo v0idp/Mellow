@@ -40,6 +40,9 @@ module.exports = class BotClient extends Commando.Client {
 				.registerDefaultGroups()
 				.registerGroups([
 					['searchrequest', 'Search & Request'],
+					['ombi', 'Ombi'],
+					['sonarr', 'Sonarr'],
+					['radarr', 'Radarr'],
 					['tautulli', 'Tautulli']
 				])
 				.registerDefaultTypes()

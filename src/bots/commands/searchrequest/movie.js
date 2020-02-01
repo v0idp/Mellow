@@ -38,6 +38,6 @@ module.exports = class searchMovieCommand extends commando.Command {
 				return executeMovie(this.client, msg, args);
 		}
 
-		return msg.reply('Please configure atleast **Ombi** or **Radarr** before using this command.');
+		return msg.reply('Please configure **Ombi** or **Radarr** before using this command.');
 	}
 };
