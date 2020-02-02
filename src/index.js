@@ -1,16 +1,16 @@
 const BotClient = require('./bots/DiscordBot.js');
 const WebServer = require('./web/WebServer.js');
-const Database = require('./database/Database.js');
 const { migrateALL } = require('./database/migration.js');
 const { version } = require('../package.json');
 
 console.log(`Mellow v${version}`);
 migrateALL().then(() => {
     let bot;
+    const Database = require('./database/Database.js');
     const webDatabase = new Database();
     const botConfig = webDatabase.webConfig.bot;
     if (botConfig && botConfig.token) {
-        bot = new BotClient(webDatabase, botConfig.ownerid, botConfig.commandprefix);
+        bot = new BotClient(webDatabase, botConfig.token, botConfig.ownerid, botConfig.commandprefix);
         bot.init().catch((err) => {
             console.log('Failed initializing DiscordBot! Please check your bot configurations.');
             console.error(err);

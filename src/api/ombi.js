@@ -4,9 +4,10 @@ module.exports = class Ombi {
     constructor (config) {
         this.config = config;
         this.endpoints = {
-            "searchContent" : getURL(config.host, config.port, config.ssl, config.baseurl + '/api/v1/Search/%TYPE%/%NAME%'),
-            "getContentInformation" : getURL(config.host, config.port, config.ssl, config.baseurl + '/api/v1/Search/%TYPE%/info/%DBID%'),
-            "requestContent" : getURL(config.host, config.port, config.ssl, config.baseurl + '/api/v1/Request/%TYPE%/')
+            "/search/type/name" : getURL(config.host, config.port, config.ssl, config.baseurl + '/api/v1/search/%TYPE%/%NAME%'),
+            "/search/type/info/id" : getURL(config.host, config.port, config.ssl, config.baseurl + '/api/v1/search/%TYPE%/info/%DBID%'),
+            "/request/type" : getURL(config.host, config.port, config.ssl, config.baseurl + '/api/v1/request/%TYPE%/'),
+            "/settings/about" : getURL(config.host, config.port, config.ssl, config.baseurl + '/api/v1/settings/about'),
         };
     }
 
@@ -16,7 +17,7 @@ module.exports = class Ombi {
                 headers: {'accept' : 'application/json',
                 'ApiKey': this.config.apikey,
                 'User-Agent': `Mellow/${process.env.npm_package_version}`},
-                url: replacePlaceholders(this.endpoints['searchContent'], { "%TYPE%":type, "%NAME%":encodeURI(name) })
+                url: replacePlaceholders(this.endpoints['/search/type/name'], { "%TYPE%":type, "%NAME%":encodeURI(name) })
             }).then(({response, body}) => {
                 if (response.statusCode === 200) {
                     const data = JSON.parse(body);
@@ -24,11 +25,11 @@ module.exports = class Ombi {
                 }
                 else {
                     console.log(response);
-                    reject()
+                    reject(response)
                 }
             }).catch((err) => {
                 console.log(err);
-                reject();
+                reject(err);
             });
         });
     }
@@ -39,7 +40,7 @@ module.exports = class Ombi {
                 headers: {'accept' : 'application/json',
                 'ApiKey': this.config.apikey,
                 'User-Agent': `Mellow/${process.env.npm_package_version}`},
-                url: replacePlaceholders(this.endpoints['getContentInformation'], { "%TYPE%":type, "%DBID%":dbid })
+                url: replacePlaceholders(this.endpoints['/search/type/info/id'], { "%TYPE%":type, "%DBID%":dbid })
             }).then(({response, body}) => {
                 if (response.statusCode === 200) {
                     const data = JSON.parse(body);
@@ -47,11 +48,11 @@ module.exports = class Ombi {
                 }
                 else {
                     console.log(response);
-                    reject()
+                    reject(response)
                 }
             }).catch((err) => {
                 console.log(err);
-                reject();
+                reject(err);
             });
         });
     }
@@ -65,13 +66,36 @@ module.exports = class Ombi {
                 'ApiAlias' : name,
                 'UserName' : this.config.username ? this.config.username : 'api',
                 'User-Agent': `Mellow/${process.env.npm_package_version}`},
-                url: replacePlaceholders(this.endpoints['requestContent'], { "%TYPE%":type }),
+                url: replacePlaceholders(this.endpoints['/request/type'], { "%TYPE%":type }),
                 body: JSON.stringify(body)
             }).then(() => {
                 resolve();
             }).catch((err) => {
                 console.log(err);
-                reject();
+                reject(err);
+            });
+        });
+    }
+
+    getSettingsAbout() {
+        return new Promise((resolve, reject) => {
+            get({
+                headers: {'accept' : 'application/json',
+                'ApiKey': this.config.apikey,
+                'User-Agent': `Mellow/${process.env.npm_package_version}`},
+                url: replacePlaceholders(this.endpoints['/settings/about'])
+            }).then(({response, body}) => {
+                if (response.statusCode === 200) {
+                    const data = JSON.parse(body);
+                    resolve(data);
+                }
+                else {
+                    console.log(response);
+                    reject(response)
+                }
+            }).catch((err) => {
+                console.log(err);
+                reject(err);
             });
         });
     }

@@ -9,19 +9,26 @@
 
 ## Features
 
-* Search for Movies & TV Shows in Ombi
-* Request Movies & TV Shows in Ombi
+* Search for Movies & TV Shows in Ombi or Sonarr / Radarr
+* Request Movies & TV Shows in Ombi or Sonarr / Radarr
 * Get a list of all Libraries on your Server in Tautulli
-* More features for Ombi, Sonarr and Radarr following soon...
+* Additional Features following soon!
 
 ## Requirements
 
 * [NodeJS 12.4.1 LTS or higher](https://nodejs.org/en/download/)
 
-## Installation & Configuration
+## Create Bot
 
-Before starting your bot you will need to invite it to your server first. I recommend using this for beginners: https://discordapi.com/permissions.html
-Your bot will need following permissions:
+Go to this website: https://discordapp.com/developers/applications/ and press ``new Application``. Copy the Client ID first, you will need that later.
+After you have done that go to the Settings Tab to the left and select Bot and press ``Add Bot``. You can now copy the Token from the Bot which you will
+need for the Mellow Configuration later on.
+
+## Invite Bot
+
+Before your Bot actually listen to the channels on your server you will have to invite it first. I recommend using this for beginners: https://discordapi.com/permissions.html
+Select the Permissions from below and paste the Client ID down there which you copied earlier. After that just click the link on the bottom and you will
+be redirect to a new page where you can select the server you want to invite the Bot too.
 
 * Read Messages
 * Embed Links
@@ -33,23 +40,22 @@ Your bot will need following permissions:
 * Mention @everyone
 * Add Reactions
 
-It's a bit more than the bot actually needs but if anything new is beeing added to the bot, it will already have the permissions to do it.
-Enter your bot client id into the field down below in the Permission Calculator. You can get it from your bot application site where you created your bot.
-Next click on the link at the bottom and invite the bot to your server.
+## Installation
 
 Go into the Mellow root folder and type
 ```sh
-npm run prestart
+npm install
 ```
 
 To start the bot just simply type
 ```sh
-npm run start
+npm start
 ```
 
-After starting the bot you will need to configure it by visiting ``youripordomain:port``
-and filling out the Bot Settings which will start the bot with your token.
-The default login credentials are username:``mellow`` password: ``default``. Please change these as soon as possible!
+## Configuration
+
+After starting the bot you will need to configure it by visiting ``youripordomain:port`` and filling out the Bot Settings which will start the bot with your token.
+The default login credentials are username: ``mellow`` password: ``default``. Please change these as soon as possible!
 Note: It's recommended to set a username and password in General Settings. This way only you can access the web interface.
 
 ## Docker Setup & Start
@@ -60,13 +66,12 @@ If you want to use this bot in a docker container you have to follow these steps
 ```
 docker run -d --restart=unless-stopped --name mellow \
    -v /opt/appdata/mellow/:/usr/src/app/data/ \
-   -e JWT_SECRET=random_string
+   -e JWT_SECRET=secret_password \
    -e PORT=5060 \
    -p 5060:5060 \
    voidp/mellow
 ```
-* if you want persistent data create a folder in ``/opt/appdata/mellow/``
-or use docker compose. A yaml file is provided for this purpose.
+* if you want persistent data create a folder in ``/opt/appdata/mellow/`` or use docker compose. A yaml file is provided for this purpose.
 
 ## Contributing
 

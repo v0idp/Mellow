@@ -11,13 +11,13 @@
         <a class="nav-link <% if (currentView == "ombi") { %>active<% } %>" id="ombi-tab" data-toggle="tab" href="#ombi" role="tab" aria-controls="ombi" aria-selected="false">Ombi</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link <% if (currentView == "tautulli") { %>active<% } %>" id="tautulli-tab" data-toggle="tab" href="#tautulli" role="tab" aria-controls="tautulli" aria-selected="false">Tautulli</a>
-    </li>
-    <li class="nav-item">
         <a class="nav-link <% if (currentView == "sonarr") { %>active<% } %>" id="sonarr-tab" data-toggle="tab" href="#sonarr" role="tab" aria-controls="sonarr" aria-selected="false">Sonarr</a>
     </li>
     <li class="nav-item">
         <a class="nav-link <% if (currentView == "radarr") { %>active<% } %>" id="radarr-tab" data-toggle="tab" href="#radarr" role="tab" aria-controls="radarr" aria-selected="false">Radarr</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link <% if (currentView == "tautulli") { %>active<% } %>" id="tautulli-tab" data-toggle="tab" href="#tautulli" role="tab" aria-controls="tautulli" aria-selected="false">Tautulli</a>
     </li>
     <li class="nav-item ml-auto">
         <a href="/login/logout" class="nav-link">Logout</a>
@@ -36,10 +36,6 @@
         <%- include('tabs/ombi'); -%>
     </div>
 
-    <div class="tab-pane fade <% if (currentView == "tautulli") { %>show active<% } %>" id="tautulli" role="tabpanel" aria-labelledby="tautulli-tab">
-        <%- include('tabs/tautulli'); -%>
-    </div>
-
     <div class="tab-pane fade <% if (currentView == "sonarr") { %>show active<% } %>" id="sonarr" role="tabpanel" aria-labelledby="sonarr-tab">
         <%- include('tabs/sonarr'); -%>
     </div>
@@ -48,9 +44,14 @@
         <%- include('tabs/radarr'); -%>
     </div>
 
+    <div class="tab-pane fade <% if (currentView == "tautulli") { %>show active<% } %>" id="tautulli" role="tabpanel" aria-labelledby="tautulli-tab">
+        <%- include('tabs/tautulli'); -%>
+    </div>
 </div>
 
 <%- include('inc/footer'); -%>
 <script src="/js/config.js"></script>
 
 <%- include('inc/post-script-footer'); -%>
+
+</br>

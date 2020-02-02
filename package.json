@@ -1,6 +1,6 @@
 {
   "name": "mellow",
-  "version": "2.2.19",
+  "version": "2.7.33",
   "main": "src/index.js",
   "author": "void* <voidp@protonmail.com> (https://github.com/v0idp)",
   "repository": {
@@ -13,11 +13,20 @@
   "keywords": [
     "discord",
     "bot",
-    "commands"
+    "commands",
+    "mellow",
+    "sonarr",
+    "radarr",
+    "tautulli",
+    "plexpy",
+    "plex",
+    "ombi",
+    "docker",
+    "api",
+    "streaming"
   ],
   "license": "GPL-3.0",
   "scripts": {
-    "prestart": "npm install",
     "start": "node src/index.js"
   },
   "dependencies": {
