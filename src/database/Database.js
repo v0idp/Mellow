@@ -21,7 +21,7 @@ module.exports = class Database {
     }
 
     resetConfigTable(table) {
-        let newWebConfig = require(path.join(__dirname, '..', '..', 'data', 'settings.json'));
+        let newWebConfig = this.getConfig();
         for (const key in template[table]) {
             newWebConfig[table][key] = template[table][key];
         }
@@ -29,7 +29,7 @@ module.exports = class Database {
     }
 
     async saveConfig(request) {
-        let newWebConfig = require(path.join(__dirname, '..', '..', 'data', 'settings.json'));
+        let newWebConfig = this.getConfig();
         if (request.originalUrl == '/general') {
             const salt = await bcrypt.genSalt(10);
             const pwHash = await bcrypt.hash(request.body.password, salt);
@@ -42,14 +42,15 @@ module.exports = class Database {
             newWebConfig.bot.deletecommandmessages = (request.body.deleteCommandMessages) ? 'true' : 'false';
             newWebConfig.bot.unknowncommandresponse = (request.body.unknownCommandResponse) ? 'true' : 'false';
             newWebConfig.bot.channelname = request.body.channelName;
+            newWebConfig.bot.defaultservice = request.body.defaultservice;
+            newWebConfig.bot.requesttv = request.body.requestTV.toLowerCase();
+            newWebConfig.bot.requestmovie = request.body.requestMovie.toLowerCase();
         } else if (request.originalUrl == '/ombi' && request.body.apiKey != '' && request.body.host != '') {
             newWebConfig.ombi.host = request.body.host;
             newWebConfig.ombi.port = request.body.port;
             newWebConfig.ombi.baseurl = request.body.baseUrl;
             newWebConfig.ombi.apikey = request.body.apiKey;
             newWebConfig.ombi.ssl = (request.body.ssl) ? 'true' : 'false';
-            newWebConfig.ombi.requesttv = request.body.requestTV.toLowerCase();
-            newWebConfig.ombi.requestmovie = request.body.requestMovie.toLowerCase();
             newWebConfig.ombi.username = request.body.userName.toLowerCase();
         } else if (request.originalUrl == '/tautulli' && request.body.apiKey != '' && request.body.host != '') {
             newWebConfig.tautulli.host = request.body.host;
@@ -63,12 +64,22 @@ module.exports = class Database {
             newWebConfig.sonarr.baseurl = request.body.baseUrl;
             newWebConfig.sonarr.apikey = request.body.apiKey;
             newWebConfig.sonarr.ssl = (request.body.ssl) ? 'true' : 'false';
+            newWebConfig.sonarr.profile = request.body.profile;
+            newWebConfig.sonarr.profileanime = request.body.profileanime;
+            newWebConfig.sonarr.rootfolder = request.body.rootfolder;
+            newWebConfig.sonarr.rootfolderanime = request.body.rootfolderanime;
+            newWebConfig.sonarr.languageprofile = request.body.languageprofile;
+            newWebConfig.sonarr.seasonfolders = (request.body.seasonfolders) ? 'true' : 'false';
+            newWebConfig.sonarr.v3 = (request.body.v3) ? 'true' : 'false';
         } else if (request.originalUrl == '/radarr' && request.body.apiKey != '' && request.body.host != '') {
             newWebConfig.radarr.host = request.body.host;
             newWebConfig.radarr.port = request.body.port;
             newWebConfig.radarr.baseurl = request.body.baseUrl;
             newWebConfig.radarr.apikey = request.body.apiKey;
             newWebConfig.radarr.ssl = (request.body.ssl) ? 'true' : 'false';
+            newWebConfig.radarr.profile = request.body.profile;
+            newWebConfig.radarr.rootfolder = request.body.rootfolder;
+            newWebConfig.radarr.minimumavailability = request.body.minimumavailability;
         }
         storeData(newWebConfig);
     }

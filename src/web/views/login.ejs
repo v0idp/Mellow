@@ -7,8 +7,14 @@
     <input type="text" class="form-control" name="username" placeholder="Username" required autofocus>
     <label for="password" class="sr-only">Password</label>
     <input type="password" name="password" class="form-control" placeholder="Password" required>
+    <div class="text-left">
+        <input type="checkbox" name="rememberme" id="rememberme" value="true">
+        <label for="rememberme">Remember Me</label>
+    </div>
     <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
 </form>
 
 <%- include('inc/footer'); -%>
+<script src="/js/login.js"></script>
+
 <%- include('inc/post-script-footer'); -%>

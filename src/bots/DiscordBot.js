@@ -1,15 +1,16 @@
 const Commando = require('discord.js-commando');
 const path = require('path');
 const fs = require('fs');
-const APIHandler = require('../api_handlers/api.js');
+const APIHandler = require('../api/api.js');
 
 module.exports = class BotClient extends Commando.Client {
-	constructor (webDatabase, ownerid, commandprefix) {
+	constructor (webDatabase, token, ownerid, commandprefix) {
 		super({
-			"owner": (ownerid !== '') ? ownerid : null,
+			"owner": (ownerid !== '') ? ownerid : undefined,
 			"commandPrefix": (commandprefix !== '') ? commandprefix : '$',
 			"invite": 'https://discord.gg/zx2BWp2'
 		});
+		this.token = token;
 		this.webDatabase = webDatabase;
 		this.API = new APIHandler(webDatabase.getConfig());
 		this.isReady = false;
@@ -38,6 +39,7 @@ module.exports = class BotClient extends Commando.Client {
 				this.registry
 				.registerDefaultGroups()
 				.registerGroups([
+					['searchrequest', 'Search & Request'],
 					['ombi', 'Ombi'],
 					['sonarr', 'Sonarr'],
 					['radarr', 'Radarr'],
@@ -58,15 +60,13 @@ module.exports = class BotClient extends Commando.Client {
 					if(checkGroups.indexOf(group.name.toLowerCase()) > -1) {
 						const groupConfig = this.webDatabase.webConfig[group.name.toLowerCase()];
 						if (groupConfig.host === "" || groupConfig.apikey === "")
-							group.commands.forEach((command) => {
-								this.registry.unregisterCommand(command);
-							});
+							group.commands.forEach((command) => this.registry.unregisterCommand(command));
 					}
 				});
 
 				this.dispatcher.addInhibitor((message) => {
 					// Older versions of the DB may not have channelName defined
-					const bot = this.webDatabase.getConfig()['bot'];
+					const bot = this.webDatabase.webConfig['bot'];
 					if (!bot.channelname || bot.channelname.length == 0) {
 						return false;
 					}
@@ -78,19 +78,18 @@ module.exports = class BotClient extends Commando.Client {
 				});
 				
 				// login client with bot token
-				this.login(this.webDatabase.webConfig.bot.token)
+				this.login(this.token)
 					.then((token) => resolve(token))
 					.catch((err) => reject(err));
 			}
 			catch (err) {
-				reject(err)
+				reject(err);
 			}
 		});
-		
 	}
 
 	deinit () {
 		this.isReady = false;
-		return this.destroy();
+		this.destroy();
 	}
 }

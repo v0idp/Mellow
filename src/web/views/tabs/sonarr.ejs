@@ -1,57 +1,144 @@
-<div class="alert alert-dark">
-    Sonarr support is <strong>coming soon</strong>. These settings are not currently required for the bot to function.
-</div>
-
 <form class="form-setting" role="form" id="form-sonarr" action="/sonarr" method="post">
-    <div class="form-group row">
-        <label for="host" class=" col-sm-3 col-form-label">Host or IP</label>
-        <div class="col-sm-6">
-            <input type="text" class="form-control host" name="host" value="<% if (sonarrSettings && sonarrSettings.host) { %><%=sonarrSettings.host %><% } %>" required>
-        </div>
-        <div class="col-sm-3 text-muted">
-            <em>Required</em>
-        </div>
-    </div>
+    <div class="row">
+        <div class="col-12 col-md-7">
+            <div class="form-group row">
+                <label for="v3" class="col-md-3 form-check-label">V3</label>
+                <div class="col-md-8">
+                    <input type="checkbox" class="v3" name="v3" value="true" <% if (sonarrSettings && sonarrSettings.v3 === 'true') { %>checked<% } %>>
+                </div>
+            </div>
 
-    <div class="form-group row">
-        <label for="port" class=" col-sm-3 col-form-label">Port</label>
-        <div class="col-sm-6">
-            <input type="number" class="form-control port" name="port" value="<% if (sonarrSettings && sonarrSettings.port) { %><%=sonarrSettings.port %><% } %>">
-        </div>
-    </div>
+            <div class="form-group row">
+                <label for="host" class="col-md-3 col-form-label">Host or IP *</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control host" name="host" value="<% if (sonarrSettings && sonarrSettings.host) { %><%=sonarrSettings.host %><% } %>" required>
+                </div>
+            </div>
 
-    <div class="form-group row">
-        <label for="baseurl" class=" col-sm-3 col-form-label">Base URL</label>
-        <div class="col-sm-6">
-            <input type="text" class="form-control baseurl" name="baseUrl" value="<% if (sonarrSettings && sonarrSettings.baseurl) { %><%=sonarrSettings.baseurl %><% } %>">
-            <small class="form-text text-muted">
-                Only enter this if you have a custom base URL, for example with a reverse proxy.
-            </small>
-        </div>
-    </div>
+            <div class="form-group row">
+                <label for="port" class="col-md-3 col-form-label">Port</label>
+                <div class="col-md-8">
+                    <input type="number" class="form-control port" name="port" value="<% if (sonarrSettings && sonarrSettings.port) { %><%=sonarrSettings.port %><% } %>">
+                </div>
+            </div>
 
-    <div class="form-group row">
-        <label for="ssl" class="col-sm-3 form-check-label">SSL</label>
-        <div class="col-sm-6">
-            <input type="checkbox" class="ssl" name="ssl" value="true" <% if (sonarrSettings && sonarrSettings.ssl === 'true') { %>checked<% } %>>
-        </div>
-    </div>
+            <div class="form-group row">
+                <label for="baseurl" class="col-md-3 col-form-label">Base URL</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control baseurl" name="baseUrl" value="<% if (sonarrSettings && sonarrSettings.baseurl) { %><%=sonarrSettings.baseurl %><% } %>">
+                    <small class="form-text text-muted">
+                        Only enter this if you have a custom base URL, for example with a reverse proxy.
+                    </small>
+                </div>
+            </div>
 
-    <div class="form-group row">
-        <label for="apikey" class=" col-sm-3 col-form-label">API Key</label>
-        <div class="col-sm-6">
-            <input type="text" class="form-control apikey" name="apiKey" value="<% if (sonarrSettings && sonarrSettings.apikey) { %><%=sonarrSettings.apikey %><% } %>" required>
+            <div class="form-group row">
+                <label for="ssl" class="col-md-3 form-check-label">SSL</label>
+                <div class="col-md-8">
+                    <input type="checkbox" class="ssl" name="ssl" value="true" <% if (sonarrSettings && sonarrSettings.ssl === 'true') { %>checked<% } %>>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="apikey" class="col-md-3 col-form-label">API Key *</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control apikey" name="apiKey" value="<% if (sonarrSettings && sonarrSettings.apikey) { %><%=sonarrSettings.apikey %><% } %>" required>
+                </div>
+            </div>
         </div>
-        <div class="col-sm-3 text-muted">
-            <em>Required</em>
+        <div class="col-md-5">
+            <div class="form-group row">
+                <div class="col-md-12 col-form-label">
+                    <small class="form-text text-muted">
+                        Please set these after saving the config, or requests won't work
+                    </small>
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label for="profile" class="col-md-4 col-form-label">Quality Profiles</label>
+                <div class="col-md-8">
+                    <select name="profile" id="profile-sonarr" class="form-control profile">
+                        <option value=0>Please select</option>
+                        <% if (sonarrOptions.profiles) { %>
+                            <% for (let i = 0; i < sonarrOptions.profiles.length; i++) { %>
+                                <option value=<%= sonarrOptions.profiles[i].id %> <% if (sonarrSettings && parseInt(sonarrSettings.profile) == parseInt(sonarrOptions.profiles[i].id)) { %>selected<% }%>><%= sonarrOptions.profiles[i].name %></option>
+                            <% } %>
+                        <% } %>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="profileanime" class="col-md-4 col-form-label">Quality Profiles (Anime)</label>
+                <div class="col-md-8">
+                    <select name="profileanime" id="profileanime" class="form-control profileanime">
+                        <option value=0>Please select</option>
+                        <% if (sonarrOptions.profiles) { %>
+                            <% for (let i = 0; i < sonarrOptions.profiles.length; i++) { %>
+                                <option value=<%= sonarrOptions.profiles[i].id %> <% if (sonarrSettings && parseInt(sonarrSettings.profileanime) == parseInt(sonarrOptions.profiles[i].id)) { %>selected<% }%>><%= sonarrOptions.profiles[i].name %></option>
+                            <% } %>
+                        <% } %>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="rootfolder" class="col-md-4 col-form-label">Default Root folders</label>
+                <div class="col-md-8">
+                    <select name="rootfolder" id="rootfolder-sonarr" class="form-control rootfolder">
+                        <option value=0>Please select</option>
+                        <% if (sonarrOptions.rootfolders) { %>
+                            <% for (let i = 0; i < sonarrOptions.rootfolders.length; i++) { %>
+                                <option value=<%= sonarrOptions.rootfolders[i].path %> <% if (sonarrSettings && sonarrSettings.rootfolder == sonarrOptions.rootfolders[i].path) { %>selected<% }%>><%= sonarrOptions.rootfolders[i].path %></option>
+                            <% } %>
+                        <% } %>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="rootfolderanime" class="col-md-4 col-form-label">Default Root folders (Anime)</label>
+                <div class="col-md-8">
+                    <select name="rootfolderanime" id="rootfolderanime" class="form-control rootfolderanime">
+                        <option value=0>Please select</option>
+                        <% if (sonarrOptions.rootfolders) { %>
+                            <% for (let i = 0; i < sonarrOptions.rootfolders.length; i++) { %>
+                                <option value=<%= sonarrOptions.rootfolders[i].path %> <% if (sonarrSettings && sonarrSettings.rootfolderanime == sonarrOptions.rootfolders[i].path) { %>selected<% }%>><%= sonarrOptions.rootfolders[i].path %></option>
+                            <% } %>
+                        <% } %>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="languageprofile" class="col-md-4 col-form-label">Language Profiles</label>
+                <div class="col-md-8">
+                    <select name="languageprofile" id="languageprofile" class="form-control languageprofile">
+                        <option value=0>Please select</option>
+                        <% if (sonarrOptions.languageprofiles) { %>
+                            <% for (let i = 0; i < sonarrOptions.languageprofiles.length; i++) { %>
+                                <option value=<%= sonarrOptions.languageprofiles[i].id %> <% if (sonarrSettings && parseInt(sonarrSettings.languageprofile) == parseInt(sonarrOptions.languageprofiles[i].id)) { %>selected<% }%>><%= sonarrOptions.languageprofiles[i].name %></option>
+                            <% } %>
+                        <% } %>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="seasonfolders" class="col-md-4 form-check-label">Enable season folders</label>
+                <div class="col-md-8">
+                    <input type="checkbox" class="seasonfolders" name="seasonfolders" value="true" <% if (sonarrSettings && sonarrSettings.seasonfolders === 'true') { %>checked<% } %>>
+                </div>
+            </div>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-sm-6 offset-sm-3">
+        <div class="col-12">
             <button class = "btn btn-lg btn-primary float-left testApi" data-api="sonarr" type = "button" >Test Connectivity</button>
             <button class = "btn btn-lg btn-primary float-right" type = "submit" name = "submit">Submit</button>
-            <a href="/sonarr/reset" class="btn btn-lg btn-outline-primary  reset-button float-right">Reset</a>
+            <a href="/sonarr/reset" class="btn btn-lg btn-outline-primary reset-button float-right">Reset</a>
         </div>
     </div>
 </form>

@@ -1,7 +1,19 @@
-const { get, getURL, ucwords } = require('../../util.js');
+const { ucwords } = require('../../util.js');
+const Sonarr = require('../../api/sonarr.js');
+const Radarr = require('../../api/radarr.js');
 
 const render = async (req, res) => {
     const config = req.webserver.WebDatabase.webConfig;
+    sonarr = new Sonarr(config['sonarr']);
+    radarr = new Radarr(config['radarr']);
+
+    sonarrProfiles = await sonarr.getProfiles().catch(() => {});
+    sonarrRootFolders = await sonarr.getRootFolders().catch(() => {});
+    sonarrLanguageProfiles = await sonarr.getLanguageProfiles().catch(() => {});
+    
+    radarrProfiles = await radarr.getProfiles().catch(() => {});
+    radarrRootFolders = await radarr.getRootFolders().catch(() => {});
+    
     res.status(200)
     .render('config', {
         title: 'Mellow Configuration',
@@ -13,7 +25,16 @@ const render = async (req, res) => {
         ombiSettings:  (config.ombi) ? config.ombi : '',
         tautulliSettings:  (config.tautulli) ? config.tautulli : '',
         sonarrSettings:  (config.sonarr) ? config.sonarr : '',
-        radarrSettings:  (config.radarr) ? config.radarr : ''
+        radarrSettings:  (config.radarr) ? config.radarr : '',
+        sonarrOptions: {
+            profiles: (sonarrProfiles) ? sonarrProfiles : undefined,
+            rootfolders: (sonarrRootFolders) ? sonarrRootFolders : undefined,
+            languageprofiles: (sonarrLanguageProfiles) ? sonarrLanguageProfiles : undefined,
+        },
+        radarrOptions: {
+            profiles: (radarrProfiles) ? radarrProfiles : undefined,
+            rootfolders: (radarrRootFolders) ? radarrRootFolders : undefined
+        }
     });
 }
 
@@ -33,59 +54,8 @@ const reset = async (req, res) => {
     res.redirect('/config');
 }
 
-const test = async (req, res) => {
-    let config = req.body;
-    let url;
-    let apiHeader = {};
-
-    switch (req.originalUrl.split('/')[1]) {
-        case "ombi":
-            apiHeader = {'ApiKey': config.apikey};
-            url = getURL(config.host, config.port, config.ssl, config.baseurl + '/api/v1/Search/movie/popular');
-            break;
-        case "tautulli":
-            url = getURL(config.host, config.port, config.ssl, config.baseurl + '/api/v2?apikey=' + config.apikey + '&cmd=status');
-            break;
-        case "sonarr":
-            url = getURL(config.host, config.port, config.ssl, config.baseurl + '/api/system/status?apikey=' + config.apikey);
-            console.log(url);
-            break;
-        case "radarr":
-            url = getURL(config.host, config.port, config.ssl, config.baseurl + '/api/system/status?apikey=' + config.apikey);
-            break;
-        default:
-            res.status(500).send(JSON.stringify({'status': 'error'}));
-            break;
-    }
-
-    if (url) {
-        const defaultHeaders = {
-            'accept': 'application/json',
-            'User-Agent': `Mellow/${process.env.npm_package_version}`
-        };
-
-        const requestHeaders = {...defaultHeaders, ...apiHeader};
-
-        get({
-            headers: requestHeaders,
-            url: url
-        }).then((resolve) => {
-            res.setHeader('Content-Type', 'application/json');
-            try {
-                JSON.parse(resolve.body);
-                res.send(resolve.body);
-            } catch (error) {
-                res.status(500).send(JSON.stringify({...{response: error}, ...{status: 'error'}}));
-            }
-        }).catch((error) => {
-            res.status(500).send(JSON.stringify({...{response: error}, ...{status: 'error'}}));
-        });
-    }
-}
-
 module.exports = {
     render,
     save,
-    reset,
-    test
+    reset
 }

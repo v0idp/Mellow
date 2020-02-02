@@ -9,7 +9,10 @@
       "commandprefix": "",
       "channelname": "",
       "deletecommandmessages": "false",
-      "unknowncommandresponse": "false"
+      "unknowncommandresponse": "false",
+      "defaultservice": "ombi",
+      "requesttv": "",
+      "requestmovie": ""
     },
     "ombi": {
       "host": "",
@@ -17,8 +20,6 @@
       "baseurl": "",
       "apikey": "",
       "ssl": "false",
-      "requesttv": "",
-      "requestmovie": "",
       "username": ""
     },
     "tautulli": {
@@ -33,13 +34,23 @@
       "port": "",
       "baseurl": "",
       "apikey": "",
-      "ssl": "false"
+      "ssl": "false",
+      "profile": "0",
+      "profileanime": "0",
+      "rootfolder": "",
+      "rootfolderanime": "",
+      "languageprofile": "0",
+      "seasonfolders": "false",
+      "v3": "false"
     },
     "radarr": {
       "host": "",
       "port": "",
       "baseurl": "",
       "apikey": "",
-      "ssl": "false"
+      "ssl": "false",
+      "profile": "0",
+      "rootfolder": "",
+      "minimumavailability": "Announced"
     }
   }

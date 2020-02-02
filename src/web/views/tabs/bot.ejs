@@ -1,60 +1,82 @@
-<form class="form-setting" role="form" action="/bot" method="post">
-    <div class="form-group row">
-        <label for="token" class=" col-sm-3 col-form-label">Token</label>
-        <div class="col-sm-6">
-            <input type="text" class="form-control" id="token" name="token" value="<% if (botSettings && botSettings.token) { %><%=botSettings.token %><% } %>">
-        </div>
-        <div class="col-sm-3 text-muted">
-            <em>Required</em>
-        </div>
-    </div>
+<form class="form-setting" role="form" id="form-bot" action="/bot" method="post">
+    <div class="row">
+        <div class="col-12 col-md-7">
+            <div class="form-group row">
+                <label for="token" class="col-sm-3 col-form-label">Token *</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control token" id="token" name="token" value="<% if (botSettings && botSettings.token) { %><%=botSettings.token %><% } %>" required>
+                </div>
+            </div>
 
-    <div class="form-group row">
-        <label for="ownerID" class=" col-sm-3 col-form-label">Owner ID</label>
-        <div class="col-sm-6">
-            <input type="text" class="form-control" id="ownerID" name="ownerID" value="<% if (botSettings && botSettings.ownerid) { %><%=botSettings.ownerid %><% } %>">
-            <small id="ownerIDhelp" class="form-text text-muted">
-                This is your numeric ID on Discord (enable developer mode, right click your user, Copy ID)
-            </small>
-        </div>
-    </div>
+            <div class="form-group row">
+                <label for="ownerID" class="col-sm-3 col-form-label">Owner ID</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" id="ownerID" name="ownerID" value="<% if (botSettings && botSettings.ownerid) { %><%=botSettings.ownerid %><% } %>">
+                    <small id="ownerIDhelp" class="form-text text-muted">
+                        This is your numeric ID on Discord (enable developer mode, right click your user, Copy ID)
+                    </small>
+                </div>
+            </div>
 
-    <div class="form-group row">
-        <label for="commandPrefix" class=" col-sm-3 col-form-label">Command Prefix</label>
-        <div class="col-sm-6">
-            <input type="text" class="form-control" id="commandPrefix" name="commandPrefix" value="<% if (botSettings && botSettings.commandprefix) { %><%=botSettings.commandprefix %><% } %>" required>
-        </div>
-        <div class="col-sm-3 text-muted">
-            <em>Required</em>
-        </div>
-    </div>
+            <div class="form-group row">
+                <label for="commandPrefix" class="col-sm-3 col-form-label">Command Prefix</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" id="commandPrefix" name="commandPrefix" value="<% if (botSettings && botSettings.commandprefix) { %><%=botSettings.commandprefix %><% } %>">
+                </div>
+            </div>
 
-    <div class="form-group row">
-        <label for="channelName" class=" col-sm-3 col-form-label">Channel Name to Monitor</label>
-        <div class="col-sm-6">
-            <input type="text" class="form-control" id="channelName" name="channelName" value="<% if (botSettings && botSettings.channelname) { %><%=botSettings.channelname %><% } %>">
-            <small class="form-text text-muted">
-                Leave blank to watch all channels.
-            </small>
-        </div>
-    </div>
+            <div class="form-group row">
+                <label for="defaultservice" class=" col-sm-3 col-form-label">Default Service</label>
+                <div class="col-md-8">
+                    <select name="defaultservice" id="defaultservice" class="form-control defaultservice">
+                        <option value="ombi" <% if (botSettings && botSettings.defaultservice == "ombi") { %>selected<% }%>>Ombi</option>
+                        <option value="sonarradar" <% if (botSettings && botSettings.defaultservice == "sonarradar") { %>selected<% }%>>Sonarr / Radarr</option>
+                    </select>
+                </div>
+            </div>
 
-    <div class="form-group row">
-        <label for="deleteCommandMessages" class="col-sm-3 form-check-label">Delete Command Messages</label>
-        <div class="col-sm-6">
-            <input type="checkbox" id="deleteCommandMessages" name="deleteCommandMessages" value="true" <% if (botSettings && botSettings.deletecommandmessages === 'true') { %>checked<% } %>>
+            <div class="form-group row">
+                <label for="deleteCommandMessages" class="col-sm-3 form-check-label">Delete Command Messages</label>
+                <div class="col-sm-6">
+                    <input type="checkbox" id="deleteCommandMessages" name="deleteCommandMessages" value="true" <% if (botSettings && botSettings.deletecommandmessages === 'true') { %>checked<% } %>>
+                </div>
+            </div>
+        
+            <div class="form-group row">
+                <label for="unknownCommandResponse" class="col-sm-3 form-check-label">Unknown Command Response</label>
+                <div class="col-sm-6">
+                    <input type="checkbox" id="unknownCommandResponse" name="unknownCommandResponse" value="true" <% if (botSettings && botSettings.unknowncommandresponse === 'true') { %>checked<% } %>>
+                </div>
+            </div>
         </div>
-    </div>
+        <div class="col-md-5">
+            <div class="form-group row">
+                <div class="col-md-12 col-form-label">
+                    <small class="form-text text-muted">
+                        Enter the Discord role names. Leave blank if anyone can request.
+                    </small>
+                </div>
+            </div>
 
-    <div class="form-group row">
-        <label for="unknownCommandResponse" class=" col-sm-3 form-check-label">Unknown Command Response</label>
-        <div class="col-sm-6">
-            <input type="checkbox" id="unknownCommandResponse" name="unknownCommandResponse" value="true" <% if (botSettings && botSettings.unknowncommandresponse === 'true') { %>checked<% } %>>
+            <div class="form-group row">
+                <label for="requesttv" class="col-md-4 col-form-label">Request TV Shows</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control requesttv" name="requestTV" value="<% if (botSettings && botSettings.requesttv) { %><%=botSettings.requesttv %><% } %>">
+                </div>
+            </div>
+        
+            <div class="form-group row">
+                <label for="requestmovie" class="col-md-4 col-form-label">Request Movies</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control requestmovie" name="requestMovie" value="<% if (botSettings && botSettings.requestmovie) { %><%=botSettings.requestmovie %><% } %>">
+                </div>
+            </div>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-sm-9">
+        <div class="col-12">
+            <button class = "btn btn-lg btn-primary float-left testBot" data-bot="bot" type = "button">Test Connectivity</button>
             <button class = "btn btn-lg btn-primary float-right" type = "submit" name = "submit">Submit</button>
             <a href="/bot/reset" class="btn btn-lg btn-outline-primary reset-button float-right">Reset</a>
         </div>
