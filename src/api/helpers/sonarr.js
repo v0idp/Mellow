@@ -1,6 +1,3 @@
-const TVMaze = require('../tvmaze.js');
-const tvmaze = new TVMaze();
-
 module.exports = buildSonarrSeries = (series, sonarr) => {
     if (sonarr.profile === "0" || sonarr.rootfolder === "0" || sonarr.rootfolder === "") {
         const errMsg = 'Please set quality profile and default root folder in sonarr config!';
@@ -26,20 +23,14 @@ module.exports = buildSonarrSeries = (series, sonarr) => {
         id: series.id
     }
 
-    tvmaze.isAnime(series.tvdbId).then((status) => {
-        if (status) {
-            if (sonarr.profileanime !== "0")
-                newSeries.qualityProfileId = parseInt(sonarr.profileanime);
-            if (sonarr.rootfolderanime !== "0" && sonarr.rootfolderanime !== "")
-                newSeries.rootFolderPath = sonarr.rootfolderanime;
-    
-            newSeries.seriesType = "anime";
-        }
-    }).catch(() => {
-        const errMsg = 'Couldn\'t get if series is anime or not.';
-        console.log(errMsg);
-        return errMsg;
-    });
+    if (series.genres.contains('Anime')) {
+        if (sonarr.profileanime !== "0")
+            newSeries.qualityProfileId = parseInt(sonarr.profileanime);
+        if (sonarr.rootfolderanime !== "0" && sonarr.rootfolderanime !== "")
+            newSeries.rootFolderPath = sonarr.rootfolderanime;
+
+        newSeries.seriesType = "anime";
+    }
 
     if (sonarr.v3 === "true") {
         newSeries.languageProfileId = parseInt(sonarr.languageprofile);
