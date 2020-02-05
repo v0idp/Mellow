@@ -40,10 +40,13 @@ const movieLookup = async (client, msg, args) => {
         client.API.radarr.movieLookup(args.name).then((data) => {
             if (data.length > 1) {
                 let fieldContent = '';
-                for (let i = 0; i < 10; i++) {
+                let count = 0;
+                for (let i = 0; i < data.length; i++) {
+                    if (fieldContent.length > 896) break;
                     fieldContent += `${i+1}) ${data[i].title} `;
                     fieldContent += `(${data[i].year}) `;
                     fieldContent += `[[TheMovieDb](https://www.themoviedb.org/movie/${data[i].tmdbId})]\n`;
+                    count++;
                 }
             
                 let movieEmbed = new Discord.MessageEmbed();
@@ -61,7 +64,7 @@ const movieLookup = async (client, msg, args) => {
                     if (collected.first().deletable) collected.first().delete();
                     if (message.startsWith('cancel')) {
                         reject('Cancelled command.');
-                    } else if (selection > 0 && selection <= 10) {
+                    } else if (selection > 0 && selection <= count) {
                         client.API.radarr.movieLookup(`tmdb:${data[selection - 1].tmdbId}`).then((oMovie) => {
                             doesMovieExist(client, oMovie[0].tmdbId).then((status) => {
                                 Object.assign(oMovie[0], { doesExist: status });

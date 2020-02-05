@@ -27,10 +27,13 @@ const seriesLookup = async (client, msg, args) => {
         client.API.sonarr.seriesLookup(args.name).then((data) => {
             if (data.length > 1) {
                 let fieldContent = '';
-                for (let i = 0; i < 10; i++) {
+                let count = 0;
+                for (let i = 0; i < data.length; i++) {
+                    if (fieldContent.length > 896) break;
                     fieldContent += `${i+1}) ${data[i].title} `;
                     fieldContent += `(${data[i].year}) `;
                     fieldContent += `[[TheTVDb](https://www.thetvdb.com/?id=${data[i].tvdbId}&tab=series)]\n`;
+                    count++;
                 }
             
                 let seriesEmbed = new Discord.MessageEmbed();
@@ -48,7 +51,7 @@ const seriesLookup = async (client, msg, args) => {
                     if (collected.first().deletable) collected.first().delete();
                     if (message.startsWith('cancel')) {
                         reject('Cancelled command.');
-                    } else if (selection > 0 && selection <= 10) {
+                    } else if (selection > 0 && selection <= count) {
                         resolve(data[selection - 1]);
                     } else {
                         reject('Please enter a valid selection!');
