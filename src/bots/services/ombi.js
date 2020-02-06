@@ -50,11 +50,14 @@ const getTMDbID = (client, msg, name) => {
         client.API.ombi.searchMovie(name).then((data) => {
             if (data.length > 1) {
                 let fieldContent = '';
-                data.forEach((movie, i) => {
-                    fieldContent += `${i+1}) ${movie.title} `;
-                    if (movie.releaseDate) fieldContent += `(${movie.releaseDate.substring(0,4)}) `;
-                    fieldContent += `[[TheMovieDb](https://www.themoviedb.org/movie/${movie.theMovieDbId})]\n`;
-                });
+                let count = 0;
+                for (let i = 0; i < data.length; i++) {
+                    if (fieldContent.length > 896) break;
+                    fieldContent += `${i+1}) ${data[i].title} `;
+                    if (data[i].releaseDate) fieldContent += `(${data[i].releaseDate.substring(0,4)}) `;
+                    fieldContent += `[[TheMovieDb](https://www.themoviedb.org/movie/${data[i].theMovieDbId})]\n`;
+                    count++;
+                }
             
                 let showEmbed = new Discord.MessageEmbed();
                 showEmbed.setTitle('Ombi Movie Search')
@@ -71,7 +74,7 @@ const getTMDbID = (client, msg, name) => {
                     if (collected.first().deletable) collected.first().delete();
                     if (message.startsWith('cancel')) {
                         msg.reply('Cancelled command.');
-                    } else if (selection > 0 && selection <= data.length) {
+                    } else if (selection > 0 && selection <= count) {
                         resolve(data[selection - 1].id);
                     } else {
                         msg.reply('Please enter a valid selection!');
