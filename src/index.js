@@ -3,7 +3,11 @@ const WebServer = require('./web/WebServer.js');
 const { migrateALL } = require('./database/migration.js');
 const { version } = require('../package.json');
 
-console.log(`Mellow v${version}`);
+console.log('#########################################');
+console.log(`####          Mellow v${version}         ####`);
+console.log('#### https://github.com/v0idp/Mellow ####');
+console.log('#########################################\n');
+
 migrateALL().then(() => {
     let bot;
     const Database = require('./database/Database.js');
