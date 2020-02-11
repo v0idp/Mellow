@@ -67,7 +67,7 @@ module.exports = class BotClient extends Commando.Client {
 				const channelname = this.webDatabase.webConfig['bot'].channelname.toLowerCase();
 				if (channelname !== "") {
 					this.dispatcher.addInhibitor((msg) => {
-						return (channelname !== msg.channel.name.toLowerCase() && msg.guild.channels.has(bot.channelname)) ? 'Not allowed in this channel' : false;
+						return (channelname !== msg.channel.name.toLowerCase() && msg.guild.channels.has(channelname)) ? 'Not allowed in this channel' : false;
 					});
 				}
 				
