@@ -33,7 +33,7 @@
     "bcryptjs": "^2.4.3",
     "bluebird": "^3.5.5",
     "cookie-parser": "^1.4.4",
-    "discord.js": "github:discordjs/discord.js#fe7df708e44e0280dfaf0f8e457b154781bb5140",
+    "discord.js": "github:discordjs/discord.js#8e9e93da1d9c96a7acf63cc1c5317a42e56afbd8",
     "discord.js-commando": "discordjs/Commando",
     "ejs": "^2.6.2",
     "express": "^4.17.1",
