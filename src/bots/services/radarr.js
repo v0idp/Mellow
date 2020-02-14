@@ -1,39 +1,4 @@
-const Discord = require('discord.js');
-const path = require('path');
 const buildRadarrMovie = require('../../api/helpers/radarr.js');
-
-const outputMovie = (msg, movie) => {
-    let movieEmbed = new Discord.MessageEmbed()
-    .setTitle(`${movie.title} (${movie.year})`)
-    .setDescription(movie.overview.substr(0, 250) + '(...)')
-    .setFooter(msg.author.username, `https://cdn.discordapp.com/avatars/${msg.author.id}/${msg.author.avatar}.png`)
-    .setTimestamp(new Date())
-    .setImage(movie.remotePoster)
-    .setURL('https://www.themoviedb.org/movie/' + movie.tmdbId)
-    .attachFiles(path.join(__dirname, '../..', 'resources', 'tmdb.png'))
-    .setThumbnail('attachment://tmdb.png')
-    .addField('__Status__', movie.status, true)
-    .addField('__Studio__', movie.studio, true)
-    .addField('__Runtime__', `${movie.runtime}min`, true);
-
-    if (movie.doesExist) movieEmbed.addField('__Added__', '✅', true);
-
-    return msg.embed(movieEmbed);
-}
-
-const doesMovieExist = (client, tmdbId) => {
-    return new Promise((resolve, reject) => {
-        client.API.radarr.getMovies().then((movies) => {
-            const fMovies = movies.filter((e) => e.tmdbId === tmdbId);
-            if (fMovies.length > 0)
-                resolve(true);
-            else
-                resolve(false);
-        }).catch((err) => {
-            reject(err);
-        });
-    });
-}
 
 const movieLookup = async (client, msg, args) => {
     return new Promise((resolve, reject) => {
@@ -101,39 +66,96 @@ const movieLookup = async (client, msg, args) => {
     });
 }
 
-const addMovie = (client, msg, movie, movieEmbed) => {
-    const bot = client.webDatabase.webConfig['bot'];
-    const newMovie = buildRadarrMovie(movie, client.webDatabase.webConfig['radarr'], true);
-    if (typeof newMovie === "string") {
-        return msg.reply(newMovie);
+module.exports = class SonarrService {
+    constructor (client) {
+        this.client = client;
     }
-    if ((!bot.requestmovie || msg.member.roles.some(role => role.name.toLowerCase() === bot.requestmovie.toLowerCase())) && !movie.doesExist) {
-        msg.reply('If you want to add this movie please click on the ⬇ reaction.');
-        movieEmbed.react('⬇');
-        
-        movieEmbed.awaitReactions((reaction, user) => reaction.emoji.name === '⬇' && user.id === msg.author.id, { max: 1, time: 120000 }).then(collected => {
-            if (collected.first()) {
-                client.API.radarr.addMovie(newMovie).then(() => {
-                    return msg.reply(`Added ${movie.title} in Radarr.`);
+
+    doesMovieExist(tmdbId) {
+        return new Promise((resolve, reject) => {
+            this.client.api.radarr.getMovies().then((movies) => {
+                const fMovies = movies.filter((e) => e.tmdbId === tmdbId);
+                if (fMovies.length > 0)
+                    resolve(true);
+                else
+                    resolve(false);
+            }).catch((err) => {
+                reject(err);
+            });
+        });
+    }
+
+    movieLookup(msg, searchQuery) {
+        return new Promise((resolve, reject) => {
+            this.client.api.radarr.movieLookup(searchQuery).then(async (data) => {
+                if (data.length > 1) {
+                    const aMsg = await this.client.send(msg, this.client.builder.buildRadarrMovieResults(data));
+                    const selection = await this.client.awaitSelection(msg, aMsg, data.length);
+    
+                    aMsg.delete();
+
+                    if (selection !== -1) {
+                        this.client.api.radarr.movieLookup(`tmdb:${data[selection].tmdbId}`).then((oMovie) => {
+                            this.doesMovieExist(oMovie[0].tmdbId).then((status) => {
+                                Object.assign(oMovie[0], { doesExist: status });
+                                resolve(oMovie[0]);
+                            }).catch(() => {
+                                reject('There was an error in checking for movie availability.');
+                            });
+                        }).catch(() => {
+                            reject('Something went wrong! Couldn\'t find movie.');
+                        });
+                    } else {
+                        reject('Please enter a valid selection!');
+                    }
+                } else if (!data.length) {
+                    reject('Something went wrong! Couldn\'t find any movie.');
+                } else {
+                    this.client.api.radarr.movieLookup(`tmdb:${data[0].tmdbId}`).then((oMovie) => {
+                        this.doesMovieExist(oMovie[0].tmdbId).then((status) => {
+                            Object.assign(oMovie[0], { doesExist: status });
+                            resolve(oMovie[0]);
+                        }).catch(() => {
+                            reject('There was an error in checking for movie availability.');
+                        })
+                    }).catch(() => {
+                        reject('Something went wrong! Couldn\'t find movie.');
+                    });
+                }
+            }).catch(() => {
+                reject('Something went wrong! Couldn\'t find any movie.');
+            });
+        });
+    }
+
+    addMovie(msg, msgEmbed, movie) {
+        const newMovie = buildRadarrMovie(movie, this.client.db.webConfig['radarr'], true);
+        if (typeof newMovie === "string") {
+            return this.client.reply(msg, newMovie);
+        }
+        if ((!this.client.config.requestmovie
+            || msg.member.roles.some(role => role.name.toLowerCase() === this.client.config.requestmovie.toLowerCase()))
+            && !movie.doesExist) {
+            this.client.reply(msg, 'If you want to add this movie please click on the ⬇ reaction.');
+            msgEmbed.react('⬇');
+
+            this.client.awaitRequest(msg, msgEmbed).then(() => {
+                this.client.api.radarr.addMovie(newMovie).then(() => {
+                    return this.client.reply(msg, `Added ${movie.title} in Radarr.`);
                 }).catch(() => {
-                    return msg.reply('Something went wrong! Couldn\'t request movie.');
+                    return this.client.reply(msg, 'Something went wrong! Couldn\'t request movie.');
                 });
-            }
-        }).catch(() => {
-            return msg.reply('Something went wrong! Couldn\'t register your emoji.');
+            });
+        }
+    }
+
+    async run(msg, searchQuery) {
+        this.client.deleteCommandMessages(msg);
+        this.movieLookup(msg, searchQuery).then(async (movie) => {
+            const msgEmbed = await this.client.send(msg, this.client.builder.buildRadarrMovieEmbed(msg, movie));
+            return this.addMovie(msg, msgEmbed, movie);
+        }).catch((err) => {
+            return this.client.reply(msg, err);
         });
     }
 }
-
-const executeAdd = async (client, msg, args) => {
-    client.deleteCommandMessages(msg);
-    movieLookup(client, msg, args).then((movie) => {
-        outputMovie(msg, movie).then((movieEmbed) => {
-            return addMovie(client, msg, movie, movieEmbed);
-        });
-    }).catch((err) => {
-        return msg.reply(err);
-    });
-}
-
-module.exports = executeAdd;

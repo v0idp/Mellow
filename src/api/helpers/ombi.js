@@ -1,1 +1,0 @@
-// TODO: Add helper function for Ombi Movies and TV Shows
