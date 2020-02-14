@@ -105,9 +105,12 @@ const migrateJSON = function() {
 }
 
 const migrateALL = function() {
-    return new Promise((resolve, reject) => {
-        migrateSQLITE().then(() => migrateJSON().then(() => resolve())
-            .catch((err) => reject(err))).catch((err) => reject(err));
+    return new Promise(async (resolve, reject) => {
+        const sqlErr = await migrateSQLITE();
+        if (sqlErr) reject(sqlErr);
+        const jsonErr = await migrateJSON();
+        if (jsonErr) reject(jsonErr);
+        resolve();
     });
 }
 

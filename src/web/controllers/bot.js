@@ -1,19 +1,17 @@
-const BotClient = require('../../bots/DiscordBot.js');
-const Database = require('../../database/Database.js');
+const DiscordBot = require('../../bots/discord/DiscordBot.js');
 
 const test = async (req, res) => {
     let bot;
-    const webDatabase = new Database();
     const botConfig = req.body;
     if (botConfig && botConfig.token) {
-        bot = new BotClient(webDatabase, botConfig.token, botConfig.ownerid, botConfig.commandprefix);
+        bot = new DiscordBot(null, null, botConfig.token);
         bot.init().then((result) => {
-            bot.deinit();
+            console.log("DiscordBot Test was successfull!");
+            bot.destroy();
             res
             .status(200)
             .send({token: result});
         }).catch((err) => {
-            bot.deinit();
             console.log('Failed initializing DiscordBot! Please check your bot configurations.');
             res
             .status(500)
