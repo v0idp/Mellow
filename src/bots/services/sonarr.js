@@ -1,108 +1,62 @@
-const Discord = require('discord.js');
-const path = require('path');
 const buildSonarrSeries = require('../../api/helpers/sonarr.js');
 
-const outputSeries = (msg, series) => {
-    let seriesEmbed = new Discord.MessageEmbed()
-    .setTitle(`${series.title} (${series.year})`)
-    .setFooter(msg.author.username, `https://cdn.discordapp.com/avatars/${msg.author.id}/${msg.author.avatar}.png`)
-    .setTimestamp(new Date())
-    .setImage(series.remotePoster)
-    .setURL(`https://www.thetvdb.com/?id=${series.tvdbId}&tab=series`)
-    .attachFiles(path.join(__dirname, '../..', 'resources', 'tvdb.png'))
-    .setThumbnail('attachment://tvdb.png')
-    .addField('__Network__', series.network, true)
-    .addField('__Status__', series.status, true)
-    .addField('__Seasons__', series.seasonCount, true)
+module.exports = class SonarrService {
+    constructor (client) {
+        this.client = client;
+    }
 
-    if (series.overview) seriesEmbed.setDescription(series.overview.substr(0, 250) + '(...)');
-    if (series.certification) seriesEmbed.addField('__Certification__', series.certification, true);
-    if (series.id) seriesEmbed.addField('__Added__', '✅', true);
-
-    return msg.embed(seriesEmbed);
-}
-
-const seriesLookup = async (client, msg, args) => {
-    return new Promise((resolve, reject) => {
-        client.API.sonarr.seriesLookup(args.name).then((data) => {
-            if (data.length > 1) {
-                let fieldContent = '';
-                let count = 0;
-                for (let i = 0; i < data.length; i++) {
-                    if (fieldContent.length > 896) break;
-                    fieldContent += `${i+1}) ${data[i].title} `;
-                    fieldContent += `(${data[i].year}) `;
-                    fieldContent += `[[TheTVDb](https://www.thetvdb.com/?id=${data[i].tvdbId}&tab=series)]\n`;
-                    count++;
-                }
-            
-                let seriesEmbed = new Discord.MessageEmbed();
-                seriesEmbed.setTitle('Sonarr Series Search')
-                .setDescription('Please select one of the search results. To abort answer **cancel**')
-                .addField('__Search Results__', fieldContent);
-                
-                const aMsg = msg.embed(seriesEmbed);
-                msg.channel.awaitMessages(m => (!isNaN(parseInt(m.content)) || m.content.startsWith('cancel')) && m.author.id == msg.author.id, { max: 1, time: 120000, errors: ['time'] })
-                .then((collected) => {
-                    let message = collected.first().content;
-                    let selection = parseInt(message);
-                    
-                    aMsg.then((m) => m.delete());
-                    if (collected.first().deletable) collected.first().delete();
-                    if (message.startsWith('cancel')) {
-                        reject('Cancelled command.');
-                    } else if (selection > 0 && selection <= count) {
-                        resolve(data[selection - 1]);
+    seriesLookup(msg, searchQuery) {
+        return new Promise((resolve, reject) => {
+            this.client.api.sonarr.seriesLookup(searchQuery).then(async (data) => {
+                if (data.length > 1) {
+                    const aMsg = await this.client.send(msg, this.client.builder.buildSonarrSeriesResults(data));
+                    const selection = await this.client.awaitSelection(msg, aMsg, data.length);
+    
+                    aMsg.delete();
+                    if (selection !== -1) {
+                        resolve(data[selection]);
                     } else {
                         reject('Please enter a valid selection!');
                     }
-                }).catch(() => {
-                    reject('Cancelled command.');
-                });
-            } else if (!data.length) {
-                reject('Something went wrong! Couldn\'t find any tv show.');
-            } else {
-                resolve(data[0]);
-            }
-        }).catch(() => {
-            reject('Something went wrong! Couldn\'t find any tv show.');
-        });
-    });
-}
-
-const addSeries = (client, msg, series, seriesEmbed) => {
-    const bot = client.webDatabase.webConfig['bot'];
-    const newSeries = buildSonarrSeries(series, client.webDatabase.webConfig['sonarr']);
-    if (typeof newSeries === "string") {
-        return msg.reply(newSeries);
-    }
-    if ((!bot.requesttv || msg.member.roles.some(role => role.name.toLowerCase() === bot.requesttv.toLowerCase())) && !series.id) {
-        msg.reply('If you want to add this series please click on the ⬇ reaction.');
-        seriesEmbed.react('⬇');
-        
-        seriesEmbed.awaitReactions((reaction, user) => reaction.emoji.name === '⬇' && user.id === msg.author.id, { max: 1, time: 120000 }).then(collected => {
-            if (collected.first()) {
-                client.API.sonarr.addSeries(newSeries).then(() => {
-                    return msg.reply(`Added ${series.title} in Sonarr.`);
-                }).catch(() => {
-                    return msg.reply('Something went wrong! Couldn\'t request series.');
-                });
-            }
-        }).catch(() => {
-            return msg.reply('Something went wrong! Couldn\'t register your emoji.');
+                } else if (!data.length) {
+                    reject('Something went wrong! Couldn\'t find any series.');
+                } else {
+                    resolve(data[0]);
+                }
+            }).catch(() => {
+                reject('Something went wrong! Couldn\'t find any series.');
+            });
         });
     }
-}
 
-const executeAdd = async (client, msg, args) => {
-    client.deleteCommandMessages(msg);
-    seriesLookup(client, msg, args).then((series) => {
-        outputSeries(msg, series).then((seriesEmbed) => {
-            return addSeries(client, msg, series, seriesEmbed);
+    addSeries(msg, msgEmbed, series) {
+        const newSeries = buildSonarrSeries(series, this.client.db.webConfig['sonarr']);
+        if (typeof newSeries === "string") {
+            return this.client.reply(msg, newSeries);
+        }
+        if ((!this.client.config.requesttv
+            || msg.member.roles.some(role => role.name.toLowerCase() === this.client.config.requesttv.toLowerCase()))
+            && !series.id) {
+            this.client.reply(msg, 'If you want to add this series please click on the ⬇ reaction.');
+            msgEmbed.react('⬇');
+
+            this.client.awaitRequest(msg, msgEmbed).then(() => {
+                this.client.api.sonarr.addSeries(newSeries).then(() => {
+                    return this.client.reply(msg, `Added ${series.title} in Sonarr.`);
+                }).catch(() => {
+                    return this.client.reply(msg, 'Something went wrong! Couldn\'t request series.');
+                });
+            });
+        }
+    }
+
+    async run(msg, searchQuery) {
+        this.client.deleteCommandMessages(msg);
+        this.seriesLookup(msg, searchQuery).then(async (series) => {
+            const msgEmbed = await this.client.send(msg, this.client.builder.buildSonarrSeriesEmbed(msg, series));
+            return this.addSeries(msg, msgEmbed, series);
+        }).catch((err) => {
+            return this.client.reply(msg, err);
         });
-    }).catch((err) => {
-        return msg.reply(err);
-    });
+    }
 }
-
-module.exports = executeAdd;
