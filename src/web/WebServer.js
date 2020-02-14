@@ -2,17 +2,17 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const path = require('path');
-const BotClient = require('../bots/DiscordBot.js');
+const BotHandler = require('../bots/BotHandler.js');
 const router = require('./router.js');
 const { version } = require('../../package.json');
 const PORT = process.env.PORT || 5060;
 
 module.exports = class WebServer {
-    constructor (WebDatabase, bot) {
+    constructor (WebDatabase, botHandler) {
         this.path = path.join(__dirname, 'views/');
         this.app = express();
         this.WebDatabase = WebDatabase;
-        this.bot = bot;
+        this.botHandler = botHandler;
         this.currentView = 'general';
         this.successMsg = '';
         this.errorMsg = '';
@@ -25,19 +25,9 @@ module.exports = class WebServer {
     }
 
     restartBot() {
-        try {
-            this.bot.deinit();
-        } catch (err) {
-            console.log('No BotClient is running to restart. Starting a new BotClient...');
-        }
-        const botConfig = this.WebDatabase.webConfig.bot;
-        if (botConfig && botConfig.token) {
-            this.bot = new BotClient(this.WebDatabase, botConfig.token, botConfig.ownerid, botConfig.commandprefix);
-            this.bot.init().catch(() => { console.error('Failed initializing BotClient. Is your token correct?') });
-        }
-        else {
-            console.log('No token provided! Aborting Discord Bot Restart...');
-        }
+        this.botHandler.deinit();
+        this.botHandler = new BotHandler(this.WebDatabase);
+        this.botHandler.init();
     }
 
     async init () {
