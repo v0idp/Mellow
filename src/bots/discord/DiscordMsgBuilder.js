@@ -36,8 +36,8 @@ const buildTautulliEmbed = function(object) {
         let obj = object.response.data[i];
         if (obj.section_type == 'movie') {
             libraryEmbed.addField(obj.section_name, obj.count, true);
-        } else if (obj.section_type == 'series') {
-            libraryEmbed.addField(obj.section_name, `${obj.count} seriess\n${obj.parent_count} Seasons\n${obj.child_count} Episodes`, true);
+        } else if (obj.section_type == 'show') {
+            libraryEmbed.addField(obj.section_name, `${obj.count} Shows\n${obj.parent_count} Seasons\n${obj.child_count} Episodes`, true);
         }
     }
     return libraryEmbed;
