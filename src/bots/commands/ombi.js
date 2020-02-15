@@ -16,7 +16,7 @@ module.exports = class ombiCommand {
 		}
 	}
 
-	hasPermission(author) {
+	hasPermission(user) {
 		return true;
 	}
 
