@@ -6,6 +6,8 @@ const buildHelpAllMsg = function(client, commands) {
     let helpMsg =   `To run a command in Mellow, use \`\`${client.config.commandprefix}command\`\`.\n` +
                     `To run a command in this DM, use \`\`command\`\` with no prefix.\n\n` +
                     'Use ``help <command>`` to view detailed information about a specific command.\n\n' +
+                    `__**Discord Support Server**__\n` +
+                    `${client.invite}\n\n` +
                     `__**Available commands in Mellow**__\n\n` +
                     '__Commands__\n';
 
