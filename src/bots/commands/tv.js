@@ -16,7 +16,7 @@ module.exports = class searchTVShowCommand {
 		}
 	}
 
-	hasPermission(author) {
+	hasPermission(user) {
 		return true;
 	}
 
