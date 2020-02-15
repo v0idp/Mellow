@@ -12,6 +12,7 @@ module.exports = class DiscordBot extends Discord.Client {
         this.config = null;
         this.commands = {};
         this.token = token;
+        this.invite = 'https://discord.gg/zx2BWp2';
     }
 
     send (msg, text) {
@@ -103,7 +104,7 @@ module.exports = class DiscordBot extends Discord.Client {
         return new Promise((resolve, reject) => {
             try {
                 this.config = this.db.webConfig['bot'];
-                this.config = this.config.commandprefix || "-";
+                this.config.commandprefix = this.config.commandprefix || "-";
 
                 this.registerEvents();
                 this.registerCommands(['ombi', 'sonarr', 'radarr', 'tautulli']);
