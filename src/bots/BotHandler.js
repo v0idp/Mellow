@@ -12,7 +12,7 @@ module.exports = class BotHandler {
         return new Promise((resolve) => {
             const bot = this.db.webConfig.bot;
             if (bot && bot.token) {
-                new DiscordBot(this.db, this.api).init(bot.token, bot.commandprefix).then((discordBot) => {
+                new DiscordBot(this.db, this.api, bot.token).init(bot.token, bot.commandprefix).then((discordBot) => {
                     this.bots.push(discordBot);
                 }).catch((err) => console.log(err));
             }
