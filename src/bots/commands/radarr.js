@@ -16,6 +16,10 @@ module.exports = class radarrCommand {
 		}
 	}
 
+	hasPermission(user) {
+		return true;
+	}
+
 	async run (msg, args) {
 		return this.services.radarr.run(msg, args.join(' '));
 	}
