@@ -16,7 +16,7 @@ module.exports = class searchMovieCommand {
 		}
 	}
 
-	hasPermission(author) {
+	hasPermission(user) {
 		return true;
 	}
 
