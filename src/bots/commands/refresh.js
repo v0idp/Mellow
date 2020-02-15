@@ -10,7 +10,7 @@ module.exports = class refreshLibrariesCommand {
 		}
 	}
 	
-	hasPermission(author) {
+	hasPermission(user) {
 		return true;
 	}
     

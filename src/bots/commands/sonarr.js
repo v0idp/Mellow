@@ -16,7 +16,7 @@ module.exports = class sonarrCommand {
 		}
 	}
 
-	hasPermission(author) {
+	hasPermission(user) {
 		return true;
 	}
 

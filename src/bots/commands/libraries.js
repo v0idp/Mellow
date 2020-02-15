@@ -10,7 +10,7 @@ module.exports = class librariesCommand {
 		};
 	}
 	
-	hasPermission(author) {
+	hasPermission(user) {
 		return true;
 	}
     

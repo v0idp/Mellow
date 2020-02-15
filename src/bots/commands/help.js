@@ -9,7 +9,7 @@ module.exports = class helpCommand {
 		};
 	}
 	
-	hasPermission(author) {
+	hasPermission(user) {
 		return true;
 	}
     
