@@ -5,12 +5,12 @@ const test = async (req, res) => {
     const botConfig = req.body;
     if (botConfig && botConfig.token) {
         bot = new DiscordBot(null, null, botConfig.token);
-        bot.init().then((result) => {
+        bot.test().then(() => {
             console.log("DiscordBot Test was successfull!");
             bot.destroy();
             res
             .status(200)
-            .send({token: result});
+            .send({status: 'success'});
         }).catch((err) => {
             console.log('Failed initializing DiscordBot! Please check your bot configurations.');
             res
