@@ -9,10 +9,9 @@ module.exports = class DiscordBot extends Discord.Client {
         this.db = db;
         this.api = api;
         this.builder = MsgBuilder;
-        this.config = db.webConfig['bot'];
-        this.config.commandprefix = this.config.commandprefix || "-";
+        this.config = null;
         this.commands = {};
-        this.token = token || this.config.token;
+        this.token = token;
     }
 
     send (msg, text) {
@@ -55,7 +54,7 @@ module.exports = class DiscordBot extends Discord.Client {
         });
     }
 
-    deleteCommandMessages = (msg) => {
+    deleteCommandMessages (msg) {
 		if (msg.deletable && this.config.deletecommandmessages === 'true') {
 			msg.delete();
 		}
@@ -87,9 +86,25 @@ module.exports = class DiscordBot extends Discord.Client {
         });
     }
 
+    test () {
+        return new Promise((resolve, reject) => {
+            try {
+                this.login(this.token)
+                .then(() => resolve(this))
+                .catch((err) => reject(err));
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
     init () {
         return new Promise((resolve, reject) => {
             try {
+                this.config = this.db.webConfig['bot'];
+                this.config = this.config.commandprefix || "-";
+
                 this.registerEvents();
                 this.registerCommands(['ombi', 'sonarr', 'radarr', 'tautulli']);
 

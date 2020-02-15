@@ -95,7 +95,6 @@ $(function() {
 
         // grab bot details from the relevant form
         request.token = $('#form-' + request.bot + ' input.token').val();
-        console.log(request.token)
 
         // make sure that we actually have enough data to proceed first...
         if (!request.token) {
