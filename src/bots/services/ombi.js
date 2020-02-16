@@ -102,7 +102,7 @@ module.exports = class OmbiService {
                 } else {
                     resolve(data[0].id);
                 }
-            }).catch((sel) => {
+            }).catch(() => {
                 this.client.reply(msg, 'Something went wrong! Couldn\'t find any movie.');
             });
         });
