@@ -11,7 +11,7 @@ exports.run = async (client, msg) => {
 
     if (!client.commands[command])
         if (client.config.unknowncommandresponse === 'true')
-            return client.reply(`Unknown command. Use ${client.config.commandprefix}help to view the commands list!`);
+            return client.reply(msg, `Unknown command. Use ${client.config.commandprefix}help to view the commands list!`);
         else return;
 
     if (msg.channel.type !== 'text' && client.commands[command].guildOnly) return;
