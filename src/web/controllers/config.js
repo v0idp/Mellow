@@ -3,7 +3,7 @@ const Sonarr = require('../../api/sonarr.js');
 const Radarr = require('../../api/radarr.js');
 
 const render = async (req, res) => {
-    const config = req.webserver.WebDatabase.webConfig;
+    const config = req.webserver.WebDatabase.config;
     sonarr = new Sonarr(config['sonarr']);
     radarr = new Radarr(config['radarr']);
 

@@ -10,7 +10,7 @@ passport.use('userJwt', new JwtStrategy({
     try {
         const Database = require('../../database/Database.js');
         const webDatabase = new Database();
-        const { username } = webDatabase.webConfig.general;
+        const { username } = webDatabase.config.general;
         if (username !== payload.user)
             return done(null, false, { message: 'username does not exist!'});
         done(null, true);
