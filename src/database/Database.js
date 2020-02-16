@@ -13,7 +13,7 @@ const storeData = (data) => {
 
 module.exports = class Database {
     constructor() {
-        this.webConfig = require(path.join(__dirname, '..', '..', 'data', 'settings.json'));
+        this.config = require(path.join(__dirname, '..', '..', 'data', 'settings.json'));
     }
 
     getConfig() {
@@ -21,7 +21,7 @@ module.exports = class Database {
     }
 
     resetConfigTable(table) {
-        let newWebConfig = this.getConfig();
+        let newWebConfig = this.config;
         for (const key in template[table]) {
             newWebConfig[table][key] = template[table][key];
         }
@@ -29,7 +29,7 @@ module.exports = class Database {
     }
 
     async saveConfig(request) {
-        let newWebConfig = this.getConfig();
+        let newWebConfig = this.config;
         if (request.originalUrl == '/general') {
             const salt = await bcrypt.genSalt(10);
             const pwHash = await bcrypt.hash(request.body.password, salt);
@@ -45,6 +45,8 @@ module.exports = class Database {
             newWebConfig.bot.defaultservice = request.body.defaultservice;
             newWebConfig.bot.requesttv = request.body.requestTV.toLowerCase();
             newWebConfig.bot.requestmovie = request.body.requestMovie.toLowerCase();
+            newWebConfig.bot.admin = request.body.admin.toLowerCase();
+            newWebConfig.bot.selection = request.body.selection;
         } else if (request.originalUrl == '/ombi' && request.body.apiKey != '' && request.body.host != '') {
             newWebConfig.ombi.host = request.body.host;
             newWebConfig.ombi.port = request.body.port;
@@ -81,6 +83,7 @@ module.exports = class Database {
             newWebConfig.radarr.rootfolder = request.body.rootfolder;
             newWebConfig.radarr.minimumavailability = request.body.minimumavailability;
         }
-        storeData(newWebConfig);
+        if (request.body)
+            storeData(newWebConfig);
     }
 }

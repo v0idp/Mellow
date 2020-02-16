@@ -9,10 +9,8 @@ module.exports = class SonarrService {
         return new Promise((resolve, reject) => {
             this.client.api.sonarr.seriesLookup(searchQuery).then(async (data) => {
                 if (data.length > 1) {
-                    const aMsg = await this.client.send(msg, this.client.builder.buildSonarrSeriesResults(data));
+                    const aMsg = await this.client.send(msg, this.client.builder.buildSonarrSeriesResults(this.client.config.selection, data));
                     const selection = await this.client.awaitSelection(msg, aMsg, data.length);
-    
-                    aMsg.delete();
                     if (selection !== -1) {
                         resolve(data[selection]);
                     } else {
@@ -30,7 +28,7 @@ module.exports = class SonarrService {
     }
 
     addSeries(msg, msgEmbed, series) {
-        const newSeries = buildSonarrSeries(series, this.client.db.webConfig['sonarr']);
+        const newSeries = buildSonarrSeries(series, this.client.db.config['sonarr']);
         if (typeof newSeries === "string") {
             return this.client.reply(msg, newSeries);
         }

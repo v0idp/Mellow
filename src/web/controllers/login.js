@@ -19,7 +19,7 @@ const render = async (req, res) => {
 
 const login = async (req, res) => {
     const { username, password, rememberme } = req.body;
-    const general = req.webserver.WebDatabase.getConfig()['general'];
+    const general = req.webserver.WebDatabase.config['general'];
     if (username === general.username && await bcrypt.compare(password, general.password)) {
         const token = signToken(username, rememberme);
         const dMaxAge = new Date();

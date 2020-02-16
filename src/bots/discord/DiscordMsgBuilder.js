@@ -89,7 +89,7 @@ const buildOmbiSeriesEmbed = function(msg, series) {
     return seriesEmbed;
 }
 
-const buildOmbiMovieResults = function(data) {
+const buildOmbiMovieResults = function(selection, data) {
     let fieldContent = '';
     for (let i = 0; i < data.length; i++) {
         if (fieldContent.length > 896) break;
@@ -100,13 +100,13 @@ const buildOmbiMovieResults = function(data) {
 
     let dataEmbed = new Discord.RichEmbed()
     dataEmbed.setTitle('Ombi Movie Search')
-    .setDescription('Please select one of the search results. **Wait for the reactions to finish!**')
+    .setDescription(`Please select one of the search results. ${(selection === 'emoji') ? '**Wait for the reactions to finish!**' : 'To abort answer **cancel**'}`)
     .addField('__Search Results__', fieldContent);
 
     return dataEmbed;
 }
 
-const buildOmbiSeriesResults = function(data) {
+const buildOmbiSeriesResults = function(selection, data) {
     let fieldContent = '';
     for (let i = 0; i < data.length; i++) {
         if (fieldContent.length > 896) break;
@@ -117,7 +117,7 @@ const buildOmbiSeriesResults = function(data) {
 
     let dataEmbed = new Discord.RichEmbed();
     dataEmbed.setTitle('Ombi Series Search')
-    .setDescription('Please select one of the search results. **Wait for the reactions to finish!**')
+    .setDescription(`Please select one of the search results. ${(selection === 'emoji') ? '**Wait for the reactions to finish!**' : 'To abort answer **cancel**'}`)
     .addField('__Search Results__', fieldContent);
 
     return dataEmbed;
@@ -143,7 +143,7 @@ const buildSonarrSeriesEmbed = function(msg, series) {
     return seriesEmbed;
 }
 
-const buildSonarrSeriesResults = function(data) {
+const buildSonarrSeriesResults = function(selection, data) {
     let fieldContent = '';
     const limit = (data.length <= 10) ? data.length : 10;
     for (let i = 0; i < limit; i++) {
@@ -155,7 +155,7 @@ const buildSonarrSeriesResults = function(data) {
 
     let seriesEmbed = new Discord.RichEmbed();
     seriesEmbed.setTitle('Sonarr Series Search')
-    .setDescription('Please select one of the search results. **Wait for the reactions to finish!**')
+    .setDescription(`Please select one of the search results. ${(selection === 'emoji') ? '**Wait for the reactions to finish!**' : 'To abort answer **cancel**'}`)
     .addField('__Search Results__', fieldContent);
 
     return seriesEmbed;
@@ -167,7 +167,6 @@ const buildRadarrMovieEmbed = function(msg, movie) {
     .setDescription(movie.overview.substr(0, 250) + '(...)')
     .setFooter(msg.author.username, `https://cdn.discordapp.com/avatars/${msg.author.id}/${msg.author.avatar}.png`)
     .setTimestamp(new Date())
-    .setImage(movie.remotePoster)
     .setURL('https://www.themoviedb.org/movie/' + movie.tmdbId)
     .attachFile(path.join(__dirname, '..', '..', 'resources', 'tmdb.png'))
     .setThumbnail('attachment://tmdb.png')
@@ -177,10 +176,13 @@ const buildRadarrMovieEmbed = function(msg, movie) {
 
     if (movie.doesExist) movieEmbed.addField('__Added__', '✅', true);
 
+    if (movie.remotePoster) movieEmbed.setImage(movie.remotePoster);
+    else if (movie.images && movie.images[0].coverType === 'poster') movieEmbed.setImage(movie.images[0].url);
+
     return movieEmbed;
 }
 
-const buildRadarrMovieResults = function(data) {
+const buildRadarrMovieResults = function(selection, data) {
     let fieldContent = '';
     const limit = (data.length <= 10) ? data.length : 10;
     for (let i = 0; i < limit; i++) {
@@ -192,7 +194,7 @@ const buildRadarrMovieResults = function(data) {
 
     let movieEmbed = new Discord.RichEmbed();
     movieEmbed.setTitle('Radarr Movie Search')
-    .setDescription('Please select one of the search results. **Wait for the reactions to finish!**')
+    .setDescription(`Please select one of the search results. ${(selection === 'emoji') ? '**Wait for the reactions to finish!**' : 'To abort answer **cancel**'}`)
     .addField('__Search Results__', fieldContent);
 
     return movieEmbed;

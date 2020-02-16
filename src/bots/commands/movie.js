@@ -21,7 +21,7 @@ module.exports = class searchMovieCommand {
 	}
 
 	async run (msg, args) {
-		const config = this.client.db.webConfig;
+		const config = this.client.db.config;
 		const searchQuery = args.join(' ');
 
 		if (config.bot.defaultservice === 'ombi') {
