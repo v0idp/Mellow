@@ -1,6 +1,7 @@
 exports.run = async (client, msg) => {
     if (msg.author.bot) return;
-    if (msg.channel.type !== 'dm' && client.config.channelname !== "" && msg.channel.name.toLowerCase() !== client.config.channelname.toLowerCase()) return;
+    if (msg.channel.type !== 'dm' && client.config.channelname !== "")
+        if (sg.channel.name.toLowerCase() !== client.config.channelname.toLowerCase()) return;
     if (msg.channel.type !== 'dm' && !msg.content.trim().replace(/ /g, '').startsWith(client.config.commandprefix)) return;
     
     let args = msg.content.split(/ +/);
