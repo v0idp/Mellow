@@ -12,7 +12,9 @@
       "unknowncommandresponse": "false",
       "defaultservice": "ombi",
       "requesttv": "",
-      "requestmovie": ""
+      "requestmovie": "",
+      "admin": "",
+      "selection": "emoji"
     },
     "ombi": {
       "host": "",
