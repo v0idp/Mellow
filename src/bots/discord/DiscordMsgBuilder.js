@@ -167,7 +167,6 @@ const buildRadarrMovieEmbed = function(msg, movie) {
     .setDescription(movie.overview.substr(0, 250) + '(...)')
     .setFooter(msg.author.username, `https://cdn.discordapp.com/avatars/${msg.author.id}/${msg.author.avatar}.png`)
     .setTimestamp(new Date())
-    .setImage(movie.remotePoster)
     .setURL('https://www.themoviedb.org/movie/' + movie.tmdbId)
     .attachFile(path.join(__dirname, '..', '..', 'resources', 'tmdb.png'))
     .setThumbnail('attachment://tmdb.png')
@@ -176,6 +175,9 @@ const buildRadarrMovieEmbed = function(msg, movie) {
     .addField('__Runtime__', `${movie.runtime}min`, true);
 
     if (movie.doesExist) movieEmbed.addField('__Added__', '✅', true);
+
+    if (movie.remotePoster) movieEmbed.setImage(movie.remotePoster);
+    else if (movie.images && movie.images[0].coverType === 'poster') movieEmbed.setImage(movie.images[0].url);
 
     return movieEmbed;
 }

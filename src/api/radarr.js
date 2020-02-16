@@ -7,6 +7,7 @@ module.exports = class Radarr {
             "/movie" : getURL(config.host, config.port, config.ssl, config.baseurl + `/api/movie?apikey=${config.apikey}`),
             "/movie/id" : getURL(config.host, config.port, config.ssl, config.baseurl + `/api/movie/%ID%?apikey=${config.apikey}`),
             "/movie/lookup" : getURL(config.host, config.port, config.ssl, config.baseurl + `/api/movie/lookup?term=%NAME%&apikey=${config.apikey}`),
+            "/movie/lookup/tmdb" : getURL(config.host, config.port, config.ssl, config.baseurl + `/api/movie/lookup/tmdb?tmdbId=%NAME%&apikey=${config.apikey}`),
             "/profile" : getURL(config.host, config.port, config.ssl, config.baseurl + `/api/profile?apikey=${config.apikey}`),
             "/rootfolder" : getURL(config.host, config.port, config.ssl, config.baseurl + `/api/rootfolder?apikey=${config.apikey}`),
             "/system/status" : getURL(config.host, config.port, config.ssl, config.baseurl + `/api/system/status?apikey=${config.apikey}`)
@@ -59,14 +60,22 @@ module.exports = class Radarr {
 
     movieLookup(name) {
         return new Promise((resolve, reject) => {
+            let endpoint = '/movie/lookup';
+            let search = name;
+            if (name.startsWith('tmdb:')) {
+                endpoint += '/tmdb';
+                search = name.replace('tmdb:', '');
+            }
+
             get({
                 headers: {'accept' : 'application/json',
                 'User-Agent': `Mellow/${process.env.npm_package_version}`},
-                url: replacePlaceholders(this.endpoints['/movie/lookup'], { "%NAME%":encodeURI(name) })
+                url: replacePlaceholders(this.endpoints[endpoint], { "%NAME%":encodeURI(search) })
             }).then(({response, body}) => {
                 if (response.statusCode === 200) {
                     const data = JSON.parse(body);
-                    resolve(data);
+                    if (data.length !== 0) resolve(data);
+                    else reject(response);
                 }
                 else {
                     console.log(response);

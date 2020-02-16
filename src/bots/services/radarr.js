@@ -112,9 +112,9 @@ module.exports = class SonarrService {
                     reject('Something went wrong! Couldn\'t find any movie.');
                 } else {
                     this.client.api.radarr.movieLookup(`tmdb:${data[0].tmdbId}`).then((oMovie) => {
-                        this.doesMovieExist(oMovie[0].tmdbId).then((status) => {
-                            Object.assign(oMovie[0], { doesExist: status });
-                            resolve(oMovie[0]);
+                        this.doesMovieExist(oMovie.tmdbId).then((status) => {
+                            Object.assign(oMovie, { doesExist: status });
+                            resolve(oMovie);
                         }).catch(() => {
                             reject('There was an error in checking for movie availability.');
                         })
