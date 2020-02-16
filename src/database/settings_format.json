@@ -13,6 +13,7 @@
       "defaultservice": "ombi",
       "requesttv": "",
       "requestmovie": "",
+      "admin": "",
       "selection": "emoji"
     },
     "ombi": {

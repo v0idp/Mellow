@@ -45,6 +45,7 @@ module.exports = class Database {
             newWebConfig.bot.defaultservice = request.body.defaultservice;
             newWebConfig.bot.requesttv = request.body.requestTV.toLowerCase();
             newWebConfig.bot.requestmovie = request.body.requestMovie.toLowerCase();
+            newWebConfig.bot.admin = request.body.admin.toLowerCase();
             newWebConfig.bot.selection = request.body.selection;
         } else if (request.originalUrl == '/ombi' && request.body.apiKey != '' && request.body.host != '') {
             newWebConfig.ombi.host = request.body.host;
