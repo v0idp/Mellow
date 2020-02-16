@@ -36,16 +36,6 @@
             </div>
 
             <div class="form-group row">
-                <label for="defaultservice" class=" col-sm-3 col-form-label">Default Service</label>
-                <div class="col-md-8">
-                    <select name="defaultservice" id="defaultservice" class="form-control defaultservice">
-                        <option value="ombi" <% if (botSettings && botSettings.defaultservice == "ombi") { %>selected<% }%>>Ombi</option>
-                        <option value="sonarradar" <% if (botSettings && botSettings.defaultservice == "sonarradar") { %>selected<% }%>>Sonarr / Radarr</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-group row">
                 <label for="deleteCommandMessages" class="col-sm-3 form-check-label">Delete Command Messages</label>
                 <div class="col-sm-6">
                     <input type="checkbox" id="deleteCommandMessages" name="deleteCommandMessages" value="true" <% if (botSettings && botSettings.deletecommandmessages === 'true') { %>checked<% } %>>
@@ -79,6 +69,40 @@
                 <label for="requestmovie" class="col-md-4 col-form-label">Request Movies</label>
                 <div class="col-md-8">
                     <input type="text" class="form-control requestmovie" name="requestMovie" value="<% if (botSettings && botSettings.requestmovie) { %><%=botSettings.requestmovie %><% } %>">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-12 col-form-label">
+                    <small class="form-text text-muted">
+                        Bot Behaviors
+                    </small>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="defaultservice" class=" col-sm-4 col-form-label">Default Service</label>
+                <div class="col-md-8">
+                    <select name="defaultservice" id="defaultservice" class="form-control defaultservice">
+                        <option value="ombi" <% if (botSettings && botSettings.defaultservice === "ombi") { %>selected<% }%>>Ombi</option>
+                        <option value="sonarradar" <% if (botSettings && botSettings.defaultservice === "sonarradar") { %>selected<% }%>>Sonarr / Radarr</option>
+                    </select>
+                    <small class="form-text text-muted">
+                        Which Service should be used as default for movie and tv commands.
+                    </small>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="selection" class=" col-sm-4 col-form-label">Default Selection</label>
+                <div class="col-md-8">
+                    <select name="selection" id="selection" class="form-control selection">
+                        <option value="emoji" <% if (botSettings && botSettings.selection === "emoji") { %>selected<% }%>>Emoji Reaction</option>
+                        <option value="text" <% if (botSettings && botSettings.selection === "text") { %>selected<% }%>>Text Response</option>
+                    </select>
+                    <small class="form-text text-muted">
+                        Which selection should be used if multiple results are returned.
+                    </small>
                 </div>
             </div>
         </div>

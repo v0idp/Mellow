@@ -12,7 +12,8 @@
       "unknowncommandresponse": "false",
       "defaultservice": "ombi",
       "requesttv": "",
-      "requestmovie": ""
+      "requestmovie": "",
+      "selection": "emoji"
     },
     "ombi": {
       "host": "",

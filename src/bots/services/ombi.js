@@ -24,10 +24,8 @@ module.exports = class OmbiService {
         return new Promise((resolve) => {
             this.client.api.ombi.searchTVShow(searchQuery).then(async (data) => {
                 if (data.length > 1) {
-                    const aMsg = await this.client.send(msg, this.client.builder.buildOmbiSeriesResults(data));
+                    const aMsg = await this.client.send(msg, this.client.builder.buildOmbiSeriesResults(this.client.config.selection, data));
                     const selection = await this.client.awaitSelection(msg, aMsg, data.length);
-    
-                    aMsg.delete();
                     if (selection !== -1) {
                         resolve(data[selection].id);
                     } else {
@@ -92,10 +90,8 @@ module.exports = class OmbiService {
         return new Promise((resolve) => {
             this.client.api.ombi.searchMovie(searchQuery).then(async (data) => {
                 if (data.length > 1) {
-                    const aMsg = await this.client.send(msg, this.client.builder.buildOmbiMovieResults(data));
+                    const aMsg = await this.client.send(msg, this.client.builder.buildOmbiMovieResults(this.client.config.selection, data));
                     const selection = await this.client.awaitSelection(msg, aMsg, data.length);
-    
-                    aMsg.delete();
                     if (selection !== -1) {
                         resolve(data[selection].id);
                     } else {
@@ -106,7 +102,7 @@ module.exports = class OmbiService {
                 } else {
                     resolve(data[0].id);
                 }
-            }).catch(() => {
+            }).catch((sel) => {
                 this.client.reply(msg, 'Something went wrong! Couldn\'t find any movie.');
             });
         });
