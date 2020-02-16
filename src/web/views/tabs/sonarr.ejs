@@ -59,10 +59,10 @@
                 <label for="profile" class="col-md-4 col-form-label">Quality Profiles</label>
                 <div class="col-md-8">
                     <select name="profile" id="profile-sonarr" class="form-control profile">
-                        <option value=0>Please select</option>
+                        <option value="0">Please select</option>
                         <% if (sonarrOptions.profiles) { %>
                             <% for (let i = 0; i < sonarrOptions.profiles.length; i++) { %>
-                                <option value=<%= sonarrOptions.profiles[i].id %> <% if (sonarrSettings && parseInt(sonarrSettings.profile) == parseInt(sonarrOptions.profiles[i].id)) { %>selected<% }%>><%= sonarrOptions.profiles[i].name %></option>
+                                <option value="<%= sonarrOptions.profiles[i].id %>" <% if (sonarrSettings && parseInt(sonarrSettings.profile) == parseInt(sonarrOptions.profiles[i].id)) { %>selected<% }%>><%= sonarrOptions.profiles[i].name %></option>
                             <% } %>
                         <% } %>
                     </select>
@@ -73,10 +73,10 @@
                 <label for="profileanime" class="col-md-4 col-form-label">Quality Profiles (Anime)</label>
                 <div class="col-md-8">
                     <select name="profileanime" id="profileanime" class="form-control profileanime">
-                        <option value=0>Please select</option>
+                        <option value="0">Please select</option>
                         <% if (sonarrOptions.profiles) { %>
                             <% for (let i = 0; i < sonarrOptions.profiles.length; i++) { %>
-                                <option value=<%= sonarrOptions.profiles[i].id %> <% if (sonarrSettings && parseInt(sonarrSettings.profileanime) == parseInt(sonarrOptions.profiles[i].id)) { %>selected<% }%>><%= sonarrOptions.profiles[i].name %></option>
+                                <option value="<%= sonarrOptions.profiles[i].id %>" <% if (sonarrSettings && parseInt(sonarrSettings.profileanime) == parseInt(sonarrOptions.profiles[i].id)) { %>selected<% }%>><%= sonarrOptions.profiles[i].name %></option>
                             <% } %>
                         <% } %>
                     </select>
@@ -87,10 +87,10 @@
                 <label for="rootfolder" class="col-md-4 col-form-label">Default Root folders</label>
                 <div class="col-md-8">
                     <select name="rootfolder" id="rootfolder-sonarr" class="form-control rootfolder">
-                        <option value=0>Please select</option>
+                        <option value="0">Please select</option>
                         <% if (sonarrOptions.rootfolders) { %>
                             <% for (let i = 0; i < sonarrOptions.rootfolders.length; i++) { %>
-                                <option value=<%= sonarrOptions.rootfolders[i].path %> <% if (sonarrSettings && sonarrSettings.rootfolder == sonarrOptions.rootfolders[i].path) { %>selected<% }%>><%= sonarrOptions.rootfolders[i].path %></option>
+                                <option value="<%= sonarrOptions.rootfolders[i].path %>" <% if (sonarrSettings && sonarrSettings.rootfolder == sonarrOptions.rootfolders[i].path) { %>selected<% }%>><%= sonarrOptions.rootfolders[i].path %></option>
                             <% } %>
                         <% } %>
                     </select>
@@ -101,10 +101,10 @@
                 <label for="rootfolderanime" class="col-md-4 col-form-label">Default Root folders (Anime)</label>
                 <div class="col-md-8">
                     <select name="rootfolderanime" id="rootfolderanime" class="form-control rootfolderanime">
-                        <option value=0>Please select</option>
+                        <option value="0">Please select</option>
                         <% if (sonarrOptions.rootfolders) { %>
                             <% for (let i = 0; i < sonarrOptions.rootfolders.length; i++) { %>
-                                <option value=<%= sonarrOptions.rootfolders[i].path %> <% if (sonarrSettings && sonarrSettings.rootfolderanime == sonarrOptions.rootfolders[i].path) { %>selected<% }%>><%= sonarrOptions.rootfolders[i].path %></option>
+                                <option value="<%= sonarrOptions.rootfolders[i].path %>" <% if (sonarrSettings && sonarrSettings.rootfolderanime == sonarrOptions.rootfolders[i].path) { %>selected<% }%>><%= sonarrOptions.rootfolders[i].path %></option>
                             <% } %>
                         <% } %>
                     </select>
@@ -115,10 +115,10 @@
                 <label for="languageprofile" class="col-md-4 col-form-label">Language Profiles</label>
                 <div class="col-md-8">
                     <select name="languageprofile" id="languageprofile" class="form-control languageprofile">
-                        <option value=0>Please select</option>
+                        <option value="0">Please select</option>
                         <% if (sonarrOptions.languageprofiles) { %>
                             <% for (let i = 0; i < sonarrOptions.languageprofiles.length; i++) { %>
-                                <option value=<%= sonarrOptions.languageprofiles[i].id %> <% if (sonarrSettings && parseInt(sonarrSettings.languageprofile) == parseInt(sonarrOptions.languageprofiles[i].id)) { %>selected<% }%>><%= sonarrOptions.languageprofiles[i].name %></option>
+                                <option value="<%= sonarrOptions.languageprofiles[i].id %>" <% if (sonarrSettings && parseInt(sonarrSettings.languageprofile) == parseInt(sonarrOptions.languageprofiles[i].id)) { %>selected<% }%>><%= sonarrOptions.languageprofiles[i].name %></option>
                             <% } %>
                         <% } %>
                     </select>

@@ -52,10 +52,10 @@
                 <label for="profile" class="col-md-4 col-form-label">Quality Profiles</label>
                 <div class="col-md-8">
                     <select name="profile" id="profile-radarr" class="form-control profile">
-                        <option value=0>Please select</option>
+                        <option value="0">Please select</option>
                         <% if (radarrOptions.profiles) { %>
                             <% for (let i = 0; i < radarrOptions.profiles.length; i++) { %>
-                                <option value=<%= radarrOptions.profiles[i].id %> <% if (radarrSettings && parseInt(radarrSettings.profile) == parseInt(radarrOptions.profiles[i].id)) { %>selected<% }%>><%= radarrOptions.profiles[i].name %></option>
+                                <option value="<%= radarrOptions.profiles[i].id %>" <% if (radarrSettings && parseInt(radarrSettings.profile) == parseInt(radarrOptions.profiles[i].id)) { %>selected<% }%>><%= radarrOptions.profiles[i].name %></option>
                             <% } %>
                         <% } %>
                     </select>
@@ -66,10 +66,10 @@
                 <label for="rootfolder" class="col-md-4 col-form-label">Default Root folders</label>
                 <div class="col-md-8">
                     <select name="rootfolder" id="rootfolder-radarr" class="form-control rootfolder">
-                        <option value=0>Please select</option>
+                        <option value="0">Please select</option>
                         <% if (radarrOptions.rootfolders) { %>
                             <% for (let i = 0; i < radarrOptions.rootfolders.length; i++) { %>
-                                <option value=<%= radarrOptions.rootfolders[i].path %> <% if (radarrSettings && radarrSettings.rootfolder == radarrOptions.rootfolders[i].path) { %>selected<% }%>><%= radarrOptions.rootfolders[i].path %></option>
+                                <option value="<%= radarrOptions.rootfolders[i].path %>" <% if (radarrSettings && radarrSettings.rootfolder == radarrOptions.rootfolders[i].path) { %>selected<% }%>><%= radarrOptions.rootfolders[i].path %></option>
                             <% } %>
                         <% } %>
                     </select>

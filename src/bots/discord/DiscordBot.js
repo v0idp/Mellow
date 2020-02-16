@@ -80,7 +80,7 @@ module.exports = class DiscordBot extends Discord.Client {
                 const commandName = file.split(".")[0];
                 const command = new commandFunction(this);
                 if (command.options.group && !groups.includes(command.options.group)) return;
-                if (command.options.group && (!this.db.webConfig[command.options.group].host || !this.db.webConfig[command.options.group].apikey)) return;
+                if (command.options.group && (!this.db.config[command.options.group].host || !this.db.config[command.options.group].apikey)) return;
                 if (command.options.aliases) command.options.aliases.forEach((alias) => this.commands[alias] = command);
                 this.commands[commandName] = command;
             });
@@ -103,7 +103,7 @@ module.exports = class DiscordBot extends Discord.Client {
     init () {
         return new Promise((resolve, reject) => {
             try {
-                this.config = this.db.webConfig['bot'];
+                this.config = this.db.config['bot'];
                 this.config.commandprefix = this.config.commandprefix || "-";
 
                 this.registerEvents();
