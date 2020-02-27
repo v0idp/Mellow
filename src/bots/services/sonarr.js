@@ -28,7 +28,7 @@ module.exports = class SonarrService {
     }
 
     addSeries(msg, msgEmbed, series) {
-        const newSeries = buildSonarrSeries(series, this.client.db.config['sonarr']);
+        const newSeries = buildSonarrSeries(series, this.client.db.config['sonarr'], true);
         if (typeof newSeries === "string") {
             return this.client.reply(msg, newSeries);
         }
