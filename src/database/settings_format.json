@@ -43,7 +43,8 @@
       "rootfolderanime": "",
       "languageprofile": "0",
       "seasonfolders": "false",
-      "v3": "false"
+      "v3": "false",
+      "searchonrequest": "false"
     },
     "radarr": {
       "host": "",
@@ -53,6 +54,7 @@
       "ssl": "false",
       "profile": "0",
       "rootfolder": "",
-      "minimumavailability": "Announced"
+      "minimumavailability": "Announced",
+      "searchonrequest": "false"
     }
   }
