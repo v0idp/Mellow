@@ -1,4 +1,4 @@
-module.exports = buildRadarrMovie = (movie, radarr, searchNow = false) => {
+module.exports = buildRadarrMovie = (movie, radarr) => {
     if (radarr.profile === "0" || radarr.rootfolder === "0" || radarr.rootfolder === "") {
         const errMsg = 'Please set quality profile and default root folder in radarr config!';
         console.log(errMsg);
@@ -20,7 +20,7 @@ module.exports = buildRadarrMovie = (movie, radarr, searchNow = false) => {
 
     Object.assign(newMovie, {
         addOptions: {
-            searchForMovie: searchNow
+            searchForMovie: (radarr.searchonrequest === "true") ? true : false
         }
     });
 
