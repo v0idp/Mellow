@@ -87,6 +87,13 @@
                     </select>
                 </div>
             </div>
+
+            <div class="form-group row">
+                <label for="searchonrequest" class="col-md-4 form-check-label">Search On Request</label>
+                <div class="col-md-8">
+                    <input type="checkbox" class="searchonrequest" name="searchonrequest" value="true" <% if (radarrSettings && radarrSettings.searchonrequest === 'true') { %>checked<% } %>>
+                </div>
+            </div>
         </div>
     </div>
 

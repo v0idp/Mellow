@@ -60,7 +60,7 @@ module.exports = class SonarrService {
     }
 
     addMovie(msg, msgEmbed, movie) {
-        const newMovie = buildRadarrMovie(movie, this.client.db.config['radarr'], true);
+        const newMovie = buildRadarrMovie(movie, this.client.db.config['radarr']);
         if (typeof newMovie === "string") {
             return this.client.reply(msg, newMovie);
         }
