@@ -1,7 +1,7 @@
 const TVMaze = require('../tvmaze.js');
 const tvmaze = new TVMaze();
 
-module.exports = buildSonarrSeries = (series, sonarr, searchNow = false) => {
+module.exports = buildSonarrSeries = (series, sonarr) => {
     if (sonarr.profile === "0" || sonarr.rootfolder === "0" || sonarr.rootfolder === "") {
         const errMsg = 'Please set quality profile and default root folder in sonarr config!';
         console.log(errMsg);
@@ -45,7 +45,7 @@ module.exports = buildSonarrSeries = (series, sonarr, searchNow = false) => {
         addOptions: {
             ignoreEpisodesWithFiles: true,
             ignoreEpisodesWithoutFiles: false,
-            searchForMissingEpisodes: searchNow
+            searchForMissingEpisodes: (sonarr.searchonrequest === "true") ? true : false
         }
     });
 
