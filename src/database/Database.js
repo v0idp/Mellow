@@ -73,6 +73,7 @@ module.exports = class Database {
             newWebConfig.sonarr.languageprofile = request.body.languageprofile;
             newWebConfig.sonarr.seasonfolders = (request.body.seasonfolders) ? 'true' : 'false';
             newWebConfig.sonarr.v3 = (request.body.v3) ? 'true' : 'false';
+            newWebConfig.sonarr.searchonrequest = (request.body.searchonrequest) ? 'true' : 'false';
         } else if (request.originalUrl == '/radarr' && request.body.apiKey != '' && request.body.host != '') {
             newWebConfig.radarr.host = request.body.host;
             newWebConfig.radarr.port = request.body.port;
@@ -82,6 +83,7 @@ module.exports = class Database {
             newWebConfig.radarr.profile = request.body.profile;
             newWebConfig.radarr.rootfolder = request.body.rootfolder;
             newWebConfig.radarr.minimumavailability = request.body.minimumavailability;
+            newWebConfig.radarr.searchonrequest = (request.body.searchonrequest) ? 'true' : 'false';
         }
         if (request.body)
             storeData(newWebConfig);
