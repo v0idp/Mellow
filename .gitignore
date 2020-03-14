@@ -2,3 +2,4 @@ node_modules
 /yarn.lock
 /data/*.sqlite3
 .vscode
+/data

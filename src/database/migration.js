@@ -42,7 +42,7 @@ const migrateSQLITE = function() {
 const migrateJSON = function() {
     return new Promise(async (resolve, reject) => {
         try {
-            const settingsPath = path.join(__dirname, '..', '..', 'data', 'settings.json')
+            const settingsPath = path.join(__dirname, '..', '..', 'data', 'settings.json');
             let oldSettings;
             let migrated = true;
         
@@ -106,6 +106,8 @@ const migrateJSON = function() {
 
 const migrateALL = function() {
     return new Promise(async (resolve, reject) => {
+        const dataPath = path.join(__dirname, '..', '..', 'data');
+        if (!fs.existsSync(dataPath)) fs.mkdirSync(dataPath);
         const sqlErr = await migrateSQLITE();
         if (sqlErr) reject(sqlErr);
         const jsonErr = await migrateJSON();
