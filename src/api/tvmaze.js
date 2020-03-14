@@ -3,7 +3,7 @@ const { get, replacePlaceholders } = require('./../util.js');
 module.exports = class TVMaze {
     constructor() {
         this.endpoints = {
-            "/lookup/shows" : "http://api.tvmaze.com/lookup/shows?thetvdb=%ID%"
+            "/shows" : "http://api.tvmaze.com/shows/%ID%"
         };
     }
 
@@ -12,7 +12,7 @@ module.exports = class TVMaze {
             get({
                 headers: {'accept' : 'application/json',
                 'User-Agent': `Mellow/${process.env.npm_package_version}`},
-                url: replacePlaceholders(this.endpoints['/lookup/shows'], { "%ID%":id })
+                url: replacePlaceholders(this.endpoints['/shows'], { "%ID%":id })
             }).then(({response, body}) => {
                 if (response.statusCode === 200) {
                     const data = JSON.parse(body);

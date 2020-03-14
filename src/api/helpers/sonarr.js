@@ -26,7 +26,7 @@ module.exports = buildSonarrSeries = (series, sonarr) => {
         id: series.id
     }
 
-    tvmaze.isAnime(series.tvdbId).then((status) => {
+    tvmaze.isAnime(series.tvMazeId).then((status) => {
         if (status) {
             if (sonarr.profileanime !== "0")
                 newSeries.qualityProfileId = parseInt(sonarr.profileanime);
