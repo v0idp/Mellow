@@ -14,8 +14,9 @@ RUN cd /tmp && npm install --loglevel=warn \
   && mkdir -p $APP \
   && mv /tmp/node_modules $APP
 
+RUN mkdir -p $APP/data
+
 COPY src $APP/src
-COPY data $APP/data
 COPY package.json $APP
 
 WORKDIR $APP
