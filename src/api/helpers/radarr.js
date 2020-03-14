@@ -10,7 +10,7 @@ module.exports = buildRadarrMovie = (movie, radarr) => {
         tmdbId: movie.tmdbId,
         qualityProfileId: parseInt(radarr.profile),
         rootFolderPath: radarr.rootfolder,
-        path: radarr.rootfolder + movie.title,
+        path: `${radarr.rootfolder}${movie.title} (${movie.year})`,
         titleSlug: movie.titleSlug,
         monitored: true,
         year: movie.year,
