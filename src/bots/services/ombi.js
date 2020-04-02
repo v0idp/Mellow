@@ -40,7 +40,6 @@ module.exports = class OmbiService {
         for (const season of wantedEpisodes) {
             for (const episode of season.episodes) {
                 if(!series.seasonRequests[season.seasonNumber - 1].episodes[episode.episodeNumber - 1].requested) {
-                    console.log(`s${season.seasonNumber} e${episode.episodeNumber} is not requested, return false`);
                     return false;
                 }
             }
@@ -56,7 +55,6 @@ module.exports = class OmbiService {
             for (const season of wantedEpisodes) {
                 for (const episode of season.episodes) {
                     if(!series.seasonRequests[season.seasonNumber - 1].episodes[episode.episodeNumber - 1].available) {
-                        console.log(`s${season.seasonNumber} e${episode.episodeNumber} is not available, return false`);
                         return false;
                     }
                 }
@@ -154,8 +152,7 @@ module.exports = class OmbiService {
                 const wantedEpisodes = await this.getWantedEpisodes(msg, data)
 
                 return this.requestSeries(msg, msgEmbed, data, wantedEpisodes);
-            }).catch((err) => {
-                console.log(err)
+            }).catch(() => {
                 return this.client.reply(msg, 'Something went wrong! Couldn\'t get series information.');
             });
         }
