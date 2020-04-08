@@ -50,11 +50,10 @@
     <div class="form-group row">
         <label for="ssl" class="col-md-3 form-check-label">TV Season Requests</label>
         <div class="col-sm-6">
-            <input type="radio" id="tvSeasons" class="tvSeasonsAlwaysFull" name="wantedTvSeasons" value="alwaysFull" <% if (ombiSettings && ombiSettings.wantedTvSeasons === 'alwaysFull') { %>checked<% } %>>
-            <label for="tvSeasons">Always request all seasons</label>
-            <br>
-            <input type="radio" id="tvSeasonsAsk" class="tvSeasonsAsk" name="wantedTvSeasons" value="ask" <% if (ombiSettings && ombiSettings.wantedTvSeasons === 'ask') { %>checked<% } %>>
-            <label for="tvSeasonsAsk">Ask for latest/ first/ all</label>
+            <select class="form-control" name="wantedTvSeasons" id="wantedTvSeasons">
+                <option value="alwaysFull" <% if (ombiSettings && ombiSettings.wantedTvSeasons === 'alwaysFull') { %>selected<% } %>>Always request all seasons</option>
+                <option value="ask" <% if (ombiSettings && ombiSettings.wantedTvSeasons === 'ask') { %>selected<% } %>>Ask for latest/ first/ all</option>
+            </select>
         </div>
     </div>
 
