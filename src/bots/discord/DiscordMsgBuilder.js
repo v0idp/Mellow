@@ -123,6 +123,21 @@ const buildOmbiSeriesResults = function(selection, data) {
     return dataEmbed;
 }
 
+const buildOmbiMonitoredSelect = function(selection) {
+    let fieldContent = `
+    0) Latest Season
+    1) First Season
+    2) All seasons    
+    `;
+
+    let dataEmbed = new Discord.RichEmbed();
+    dataEmbed.setTitle('Monitored select')
+    .setDescription(`Please select what should be monitored. ${(selection === 'emoji') ? '**Wait for the reactions to finish!**' : 'To abort answer **cancel**'}`)
+    .addField('__Monitored Selection__', fieldContent);
+
+    return dataEmbed;
+}
+
 const buildSonarrSeriesEmbed = function(msg, series) {
     let seriesEmbed = new Discord.RichEmbed()
     .setTitle(`${series.title} (${series.year})`)
@@ -210,6 +225,7 @@ module.exports = {
     buildOmbiSeriesEmbed,
     buildOmbiMovieResults,
     buildOmbiSeriesResults,
+    buildOmbiMonitoredSelect,
 
     buildSonarrSeriesEmbed,
     buildSonarrSeriesResults,

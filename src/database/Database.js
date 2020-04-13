@@ -53,6 +53,7 @@ module.exports = class Database {
             newWebConfig.ombi.baseurl = request.body.baseUrl;
             newWebConfig.ombi.apikey = request.body.apiKey;
             newWebConfig.ombi.ssl = (request.body.ssl) ? 'true' : 'false';
+            newWebConfig.ombi.wantedTvSeasons = request.body.wantedTvSeasons;
             newWebConfig.ombi.username = request.body.userName.toLowerCase();
         } else if (request.originalUrl == '/tautulli' && request.body.apiKey != '' && request.body.host != '') {
             newWebConfig.tautulli.host = request.body.host;
