@@ -130,6 +130,8 @@ module.exports = class DiscordBot extends Discord.Client {
                 this.registerEvents();
                 this.registerCommands(['ombi', 'sonarr', 'radarr', 'tautulli']);
 
+                this.on("error", console.log);
+
                 this.login(this.token)
                 .then(() => resolve(this))
                 .catch((err) => reject(err));
