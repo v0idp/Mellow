@@ -120,7 +120,13 @@ module.exports = class Ombi {
         return this.getContentInformation('tv', tvdbid);
     }
 
-    requestTVShow(tvdbid, name) {
-        return this.requestContent('tv', { 'tvDbId': tvdbid, "requestAll": true}, name);
+    requestTVShow(tvdbid, name, seasons) {
+        return this.requestContent('tv', {
+            'tvDbId': tvdbid,
+            'requestAll': false,
+            'latestSeason': false,
+            'firstSeason': false,
+            "seasons": seasons
+        }, name);
     }
 }

@@ -47,6 +47,16 @@
         </div>
     </div>
 
+    <div class="form-group row">
+        <label for="wantedTvSeasons" class="col-md-3 form-check-label">TV Season Requests</label>
+        <div class="col-sm-6">
+            <select class="form-control" name="wantedTvSeasons" id="wantedTvSeasons">
+                <option value="alwaysFull" <% if (ombiSettings && ombiSettings.wantedTvSeasons === 'alwaysFull') { %>selected<% } %>>Always request all seasons</option>
+                <option value="ask" <% if (ombiSettings && ombiSettings.wantedTvSeasons === 'ask') { %>selected<% } %>>Ask for latest/ first/ all</option>
+            </select>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-sm-6 offset-sm-3">
             <button class = "btn btn-lg btn-primary float-left testApi" data-api="ombi" type = "button" >Test Connectivity</button>
